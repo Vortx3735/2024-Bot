@@ -28,6 +28,12 @@ public class ArmSub extends SubsystemBase {
    *
    * @return a command
    */
+
+  public void move(double percentSpeed){
+    ArmNeo1.set(percentSpeed);
+  }
+
+  
   public CommandBase exampleMethodCommand() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
@@ -42,6 +48,10 @@ public class ArmSub extends SubsystemBase {
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
+
+
+  
+
   public boolean exampleCondition() {
     // Query some boolean state, such as a digital sensor.
     return false;

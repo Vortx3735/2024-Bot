@@ -4,8 +4,8 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ClimbSub;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ArmSub;
 
 /** An example command that uses an example subsystem. */
 public class ArmCOM extends CommandBase {
@@ -17,10 +17,18 @@ public class ArmCOM extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArmSub(ArmSub inputClimb) {
-    climb = inputClimb;
+  public ArmCOM(ArmSub inputArm) {
+    arm = inputArm;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(climb);
+    addRequirements(arm);
+  }
+
+  public void startMotor() {
+    arm.move(0.25);
+  }
+
+  public void reverseMotor() {
+    arm.move(-0.25);
   }
 
   // Called when the command is initially scheduled.
