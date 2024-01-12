@@ -30,8 +30,8 @@ public class RobotContainer {
   public static ClimbSub climbsub = new ClimbSub(0);
   public static ClimbCOM climb = new ClimbCOM(climbsub);
 
-  public static FloorIntakeSub fIntakesub = new FloorIntakeSub(0);
-  public static FloorIntakeCOM fIntake = new FloorIntakeCOM(fIntakesub);
+  public static IntakeSub fIntakesub = new IntakeSub(0);
+  public static IntakeCOM fIntake = new IntakeCOM(fIntakesub);
 
   public static HumanIntakeSub hIntakesub = new HumanIntakeSub(0);
   public static HumanIntakeCOM hIntake = new HumanIntakeCOM(hIntakesub);

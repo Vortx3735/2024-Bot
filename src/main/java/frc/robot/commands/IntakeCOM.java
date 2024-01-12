@@ -4,23 +4,23 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.HumanIntakeSub;
+import frc.robot.subsystems.IntakeSub;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class HumanIntakeCOM extends CommandBase {
+public class IntakeCOM extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final HumanIntakeSub hIntake;
+  private final IntakeSub fIntake;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public HumanIntakeCOM(HumanIntakeSub inputhIntake) {
-    hIntake = inputhIntake;
+  public IntakeCOM(IntakeSub inputfIntake) {
+    fIntake = inputfIntake;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(hIntake);
+    addRequirements(fIntake);
   }
 
   // Called when the command is initially scheduled.

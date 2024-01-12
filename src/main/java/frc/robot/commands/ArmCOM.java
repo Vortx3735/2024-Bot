@@ -4,23 +4,31 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.FloorIntakeSub;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ArmSub;
 
 /** An example command that uses an example subsystem. */
-public class FloorIntakeCOM extends CommandBase {
+public class ArmCOM extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final FloorIntakeSub fIntake;
+  private final ArmSub arm;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public FloorIntakeCOM(FloorIntakeSub inputfIntake) {
-    fIntake = inputfIntake;
+  public ArmCOM(ArmSub inputArm) {
+    arm = inputArm;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(fIntake);
+    addRequirements(arm);
+  }
+
+  public void startMotor() {
+    arm.move(0.25);
+  }
+
+  public void reverseMotor() {
+    arm.move(-0.25);
   }
 
   // Called when the command is initially scheduled.
