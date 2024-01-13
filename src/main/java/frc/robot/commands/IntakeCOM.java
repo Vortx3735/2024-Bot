@@ -17,10 +17,20 @@ public class IntakeCOM extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
+
+   
   public IntakeCOM(IntakeSub inputfIntake) {
     fIntake = inputfIntake;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(fIntake);
+  }
+
+  public void startMotor() {
+    fIntake.move(0.25);
+  }
+
+  public void reverseMotor() {
+    fIntake.move(-0.25);
   }
 
   // Called when the command is initially scheduled.

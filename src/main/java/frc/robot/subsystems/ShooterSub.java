@@ -4,13 +4,25 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSub extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public ShooterSub(int ID) {
-    
+  static CANSparkMax ShooterNeo1;
+  static CANSparkMax ShooterNeo2;
+  // SHOOTER NEO 1 = Top Roller
+  // SHOOTER NEO 2 = Bottom Roller
+
+  public ShooterSub(int ID1, int ID2) {
+    ShooterNeo1 = new CANSparkMax(ID1, MotorType.kBrushless);
+    ShooterNeo2 = new CANSparkMax(ID2, MotorType.kBrushless);
+
+
+    ShooterNeo2.follow(ShooterNeo1, true);
   }
 
   /**
@@ -18,6 +30,11 @@ public class ShooterSub extends SubsystemBase {
    *
    * @return a command
    */
+
+   public void move(double percentSpeed){
+    ShooterNeo1.set(percentSpeed);
+  }
+
   public CommandBase exampleMethodCommand() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.

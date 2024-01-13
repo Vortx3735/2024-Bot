@@ -4,23 +4,31 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.IntakeSub;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ShooterSub;
 
 /** An example command that uses an example subsystem. */
 public class ShooterCOM extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ShooterSub fIntake;
+  private final ShooterSub shooter;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShoooterCOM(ShooterSub inputfIntake) {
-    fIntake = inputfIntake;
+  public ShooterCOM(ShooterSub inputShooter) {
+    shooter = inputShooter;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(fIntake);
+    addRequirements(shooter);
+  }
+
+  public void startMotor() {
+    shooter.move(0.25);
+  }
+
+  public void reverseMotor() {
+    shooter.move(-0.25);
   }
 
   // Called when the command is initially scheduled.
