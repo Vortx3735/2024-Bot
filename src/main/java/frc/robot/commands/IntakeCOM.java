@@ -7,7 +7,6 @@ package frc.robot.commands;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSub;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
 
 /** An example command that uses an example subsystem. */
@@ -34,23 +33,6 @@ public class IntakeCOM extends CommandBase {
 
   public void reverseMotor() {
     fIntake.move(-0.25);
-  }
-
-  public void push() {
-    if (fIntake.phIntakeDoubleSolenoid.get() == kForward)
-    {
-      if(RobotContainer.clawsub.phClawDoubleSolenoid.get() == kReverse)
-      {
-        fIntake.closeIntake();
-      }
-    } else {
-      fIntake.openIntake();
-    }
-    // intake.toggleIntake();
-  }
-
-  public void startIntake() {
-    fIntake.move(-0.8);
   }
 
   public void stopIntake() {

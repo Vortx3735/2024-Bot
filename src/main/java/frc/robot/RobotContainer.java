@@ -122,9 +122,16 @@ public class RobotContainer {
         // intake
         con1.circle.onTrue(
             new InstantCommand(
-                fIntake::push,
+                fIntake::startMotor,
                 fIntakesub
             )                
+        );
+
+        con1.square.onTrue(
+            new InstantCommand(
+                fIntake :: stopIntake,
+                fIntakesub
+            )
         );
 
         // shooter

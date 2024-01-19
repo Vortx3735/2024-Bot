@@ -12,7 +12,7 @@ public class ShooterCOM extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ShooterSub shooter;
 
-  /**
+  /** 
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.

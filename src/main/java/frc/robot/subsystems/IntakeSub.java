@@ -9,16 +9,13 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
+
 
 
 
 public class IntakeSub extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   static CANSparkMax IntakeNeo1;
-
-  public DoubleSolenoid phIntakeDoubleSolenoid;
 
   public IntakeSub(int ID) {
     IntakeNeo1 = new CANSparkMax(ID, MotorType.kBrushless);
@@ -34,17 +31,6 @@ public class IntakeSub extends SubsystemBase {
     IntakeNeo1.set(percentSpeed);
   }
 
-  public void openIntake(){
-    phIntakeDoubleSolenoid.set(kForward);
-  }
-
-  public void closeIntake(){
-    phIntakeDoubleSolenoid.set(kReverse);
-  }
-
-  public void toggleIntake(){
-    phIntakeDoubleSolenoid.toggle();
-  }
 
 
    public CommandBase exampleMethodCommand() {
