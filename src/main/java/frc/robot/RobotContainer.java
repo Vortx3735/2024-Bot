@@ -4,16 +4,24 @@
 
 package frc.robot;
 
-import frc.robot.commands.*;
-import frc.robot.subsystems.*;
-import frc.robot.util.VorTXController;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ArmCOM;
+import frc.robot.commands.ClimbCOM;
+import frc.robot.commands.IntakeCOM;
+import frc.robot.commands.ShooterCOM;
+import frc.robot.subsystems.ArmSub;
+import frc.robot.subsystems.ClimbSub;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSub;
+import frc.robot.subsystems.ShooterSub;
+import frc.robot.util.VorTXController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,8 +41,11 @@ public class RobotContainer {
   public static IntakeSub fIntakesub = new IntakeSub(0);
   public static IntakeCOM fIntake = new IntakeCOM(fIntakesub);
 
-  public static HumanIntakeSub hIntakesub = new HumanIntakeSub(0);
-  public static HumanIntakeCOM hIntake = new HumanIntakeCOM(hIntakesub);
+  public static ArmSub armsub = new ArmSub(0, 0);
+  public static ArmCOM arm = new ArmCOM(armsub);
+
+  public static ShooterSub shootersub = new ShooterSub(0, 0);
+  public static ShooterCOM shooter = new ShooterCOM(shootersub);
 
   public static DriveSubsystem swerve = new DriveSubsystem();
   
@@ -70,7 +81,63 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+    // R1 changes speed to as fast as possible
+        // L1 changes speed to really slow
+        // if speed is set to anything > 4, motor controllers set to brake 
+
+        // more swerve
+        con1.r2.onTrue(
+            new InstantCommand(
+                () -> {
+                    swerve.changeSpeed(10);
+                },
+                swerve
+            )
+        );
+
+        //swerve
+        con1.l2.onTrue(
+            new InstantCommand(
+                () -> {
+                    swerve.changeSpeed(1.5);
+                },
+                swerve
+            )
+        );
+
+        // share button on left of ps4 controller
+        con1.share.onTrue(
+           new InstantCommand(
+                swerve::zeroGyroscope,
+                swerve
+           ) 
+        );
+
+        // climb
+        con1.triangle.whileTrue(
+             new RunCommand(
+                 climb::reverseMotor,
+                 climbsub
+             )
+         );
+
+        // intake
+        con1.circle.onTrue(
+            new InstantCommand(
+                fIntake::push,
+                fIntakesub
+            )                
+        );
+
+        // shooter
+        con1.cross.onTrue(
+            new InstantCommand(
+              shooter::shoot,
+              shootersub
+            )
+        ); 
+
+    }
   }
 
   /**

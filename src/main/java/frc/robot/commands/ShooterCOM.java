@@ -31,6 +31,10 @@ public class ShooterCOM extends CommandBase {
     shooter.move(-0.25);
   }
 
+  public void shoot() {
+    
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}

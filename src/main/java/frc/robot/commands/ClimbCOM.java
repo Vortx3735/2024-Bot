@@ -4,13 +4,19 @@
 
 package frc.robot.commands;
 
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.ClimbSub;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.DigitalInput;
+
 
 /** An example command that uses an example subsystem. */
 public class ClimbCOM extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ClimbSub climb;
+
+  private DigitalInput limitSwitchTop = new DigitalInput(0);
+  private DigitalInput limitSwitchBottom = new DigitalInput(1);
 
   /**
    * Creates a new ExampleCommand.
@@ -21,6 +27,14 @@ public class ClimbCOM extends CommandBase {
     climb = inputClimb;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(climb);
+  }
+
+  public void reverseMotor() {
+    if(limitSwitchBottom.get()) {
+      climb.move(RobotContainer.con1.getLeftX());
+    } else {
+      climb.hold();
+    }
   }
 
   // Called when the command is initially scheduled.

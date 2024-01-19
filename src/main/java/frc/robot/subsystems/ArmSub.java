@@ -11,28 +11,49 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import edu.wpi.first.math.controller.PIDController;
+
 public class ArmSub extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   static CANSparkMax ArmNeo1;
   static CANSparkMax ArmNeo2;
+
+  private PIDController hold;
+
+  private int setpoint;
+
 
   public ArmSub(int ID1, int ID2) {
     ArmNeo1 = new CANSparkMax(ID1, MotorType.kBrushless);
     ArmNeo2 = new CANSparkMax(ID2, MotorType.kBrushless);
 
     ArmNeo2.follow(ArmNeo1, true);
-  }
 
+    hold = new PIDController(0.01, 0, 0);
+
+    setpoint = 0;
+    
+  }
+  
   /**
    * Example command factory method.
    *
    * @return a command
    */
 
+
+
   public void move(double percentSpeed){
     ArmNeo1.set(percentSpeed);
   }
 
+
+  public void hold() {
+    double pos = ArmNeo1.getEncoder().getPosition();
+    ArmNeo1.set(hold.calculate(pos, setpoint));
+
+    setpoint = (int)(pos);
+  }
   
   public CommandBase exampleMethodCommand() {
     // Inline construction of command goes here.
