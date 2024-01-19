@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.PIDController;
 public class ClimbSub extends SubsystemBase {
 
   static CANSparkMax ClimbNeo1;
+  static CANSparkMax ClimbNeo2;
 
   private PIDController hold;
 
@@ -22,6 +23,10 @@ public class ClimbSub extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public ClimbSub(int ID) {
     ClimbNeo1 = new CANSparkMax(1, MotorType.kBrushless);
+    ClimbNeo2 = new CANSparkMax(1, MotorType.kBrushless);
+
+    ClimbNeo2.follow(ClimbNeo1, true);
+
   }
 
   public void move(double percentSpeed){
