@@ -21,16 +21,21 @@ public class ClimbSub extends SubsystemBase {
 
 
   /** Creates a new ExampleSubsystem. */
+
+  // NEO 1 = LEFT
+  // NEO 2 = RIGHT
   public ClimbSub(int ID) {
     ClimbNeo1 = new CANSparkMax(1, MotorType.kBrushless);
     ClimbNeo2 = new CANSparkMax(1, MotorType.kBrushless);
 
-    ClimbNeo2.follow(ClimbNeo1, true);
-
   }
 
-  public void move(double percentSpeed){
+  public void moveLeft(double percentSpeed){
     ClimbNeo1.set(percentSpeed);
+  }
+
+  public void moveRight(double percentSpeed){
+    ClimbNeo2.set(percentSpeed);
   }
 
   /**

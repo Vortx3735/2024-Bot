@@ -21,6 +21,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSub;
 import frc.robot.subsystems.ShooterSub;
 import frc.robot.util.VorTXController;
+import frc.robot.util.VorTXControllerXbox;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -84,7 +85,7 @@ public class RobotContainer {
         // if speed is set to anything > 4, motor controllers set to brake 
 
         // more swerve
-        con1.r2.onTrue(
+        con1.l2.onTrue(
             new InstantCommand(
                 () -> {
                     swerve.changeSpeed(10);
@@ -112,7 +113,7 @@ public class RobotContainer {
         );
 
         // climb
-        con1.triangle.whileTrue(
+        con1..whileTrue(
              new RunCommand(
                  climb::reverseMotor,
                  climbsub
