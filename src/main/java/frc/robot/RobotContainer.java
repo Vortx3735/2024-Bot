@@ -33,7 +33,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   public static VorTXController con1 = new VorTXController(0);
-  public static VorTXController con2 = new VorTXController(1);
 
   public static ClimbSub climbsub = new ClimbSub(0);
   public static ClimbCOM climb = new ClimbCOM(climbsub);
