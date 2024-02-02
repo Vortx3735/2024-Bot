@@ -21,8 +21,7 @@ public class VorTXControllerXbox extends XboxController {
 
 	public VorTXControllerXbox(int port) {
 		super(port);
-		
-
+        		
 		xButton = new JoystickButton(this, 3);
 		aButton = new JoystickButton(this, 1);
 		bButton = new JoystickButton(this, 2);

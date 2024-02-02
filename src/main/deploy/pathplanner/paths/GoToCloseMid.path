@@ -1,0 +1,49 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.355271319776003,
+        "y": 6.97892778425677
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.14818741406461,
+        "y": 5.385515959592434
+      },
+      "isLocked": false,
+      "linkedName": "LeftNoteStart"
+    },
+    {
+      "anchor": {
+        "x": 2.355271319776003,
+        "y": 5.570373582233556
+      },
+      "prevControl": {
+        "x": 2.345847042153697,
+        "y": 5.558030280563858
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "CloseMid"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "StartWLeft",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}
