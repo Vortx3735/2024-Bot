@@ -5,17 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmSub;
-import edu.wpi.first.wpilibj.DigitalInput;
 
 
 /** An example command that uses an example subsystem. */
 public class ArmCOM extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSub arm;
-  private DigitalInput limitSwitchTop = new DigitalInput(0);
-  private DigitalInput limitSwitchBottom = new DigitalInput(1);
+  
 
   /**
    * Creates a new ExampleCommand.
@@ -37,11 +34,7 @@ public class ArmCOM extends Command {
   }
 
   public void reverseMotor() {
-    if(limitSwitchBottom.get()) {
-      arm.move(RobotContainer.con1.getLeftX());
-    } else {
-      arm.hold();
-    }
+    arm.move(-0.25);
   }
 
   // Called when the command is initially scheduled.

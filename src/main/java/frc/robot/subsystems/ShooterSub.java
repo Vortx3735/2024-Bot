@@ -22,7 +22,7 @@ public class ShooterSub extends SubsystemBase {
     ShooterNeo2 = new CANSparkMax(ID2, MotorType.kBrushless);
 
 
-    ShooterNeo2.follow(ShooterNeo1, true);
+    ShooterNeo2.follow(ShooterNeo1, false);
   }
 
   /**
