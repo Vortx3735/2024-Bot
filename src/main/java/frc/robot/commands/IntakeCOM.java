@@ -6,11 +6,11 @@ package frc.robot.commands;
 
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSub;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
 
 /** An example command that uses an example subsystem. */
-public class IntakeCOM extends CommandBase {
+public class IntakeCOM extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final IntakeSub fIntake;
 

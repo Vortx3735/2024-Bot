@@ -6,12 +6,12 @@ package frc.robot.commands;
 
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ClimbSub;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 
 /** An example command that uses an example subsystem. */
-public class ClimbCOM extends CommandBase {
+public class ClimbCOM extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ClimbSub climb;
 

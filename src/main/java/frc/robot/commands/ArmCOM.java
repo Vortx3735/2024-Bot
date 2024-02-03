@@ -4,14 +4,14 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmSub;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 
 /** An example command that uses an example subsystem. */
-public class ArmCOM extends CommandBase {
+public class ArmCOM extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSub arm;
   private DigitalInput limitSwitchTop = new DigitalInput(0);
