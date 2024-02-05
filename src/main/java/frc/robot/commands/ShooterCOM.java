@@ -4,11 +4,11 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSub;
 
 /** An example command that uses an example subsystem. */
-public class ShooterCOM extends CommandBase {
+public class ShooterCOM extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ShooterSub shooter;
 

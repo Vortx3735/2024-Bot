@@ -4,24 +4,16 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.ArmCOM;
-import frc.robot.commands.ClimbCOM;
-import frc.robot.commands.IntakeCOM;
-import frc.robot.commands.ShooterCOM;
-import frc.robot.subsystems.ArmSub;
-import frc.robot.subsystems.ClimbSub;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IntakeSub;
-import frc.robot.subsystems.ShooterSub;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import frc.robot.util.VorTXController;
-import frc.robot.util.VorTXControllerXbox;
+import java.io.File;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.OperatorConstants;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,8 +26,6 @@ public class RobotContainer {
 
   public static VorTXController con1 = new VorTXController(0);
 
-  public static ClimbSub climbsub = new ClimbSub(0);
-  public static ClimbCOM climb = new ClimbCOM(climbsub);
 
   public static IntakeSub fIntakesub = new IntakeSub(0);
   public static IntakeCOM fIntake = new IntakeCOM(fIntakesub);
@@ -46,28 +36,40 @@ public class RobotContainer {
   public static ShooterSub shootersub = new ShooterSub(0, 0);
   public static ShooterCOM shooter = new ShooterCOM(shootersub);
 
-  public static DriveSubsystem swerve = new DriveSubsystem();
+  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+                                                                         "swerve"));
+
+                                                                   
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
+                                                                   () -> MathUtil.applyDeadband(con1.getLeftY(),
+                                                                                                OperatorConstants.LEFT_Y_DEADBAND),
+                                                                   () -> MathUtil.applyDeadband(con1.getLeftX(),
+                                                                                                OperatorConstants.LEFT_X_DEADBAND),
+                                                                   () -> MathUtil.applyDeadband(con1.getRightX(),
+                                                                   OperatorConstants.RIGHT_X_DEADBAND),
+                                                                   () -> con1.triangle.getAsBoolean(),
+                                                                   () -> con1.cross.getAsBoolean(),
+                                                                   () -> con1.square.getAsBoolean(),
+                                                                   () -> con1.circle.getAsBoolean(),
+                                                                   18);
+    // Applies deadbands and inverts controls because joysticks
+    // are back-right positive while robot
+    // controls are front-left positive
+    // left stick controls translation
+    // right stick controls the desired angle NOT angular rotation
+    Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
+        () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
+        () -> con1.getRightX(),
+        () -> con1.getRightY());
 
-    swerve.setDefaultCommand(
-            // The left stick controls translation of the robot.
-            // Turning is controlled by the X axis of the right stick.
-            new RunCommand(
-                () -> swerve.drive(
-                    ChassisSpeeds.fromFieldRelativeSpeeds(
-                        //1,0,0,
-                        MathUtil.applyDeadband(con1.getLeftY(), 0.1),
-                        MathUtil.applyDeadband(con1.getLeftX(), 0.1),
-                        MathUtil.applyDeadband(con1.getRightX(), 0.1)*1.75, 
-                        DriveSubsystem.getGyroscopeRotation())
-                    ),
-                    swerve
-            )
-        );
+    drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+
   }
 
   /**
@@ -80,45 +82,14 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // R1 changes speed to as fast as possible
-        // L1 changes speed to really slow
-        // if speed is set to anything > 4, motor controllers set to brake 
 
-        // more swerve
-        con1.l2.onTrue(
+        con1.options.onTrue(
+          ( 
             new InstantCommand(
-                () -> {
-                    swerve.changeSpeed(10);
-                },
-                swerve
+              drivebase::zeroGyro
             )
+          )
         );
-
-        //swerve
-        con1.l2.onTrue(
-            new InstantCommand(
-                () -> {
-                    swerve.changeSpeed(1.5);
-                },
-                swerve
-            )
-        );
-
-        // share button on left of ps4 controller
-        con1.share.onTrue(
-           new InstantCommand(
-                swerve::zeroGyroscope,
-                swerve
-           ) 
-        );
-
-        // climb
-        con1..whileTrue(
-             new RunCommand(
-                 climb::reverseMotor,
-                 climbsub
-             )
-         );
 
         // intake
         con1.circle.onTrue(
@@ -130,7 +101,7 @@ public class RobotContainer {
 
         con1.square.onTrue(
             new InstantCommand(
-                fIntake :: stopIntake,
+                fIntake::stopIntake,
                 fIntakesub
             )
         );
@@ -153,5 +124,15 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return new InstantCommand();
+  }
+
+  public void setDriveMode()
+  {
+    //drivebase.setDefaultCommand();
+  }
+
+  public void setMotorBrake(boolean brake)
+  {
+    drivebase.setMotorBrake(brake);
   }
 }

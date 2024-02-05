@@ -7,7 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeSub extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  static CANSparkMax IntakeNeo1;
+  static CANSparkMax intakeNeo1;
 
-  public IntakeSub(int ID) {
-    IntakeNeo1 = new CANSparkMax(ID, MotorType.kBrushless);
+  public IntakeSub(int ID1) {
+    intakeNeo1 = new CANSparkMax(ID1, MotorType.kBrushless);
   }
   /**
    * Example command factory method.
@@ -28,12 +28,12 @@ public class IntakeSub extends SubsystemBase {
 
 
    public void move(double percentSpeed){
-    IntakeNeo1.set(percentSpeed);
+    intakeNeo1.set(percentSpeed);
   }
 
 
 
-   public CommandBase exampleMethodCommand() {
+   public Command exampleMethodCommand() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
