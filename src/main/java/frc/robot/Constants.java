@@ -48,4 +48,17 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
+
+  public static class IntakeConstants {
+    public static final double ringDistanceMeters = 0.3;
+    public static final double ringDistanceErrorMeters = 0.05;
+  }
+
+
+  public static class ArmConstants {
+    public static final double motorToArmGearRatio = 1.0/27.0;
+    public static final double ampArmPos = 110;
+  }
+
+
 }

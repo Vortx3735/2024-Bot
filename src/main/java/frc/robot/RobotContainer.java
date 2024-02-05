@@ -6,14 +6,18 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.util.VorTXController;
 import java.io.File;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.IntakeConstants;;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,7 +34,7 @@ public class RobotContainer {
   public static IntakeSub fIntakesub = new IntakeSub(0);
   public static IntakeCOM fIntake = new IntakeCOM(fIntakesub);
 
-  public static ArmSub armsub = new ArmSub(0, 0);
+  public static ArmSub armsub = new ArmSub(8, 1, Constants.ArmConstants.motorToArmGearRatio);
   public static ArmCOM arm = new ArmCOM(armsub);
 
   public static ShooterSub shootersub = new ShooterSub(0, 0);
@@ -69,6 +73,26 @@ public class RobotContainer {
         () -> con1.getRightY());
 
     drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+
+
+    // go brrrrrrrrrrrrrrrr and vibrate when we have a ring (hopefully)
+    fIntakesub.setDefaultCommand(
+      new RunCommand(
+        () -> {
+          if (fIntake.hasRing(IntakeConstants.ringDistanceMeters, IntakeConstants.ringDistanceErrorMeters)) {
+              con1.setRumble(RumbleType.kBothRumble, 1);
+            }
+        }
+      )
+    );
+    
+    
+    
+
+
+    
+    
+    
 
   }
 

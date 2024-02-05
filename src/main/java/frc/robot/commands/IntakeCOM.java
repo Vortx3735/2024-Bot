@@ -5,6 +5,9 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.IntakeSub;
+
+import com.revrobotics.Rev2mDistanceSensor;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 
@@ -22,6 +25,7 @@ public class IntakeCOM extends Command {
    
   public IntakeCOM(IntakeSub inputfIntake) {
     fIntake = inputfIntake;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(fIntake);
   }
@@ -36,6 +40,10 @@ public class IntakeCOM extends Command {
 
   public void stopIntake() {
     fIntake.move(0);
+  }
+
+  public boolean hasRing(double dist, double error) {
+    return fIntake.getDistance() < dist - error;
   }
 
 

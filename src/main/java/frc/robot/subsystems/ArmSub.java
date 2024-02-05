@@ -15,23 +15,25 @@ import edu.wpi.first.math.controller.PIDController;
 
 public class ArmSub extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  static CANSparkMax ArmNeo1;
-  static CANSparkMax ArmNeo2;
+  CANSparkMax ArmNeo1;
+  CANSparkMax ArmNeo2;
 
   private PIDController hold;
 
   private int setpoint;
+  private final double motorToArmGearRatio;
 
 
-  public ArmSub(int ID1, int ID2) {
-    ArmNeo1 = new CANSparkMax(ID1, MotorType.kBrushless);
-    ArmNeo2 = new CANSparkMax(ID2, MotorType.kBrushless);
+  public ArmSub(int leftMotor, int rightMotor, double motorToArmGearRatio) {
+    this.ArmNeo1 = new CANSparkMax(leftMotor, MotorType.kBrushless);
+    this.ArmNeo2 = new CANSparkMax(rightMotor, MotorType.kBrushless);
 
-    ArmNeo2.follow(ArmNeo1, true);
+    this.ArmNeo2.follow(ArmNeo1, true);
 
-    hold = new PIDController(0.01, 0, 0);
+    this.hold = new PIDController(0.01, 0, 0);
 
-    setpoint = 0;
+    this.setpoint = 0;
+    this.motorToArmGearRatio = motorToArmGearRatio;
     
   }
   
@@ -48,12 +50,25 @@ public class ArmSub extends SubsystemBase {
   }
 
 
+  public void moveToSetpoint(double setPointDegrees, double p) {
+    move((setPointDegrees - getArmAngle()) * p);
+  }
+
   public void hold() {
     double pos = ArmNeo1.getEncoder().getPosition();
     ArmNeo1.set(hold.calculate(pos, setpoint));
 
     setpoint = (int)(pos);
   }
+
+  public double getArmAngle() {
+    double averageNeoRotations = (ArmNeo1.getEncoder().getPosition() + ArmNeo2.getEncoder().getPosition())/2;
+    double armRotation = averageNeoRotations * motorToArmGearRatio;
+    double armAngleDegrees = armRotation * 360;
+    return armAngleDegrees;
+
+  }
+
   
   public Command exampleMethodCommand() {
     // Inline construction of command goes here.
