@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.util.VorTXController;
@@ -69,6 +70,12 @@ public class RobotContainer {
         () -> con1.getRightY());
 
     drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+    armsub.setDefaultCommand(
+      new RunCommand(
+        armsub::hold,
+        armsub  
+      )
+    );
 
   }
 
@@ -112,7 +119,20 @@ public class RobotContainer {
               shooter::shoot,
               shootersub
             )
-        ); 
+        );
+        
+        con1.l2.onTrue(
+            new RunCommand(
+              arm::startMotor,
+              armsub
+            )
+        );
+        con1.r2.onTrue(
+          new RunCommand(
+            arm::reverseMotor,
+            armsub
+            )
+        );
 
     }
 
