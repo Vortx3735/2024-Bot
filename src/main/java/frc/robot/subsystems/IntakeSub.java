@@ -5,10 +5,15 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import com.revrobotics.Rev2mDistanceSensor.Port;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+
 
 
 
@@ -17,7 +22,10 @@ public class IntakeSub extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   static CANSparkMax intakeNeo1;
 
+  private Rev2mDistanceSensor ringDetector;
+
   public IntakeSub(int ID1) {
+    ringDetector = new Rev2mDistanceSensor(Port.kOnboard);
     intakeNeo1 = new CANSparkMax(ID1, MotorType.kBrushless);
   }
   /**
@@ -31,6 +39,9 @@ public class IntakeSub extends SubsystemBase {
     intakeNeo1.set(percentSpeed);
   }
 
+  public double getDistance(){
+    return ringDetector.GetRange();
+  }
 
 
    public Command exampleMethodCommand() {

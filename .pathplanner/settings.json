@@ -3,10 +3,14 @@
   "robotLength": 0.7366,
   "holonomicMode": true,
   "pathFolders": [
+<<<<<<< Updated upstream
     "LeftNote",
     "MiddleToLeft",
     "StartWLeft",
     "gatherNotesFromMid"
+=======
+    "AutoMid"
+>>>>>>> Stashed changes
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,

@@ -17,9 +17,9 @@ public class ShooterSub extends SubsystemBase {
   // SHOOTER NEO 1 = Top Roller
   // SHOOTER NEO 2 = Bottom Roller
 
-  public ShooterSub(int ID1, int ID2) {
-    ShooterNeo1 = new CANSparkMax(ID1, MotorType.kBrushless);
-    ShooterNeo2 = new CANSparkMax(ID2, MotorType.kBrushless);
+  public ShooterSub(int leftMotor, int rightMotor) {
+    ShooterNeo1 = new CANSparkMax(leftMotor, MotorType.kBrushless);
+    ShooterNeo2 = new CANSparkMax(rightMotor, MotorType.kBrushless);
 
 
     ShooterNeo2.follow(ShooterNeo1, false);

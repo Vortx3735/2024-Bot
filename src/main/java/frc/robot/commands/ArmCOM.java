@@ -4,8 +4,10 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ArmSub;
+import frc.robot.Constants.ArmConstants;
 
 
 /** An example command that uses an example subsystem. */
@@ -29,13 +31,11 @@ public class ArmCOM extends Command {
 
   }
 
-  public void startMotor() {
-    arm.move(0.25);
+  public void moveToAmpPos() {
+    arm.moveToSetpoint(ArmConstants.ampArmPos, 1);
   }
-
-  public void reverseMotor() {
-    arm.move(-0.25);
-  }
+  
+  
 
   // Called when the command is initially scheduled.
   @Override
