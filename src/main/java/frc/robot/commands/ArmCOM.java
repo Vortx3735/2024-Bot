@@ -27,6 +27,14 @@ public class ArmCOM extends Command {
     addRequirements(arm);
   }
 
+  public void startMotor() {
+    arm.move(0.25);
+  }
+
+  public void reverseMotor() {
+    arm.move(-0.25);
+  }
+
   public void moveStick() {
 
   }
