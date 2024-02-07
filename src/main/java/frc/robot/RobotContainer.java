@@ -11,13 +11,15 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.util.VorTXController;
 import java.io.File;
+import java.text.RuleBasedCollator;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.Constants.IntakeConstants;;
+import frc.robot.Constants.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,19 +31,14 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   public static VorTXController con1 = new VorTXController(0);
+  public static Intake intake = new Intake(6);
+  public static Arm arm = new Arm(8, 5, Constants.ArmConstants.motorToArmGearRatio);
+  public static Shooter shooter = new Shooter(7, 3);
 
+  // private final Swerve Subsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+  //                                                                        "swerve"));
 
-  public static IntakeSub fIntakesub = new IntakeSub(0);
-  public static IntakeCOM fIntake = new IntakeCOM(fIntakesub);
-
-  public static ArmSub armsub = new ArmSub(8, 1, Constants.ArmConstants.motorToArmGearRatio);
-  public static ArmCOM arm = new ArmCOM(armsub);
-
-  public static ShooterSub shootersub = new ShooterSub(0, 0);
-  public static ShooterCOM shooter = new ShooterCOM(shootersub);
-
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                         "swerve"));
+  
 
                                                                    
   
@@ -49,50 +46,63 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-    AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
-                                                                   () -> MathUtil.applyDeadband(con1.getLeftY(),
-                                                                                                OperatorConstants.LEFT_Y_DEADBAND),
-                                                                   () -> MathUtil.applyDeadband(con1.getLeftX(),
-                                                                                                OperatorConstants.LEFT_X_DEADBAND),
-                                                                   () -> MathUtil.applyDeadband(con1.getRightX(),
-                                                                   OperatorConstants.RIGHT_X_DEADBAND),
-                                                                   () -> con1.triangle.getAsBoolean(),
-                                                                   () -> con1.cross.getAsBoolean(),
-                                                                   () -> con1.square.getAsBoolean(),
-                                                                   () -> con1.circle.getAsBoolean(),
-                                                                   18);
-    // Applies deadbands and inverts controls because joysticks
+    // AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
+    //                                                                () -> MathUtil.applyDeadband(con1.getLeftY(),
+    //                                                                                             OperatorConstants.LEFT_Y_DEADBAND),
+    //                                                                () -> MathUtil.applyDeadband(con1.getLeftX(),
+    //                                                                                             OperatorConstants.LEFT_X_DEADBAND),
+    //                                                                () -> MathUtil.applyDeadband(con1.getRightX(),
+    //                                                                OperatorConstants.RIGHT_X_DEADBAND),
+    //                                                                () -> con1.triangle.getAsBoolean(),
+    //                                                                () -> con1.cross.getAsBoolean(),
+    //                                                                () -> con1.square.getAsBoolean(),
+    //                                                                () -> con1.circle.getAsBoolean(),
+    //                                                                18);
+    // // Applies deadbands and inverts controls because joysticks
     // are back-right positive while robot
     // controls are front-left positive
     // left stick controls translation
     // right stick controls the desired angle NOT angular rotation
-    Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-        () -> con1.getRightX(),
-        () -> con1.getRightY());
+    // Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
+    //     () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
+    //     () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
+    //     () -> con1.getRightX(),
+    //     () -> con1.getRightY());
 
-    drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
-    
-    armsub.setDefaultCommand(
+    // drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+
+    arm.setDefaultCommand(
       new RunCommand(
-        armsub::hold,
-        armsub  
+        arm::hold,
+        arm  
+      )
+    );
+
+    shooter.setDefaultCommand(
+      new RunCommand(
+        shooter::coast,
+        shooter
       )
     );
 
 
-    // go brrrrrrrrrrrrrrrr and vibrate when we have a ring (hopefully)
-    fIntakesub.setDefaultCommand(
+    // // go brrrrrrrrrrrrrrrr and vibrate when we have a ring (hopefully)
+    // fIntakesub.setDefaultCommand(
+    //   new RunCommand(
+    //     () -> {
+    //       if (fIntakecom.hasRing(IntakeConstants.ringDistanceMeters, IntakeConstants.ringDistanceErrorMeters)) {
+  //           con1.setRumble(RumbleType.kBothRumble, 1);
+  //         }
+    //     }
+    //   )
+    // );
+    
+    intake.setDefaultCommand(
       new RunCommand(
-        () -> {
-          if (fIntake.hasRing(IntakeConstants.ringDistanceMeters, IntakeConstants.ringDistanceErrorMeters)) {
-              con1.setRumble(RumbleType.kBothRumble, 1);
-            }
-        }
+        intake::coast,
+        intake
       )
     );
-    
     
     // https://www.desmos.com/calculator/ewzddexzei
 
@@ -114,48 +124,101 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-        con1.options.onTrue(
-          ( 
-            new InstantCommand(
-              drivebase::zeroGyro
-            )
+        // con1.options.whileTrue(
+        //   ( 
+        //     new InstantCommand(
+        //       drivebase::zeroGyro
+        //     )
+        //   )
+        // );
+
+        //intake
+        // con1.circle.whileTrue(
+        //     new RunCommand(
+        //         fIntakecom::startMotor,
+        //         fIntakesub
+        //     )                
+        // );
+
+        //Takes note out
+        con1.circle.whileTrue(
+          new RunCommand(
+            () -> intake.intake(0.25), 
+            intake
           )
         );
 
-        // intake
-        con1.circle.onTrue(
-            new InstantCommand(
-                fIntake::startMotor,
-                fIntakesub
-            )                
-        );
+        // con1.square.whileTrue(
+        //     new RunCommand(
+        //         fIntakecom::stopIntake,
+        //         fIntakesub
+        //     )
+        // );
 
-        con1.square.onTrue(
-            new InstantCommand(
-                fIntake::stopIntake,
-                fIntakesub
-            )
+        //Brings Note In
+        con1.square.whileTrue(
+          new RunCommand(
+            () -> intake.outtake(.25),
+            intake
+          )
         );
 
         // shooter
-        con1.cross.onTrue(
-            new InstantCommand(
-              shooter::shoot,
-              shootersub
-            )
-        );
-        
-        con1.l2.onTrue(
-            new RunCommand(
-              arm::startMotor,
-              armsub
-            )
-        );
-        con1.r2.onTrue(
+
+        // con1.cross.whileTrue(
+        //     new RunCommand(
+        //       shootercom::reverseMotor,
+        //       shootersub
+        //     )
+        // );
+
+        con1.cross.whileTrue(
           new RunCommand(
-            arm::reverseMotor,
-            armsub
-            )
+            () -> shooter.shoot(.9),
+            shooter
+          )
+        );
+
+        InstantCommand moveArmToAmp = new InstantCommand(
+          () -> arm.moveToSetpoint(ArmConstants.ampArmPos, 1),
+          arm
+        );
+
+        con1.triangle.whileTrue(
+          moveArmToAmp
+        );
+
+       
+
+        
+        // con1.l2.whileTrue(
+        //     new RunCommand(
+        //       armcom::startMotor,
+        //       armsub
+        //     )
+        // );
+
+        //Goes towards floor
+        con1.l2.whileTrue(
+          new RunCommand(
+            () -> arm.up(0.25),
+            arm
+          )
+        );
+
+        // con1.r2.whileTrue(
+        //   new RunCommand(
+        //     armcom::reverseMotor,
+        //     armsub
+        //     )
+        // );
+
+        //Goes up
+        con1.r2.whileTrue(
+          new RunCommand(
+            () -> arm.down(0.25),
+            arm
+          )
         );
 
     }
@@ -175,8 +238,8 @@ public class RobotContainer {
     //drivebase.setDefaultCommand();
   }
 
-  public void setMotorBrake(boolean brake)
-  {
-    drivebase.setMotorBrake(brake);
-  }
+  // public void setMotorBrake(boolean brake)
+  // {
+  //   drivebase.setMotorBrake(brake);
+  // }
 }

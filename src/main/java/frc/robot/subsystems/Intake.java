@@ -18,15 +18,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 
-public class IntakeSub extends SubsystemBase {
+public class Intake extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   static CANSparkMax intakeNeo1;
 
   private Rev2mDistanceSensor ringDetector;
 
-  public IntakeSub(int ID1) {
+  public Intake(int ID1) {
     ringDetector = new Rev2mDistanceSensor(Port.kOnboard);
     intakeNeo1 = new CANSparkMax(ID1, MotorType.kBrushless);
+    intakeNeo1.setInverted(true);
   }
   /**
    * Example command factory method.
@@ -35,14 +36,29 @@ public class IntakeSub extends SubsystemBase {
    */
 
 
-   public void move(double percentSpeed){
+  private void move(double percentSpeed){
     intakeNeo1.set(percentSpeed);
   }
 
-  public double getDistance(){
+  public void intake(double percentSpeed) {
+    move(Math.abs(percentSpeed));
+  }
+
+  public void outtake(double percentSpeed) {
+    move(Math.abs(percentSpeed));
+  }
+
+  private double getDistance(){
     return ringDetector.GetRange();
   }
 
+  public boolean hasRing(double dist, double error) {
+    return getDistance() < dist - error;
+  }
+
+  public void coast() {
+    move(0);
+  }
 
    public Command exampleMethodCommand() {
     // Inline construction of command goes here.

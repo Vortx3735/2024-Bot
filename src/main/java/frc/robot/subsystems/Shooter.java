@@ -7,69 +7,51 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import edu.wpi.first.math.controller.PIDController;
-
-public class ArmSub extends SubsystemBase {
+public class Shooter extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  CANSparkMax ArmNeo1;
-  CANSparkMax ArmNeo2;
+  static CANSparkMax ShooterNeo1;
+  static CANSparkMax ShooterNeo2;
+  // SHOOTER NEO 1 = Top Roller
+  // SHOOTER NEO 2 = Bottom Roller
 
-  private PIDController hold;
+  public Shooter(int topMotor, int bottomMotor) {
+    ShooterNeo1 = new CANSparkMax(topMotor, MotorType.kBrushless);
+    ShooterNeo2 = new CANSparkMax(bottomMotor, MotorType.kBrushless);
 
-  private int setpoint;
-  private final double motorToArmGearRatio;
 
-
-  public ArmSub(int leftMotor, int rightMotor, double motorToArmGearRatio) {
-    this.ArmNeo1 = new CANSparkMax(leftMotor, MotorType.kBrushless);
-    this.ArmNeo2 = new CANSparkMax(rightMotor, MotorType.kBrushless);
-
-    this.ArmNeo2.follow(ArmNeo1, true);
-
-    this.hold = new PIDController(0.01, 0, 0);
-
-    this.setpoint = 0;
-    this.motorToArmGearRatio = motorToArmGearRatio;
-    
+    ShooterNeo2.follow(ShooterNeo1, false);
   }
-  
+
   /**
    * Example command factory method.
    *
    * @return a command
    */
 
-
-
   public void move(double percentSpeed){
-    ArmNeo1.set(percentSpeed);
+    ShooterNeo1.set(percentSpeed);
+  }
+
+  public void shoot(double percentSpeed) {
+    move(Math.abs(percentSpeed));
+  }
+
+  /**
+   * why would you even want to reverse the shooter
+   * @param percentSpeed
+   */
+  public void reverse(double percentSpeed) {
+    move(Math.abs(percentSpeed));
+  }
+
+  public void coast() {
+    move(0);
   }
 
 
-  public void moveToSetpoint(double setPointDegrees, double p) {
-    move((setPointDegrees - getArmAngle()) * p);
-  }
-
-  public void hold() {
-    double pos = ArmNeo1.getEncoder().getPosition();
-    ArmNeo1.set(hold.calculate(pos, setpoint));
-
-    setpoint = (int)(pos);
-  }
-
-  public double getArmAngle() {
-    double averageNeoRotations = (ArmNeo1.getEncoder().getPosition() + ArmNeo2.getEncoder().getPosition())/2;
-    double armRotation = averageNeoRotations * motorToArmGearRatio;
-    double armAngleDegrees = armRotation * 360;
-    return armAngleDegrees;
-
-  }
-
-  
   public Command exampleMethodCommand() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
@@ -84,10 +66,6 @@ public class ArmSub extends SubsystemBase {
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
-
-
-  
-
   public boolean exampleCondition() {
     // Query some boolean state, such as a digital sensor.
     return false;

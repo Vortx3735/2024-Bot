@@ -11,7 +11,7 @@
   },
   "angle": {
     "type": "sparkmax",
-    "id": 8,
+    "id": 19,
     "canbus": null 
   },
   "conversionFactor": {
