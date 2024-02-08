@@ -4,21 +4,15 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.*;
-import frc.robot.subsystems.*;
-import frc.robot.util.VorTXController;
 import java.io.File;
-import java.text.RuleBasedCollator;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.OperatorConstants;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.subsystems.*;
+import frc.robot.util.VorTXController;
 import frc.robot.Constants.*;
 
 /**
@@ -35,8 +29,8 @@ public class RobotContainer {
   public static Arm arm = new Arm(8, 5, Constants.ArmConstants.motorToArmGearRatio);
   public static Shooter shooter = new Shooter(7, 3);
 
-  // private final Swerve Subsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-  //                                                                        "swerve"));
+  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+                                                                         "swerve"));
 
   
 
@@ -63,13 +57,13 @@ public class RobotContainer {
     // controls are front-left positive
     // left stick controls translation
     // right stick controls the desired angle NOT angular rotation
-    // Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
-    //     () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-    //     () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-    //     () -> con1.getRightX(),
-    //     () -> con1.getRightY());
+    Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
+        () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
+        () -> con1.getRightX(),
+        () -> con1.getRightY());
 
-    // drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+    drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
 
     arm.setDefaultCommand(
       new RunCommand(
@@ -124,13 +118,13 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-        // con1.options.whileTrue(
-        //   ( 
-        //     new InstantCommand(
-        //       drivebase::zeroGyro
-        //     )
-        //   )
-        // );
+        con1.options.whileTrue(
+          ( 
+            new InstantCommand(
+              drivebase::zeroGyro
+            )
+          )
+        );
 
         //intake
         // con1.circle.whileTrue(
@@ -143,7 +137,7 @@ public class RobotContainer {
         //Takes note out
         con1.circle.whileTrue(
           new RunCommand(
-            () -> intake.intake(0.25), 
+            () -> intake.intake(-0.25), 
             intake
           )
         );
