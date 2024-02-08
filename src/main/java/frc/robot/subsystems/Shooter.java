@@ -4,19 +4,55 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class IntakeSub extends SubsystemBase {
+public class Shooter extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public IntakeSub(int ID) {}
+  static CANSparkMax ShooterNeo1;
+  static CANSparkMax ShooterNeo2;
+  // SHOOTER NEO 1 = Top Roller
+  // SHOOTER NEO 2 = Bottom Roller
+
+  public Shooter(int topMotor, int bottomMotor) {
+    ShooterNeo1 = new CANSparkMax(topMotor, MotorType.kBrushless);
+    ShooterNeo2 = new CANSparkMax(bottomMotor, MotorType.kBrushless);
+
+
+    ShooterNeo2.follow(ShooterNeo1, false);
+  }
 
   /**
    * Example command factory method.
    *
    * @return a command
    */
-  public CommandBase exampleMethodCommand() {
+
+  public void move(double percentSpeed){
+    ShooterNeo1.set(percentSpeed);
+  }
+
+  public void shoot(double percentSpeed) {
+    move(Math.abs(percentSpeed));
+  }
+
+  /**
+   * why would you even want to reverse the shooter
+   * @param percentSpeed
+   */
+  public void reverse(double percentSpeed) {
+    move(Math.abs(percentSpeed));
+  }
+
+  public void coast() {
+    move(0);
+  }
+
+
+  public Command exampleMethodCommand() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(

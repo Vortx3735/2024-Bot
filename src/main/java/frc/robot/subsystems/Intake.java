@@ -5,36 +5,62 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import com.revrobotics.Rev2mDistanceSensor.Port;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ArmSub extends SubsystemBase {
+
+
+
+
+
+public class Intake extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  static CANSparkMax ArmNeo1;
-  static CANSparkMax ArmNeo2;
+  static CANSparkMax intakeNeo1;
 
-  public ArmSub(int ID1, int ID2) {
-    ArmNeo1 = new CANSparkMax(ID1, MotorType.kBrushless);
-    ArmNeo2 = new CANSparkMax(ID2, MotorType.kBrushless);
+  private Rev2mDistanceSensor ringDetector;
 
-    ArmNeo2.follow(ArmNeo1, true);
+  public Intake(int ID1) {
+    ringDetector = new Rev2mDistanceSensor(Port.kOnboard);
+    intakeNeo1 = new CANSparkMax(ID1, MotorType.kBrushless);
+    intakeNeo1.setInverted(true);
   }
-
   /**
    * Example command factory method.
    *
    * @return a command
    */
 
-  public void move(double percentSpeed){
-    ArmNeo1.set(percentSpeed);
+
+  private void move(double percentSpeed){
+    intakeNeo1.set(percentSpeed);
   }
 
-  
-  public CommandBase exampleMethodCommand() {
+  public void intake(double percentSpeed) {
+    move(Math.abs(percentSpeed));
+  }
+
+  public void outtake(double percentSpeed) {
+    move(Math.abs(percentSpeed));
+  }
+
+  private double getDistance(){
+    return ringDetector.GetRange();
+  }
+
+  public boolean hasRing(double dist, double error) {
+    return getDistance() < dist - error;
+  }
+
+  public void coast() {
+    move(0);
+  }
+
+   public Command exampleMethodCommand() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
@@ -48,10 +74,6 @@ public class ArmSub extends SubsystemBase {
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
-
-
-  
-
   public boolean exampleCondition() {
     // Query some boolean state, such as a digital sensor.
     return false;
