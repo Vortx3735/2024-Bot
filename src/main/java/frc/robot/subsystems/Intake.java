@@ -24,9 +24,9 @@ public class Intake extends SubsystemBase {
 
   private Rev2mDistanceSensor ringDetector;
 
-  public Intake(int ID1) {
+  public Intake(int id) {
     ringDetector = new Rev2mDistanceSensor(Port.kOnboard);
-    intakeNeo1 = new CANSparkMax(ID1, MotorType.kBrushless);
+    intakeNeo1 = new CANSparkMax(id, MotorType.kBrushless);
     intakeNeo1.setInverted(true);
   }
   /**

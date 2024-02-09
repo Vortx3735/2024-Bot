@@ -52,6 +52,8 @@ public class Arm extends SubsystemBase {
     ArmNeo1.set(percentSpeed);
   }
 
+
+  //add soft limits based on encoder position
   public void up(double percentSpeed) {
     move(Math.abs(percentSpeed));
   }

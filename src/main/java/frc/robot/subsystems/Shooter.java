@@ -39,14 +39,6 @@ public class Shooter extends SubsystemBase {
     move(Math.abs(percentSpeed));
   }
 
-  /**
-   * why would you even want to reverse the shooter
-   * @param percentSpeed
-   */
-  public void reverse(double percentSpeed) {
-    move(Math.abs(percentSpeed));
-  }
-
   public void coast() {
     move(0);
   }
