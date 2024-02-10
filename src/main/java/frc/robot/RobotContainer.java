@@ -25,9 +25,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   public static VorTXController con1 = new VorTXController(0);
-  public static Intake intake = new Intake(6);
-  public static Arm arm = new Arm(8, 5, Constants.ArmConstants.motorToArmGearRatio);
-  public static Shooter shooter = new Shooter(7, 3);
+  public static Intake intake = new Intake(59);
+  public static Arm arm = new Arm(51, 52, Constants.ArmConstants.motorToArmGearRatio);
+  public static Shooter shooter = new Shooter(61, 62);
 
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve"));
@@ -230,11 +230,11 @@ public class RobotContainer {
 
   public void setDriveMode()
   {
-    //drivebase.setDefaultCommand();
+    // drivebase.setDefaultCommand();
   }
 
-  // public void setMotorBrake(boolean brake)
-  // {
-  //   drivebase.setMotorBrake(brake);
-  // }
+  public void setMotorBrake(boolean brake)
+  {
+    drivebase.setMotorBrake(brake);
+  }
 }
