@@ -29,15 +29,12 @@ public class Arm extends SubsystemBase {
     this.ArmNeo2 = new CANSparkMax(rightMotor, MotorType.kBrushless);
 
     ArmNeo1.setInverted(true);
-
-    this.ArmNeo2.follow(ArmNeo1, false);
-    
+    this.ArmNeo2.follow(ArmNeo1, true);
 
     this.hold = new PIDController(0.01, 0, 0);
 
     this.setpoint = 0;
     this.motorToArmGearRatio = motorToArmGearRatio;
-    
   }
   
   /**
@@ -50,12 +47,13 @@ public class Arm extends SubsystemBase {
 
   private void move(double percentSpeed){
     ArmNeo1.set(percentSpeed);
+    System.out.println("Setting Speed" + percentSpeed);
   }
 
 
   //add soft limits based on encoder position
   public void up(double percentSpeed) {
-    move(Math.abs(percentSpeed));
+    move(percentSpeed);
   }
 
   public void coast() {
@@ -63,7 +61,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void down(double percentSpeed) {
-    move(Math.abs(percentSpeed));
+    move(-percentSpeed);
   }
 
 
@@ -83,7 +81,6 @@ public class Arm extends SubsystemBase {
     double armRotation = averageNeoRotations * motorToArmGearRatio;
     double armAngleDegrees = armRotation * 360;
     return armAngleDegrees;
-
   }
 
   

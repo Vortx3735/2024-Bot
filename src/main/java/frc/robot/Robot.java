@@ -4,14 +4,17 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import java.io.File;
 import java.io.IOException;
-import swervelib.parser.SwerveParser;
-import edu.wpi.first.wpilibj.Timer;
+
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Shooter;
+import swervelib.parser.SwerveParser;
 
 
 /**
@@ -29,6 +32,8 @@ public class Robot extends TimedRobot {
 
   private Timer disabledTimer;
 
+  // private DigitalInput beamBreak = new DigitalInput(IntakeConstants.BEAM_BREAK_PORT);
+
 
   public Robot()
   {
@@ -43,15 +48,22 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+  double value = 19;
+
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
+    
+    enableLiveWindowInTest(true); //enabling test mode
+    SmartDashboard.putData(CommandScheduler.getInstance());
+
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
+    SmartDashboard.putNumber("shooter/Shooter Setpoint", value);
   }
 
   /**
@@ -68,6 +80,9 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    value = SmartDashboard.getNumber("shooter/Shooter Setpoint", 1.0);
+    SmartDashboard.putNumber("shooter/Shooter Setpoint 2", value);
+    // SmartDashboard.putBoolean("intake/Beam Break",beamBreak.get());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

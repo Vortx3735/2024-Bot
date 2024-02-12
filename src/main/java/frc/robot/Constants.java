@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
 import swervelib.math.Matter;
 import swervelib.parser.PIDFConfig;
 
@@ -47,15 +48,17 @@ public final class Constants
   {
     public static final int kDriverControllerPort = 1;
     // Joystick Deadband
-    public static final double LEFT_X_DEADBAND  = 0.01;
+    public static final double LEFT_X_DEADBAND  = 0.1;
     public static final double LEFT_Y_DEADBAND  = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
+    public static final double RIGHT_Y_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
 
   public static class IntakeConstants {
     public static final double ringDistanceMeters = 0.3;
     public static final double ringDistanceErrorMeters = 0.05;
+    public static final int BEAM_BREAK_PORT = 1;
   }
 
 

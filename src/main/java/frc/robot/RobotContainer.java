@@ -11,9 +11,13 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.*;
 import frc.robot.util.VorTXController;
 import frc.robot.Constants.*;
+import frc.robot.commands.intake.IntakeOut;
+import frc.robot.commands.intake.IntakeIn;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,9 +32,13 @@ public class RobotContainer {
   public static Intake intake = new Intake(59);
   public static Arm arm = new Arm(51, 52, Constants.ArmConstants.motorToArmGearRatio);
   public static Shooter shooter = new Shooter(61, 62);
+  
 
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve"));
+                                                                      
+
+
 
   
 
@@ -57,11 +65,26 @@ public class RobotContainer {
     // controls are front-left positive
     // left stick controls translation
     // right stick controls the desired angle NOT angular rotation
+    // Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
+    //     // () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
+    //     // () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
+    //     // () -> con1.getRightX(),
+    //     // () -> con1.getRightY()
+    //   );
+
+
+
+  //   Shuffleboard.getTab("shooter")
+  //  .add("Shooter Setpoint", 2000)
+  //  .withWidget(BuiltInWidgets.kNumberSlider) // specify the widget here
+  //  .getEntry();
+  
+
     Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
         () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
         () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-        () -> con1.getRightX(),
-        () -> con1.getRightY()
+        () -> MathUtil.applyDeadband(-con1.getRightX(), OperatorConstants.LEFT_X_DEADBAND),
+        () -> MathUtil.applyDeadband(con1.getRightY(), OperatorConstants.LEFT_Y_DEADBAND)
       );
 
     drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
@@ -94,7 +117,7 @@ public class RobotContainer {
     
     intake.setDefaultCommand(
       new RunCommand(
-        intake::coast,
+        intake::stopIntake,
         intake
       )
     );
@@ -127,49 +150,19 @@ public class RobotContainer {
           )
         );
 
-        //intake
-        // con1.circle.whileTrue(
-        //     new RunCommand(
-        //         fIntakecom::startMotor,
-        //         fIntakesub
-        //     )                
-        // );
-
         //Takes note out
         con1.circle.whileTrue(
-          new RunCommand(
-            () -> intake.intake(-0.25), 
-            intake
-          )
+          new IntakeOut(intake)
         );
-
-        // con1.square.whileTrue(
-        //     new RunCommand(
-        //         fIntakecom::stopIntake,
-        //         fIntakesub
-        //     )
-        // );
 
         //Brings Note In
         con1.square.whileTrue(
-          new RunCommand(
-            () -> intake.outtake(.25),
-            intake
-          )
+          new IntakeIn(intake)
         );
 
-        // shooter
-
-        // con1.cross.whileTrue(
-        //     new RunCommand(
-        //       shootercom::reverseMotor,
-        //       shootersub
-        //     )
-        // );
-
-        con1.cross.whileTrue(
+        con1.l2.whileTrue(
           new RunCommand(
-            () -> shooter.shoot(.9),
+            () -> shooter.shoot(con1.getL2Axis()),
             shooter
           )
         );
@@ -183,20 +176,10 @@ public class RobotContainer {
           moveArmToAmp
         );
 
-       
-
-        
-        // con1.l2.whileTrue(
-        //     new RunCommand(
-        //       armcom::startMotor,
-        //       armsub
-        //     )
-        // );
-
         //Goes towards floor
-        con1.l2.whileTrue(
+        con1.l1.whileTrue(
           new RunCommand(
-            () -> arm.up(0.25),
+            () -> arm.down(0.25),
             arm
           )
         );
@@ -209,9 +192,9 @@ public class RobotContainer {
         // );
 
         //Goes up
-        con1.r2.whileTrue(
+        con1.r1.whileTrue(
           new RunCommand(
-            () -> arm.down(0.25),
+            () -> arm.up(0.25),
             arm
           )
         );

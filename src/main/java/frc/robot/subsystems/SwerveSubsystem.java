@@ -10,6 +10,8 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -39,12 +41,8 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Maximum speed of the robot in meters per second, used to limit acceleration.
    */
-  public double maximumSpeed = Units.feetToMeters(1);
-
-
-
-
-
+  public double maximumSpeed = Units.feetToMeters(14.5);
+  static PIDController swervePID;
 
 
 
@@ -77,6 +75,9 @@ public class SwerveSubsystem extends SubsystemBase {
     swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
 
     setupPathPlanner();
+
+    swervePID = new PIDController(0.0, 0.0, 0.0);
+    addChild("swervePID", swervePID); // send PID values to smartDashboard
   }
 
   /**
