@@ -5,11 +5,18 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.RobotContainer;
 
 /** An example command that uses an example subsystem. */
-public class Shoot extends Command {
+public class ShooterCom extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Shooter shooter;
 
@@ -20,12 +27,31 @@ public class Shoot extends Command {
    */
 
    
-  public Shoot(Shooter s) {
+  public ShooterCom(Shooter s) {
     shooter = s;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
   }
+
+  public void shoot() {
+      if(Intake.hasRing) {
+        
+        new ParallelCommandGroup(
+          new RunCommand(
+            () -> shooter.move(.75), 
+            shooter
+            ),
+          new SequentialCommandGroup(
+            new WaitCommand(2),
+            new RunCommand(
+              () -> RobotContainer.intake.move(.25), 
+              RobotContainer.intake
+              )
+          )
+        );
+      }
+    }
 
   // Called when the command is initially scheduled.
   @Override

@@ -2,17 +2,16 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.intake;
+package frc.robot.commands;
 
 import frc.robot.subsystems.Intake;
-
-import com.revrobotics.Rev2mDistanceSensor;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
-public class IntakeIn extends Command {
+public class IntakeCom extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Intake intake;
 
@@ -23,23 +22,31 @@ public class IntakeIn extends Command {
    */
 
    
-  public IntakeIn(Intake i) {
+  public IntakeCom(Intake i) {
     intake = i;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
   }
 
- 
+  public void intakeNote() {
+    intake.move(.4);
+  }
+
+  public void fixOvershoot() {
+    intake.move(-.2);
+  }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.move(true);
+
   }
 
   // Called once the command ends or is interrupted.

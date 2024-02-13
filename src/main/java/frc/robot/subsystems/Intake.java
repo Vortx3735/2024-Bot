@@ -4,66 +4,42 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import com.revrobotics.Rev2mDistanceSensor.Port;
-import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
 
 
 public class Intake extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
  static CANSparkMax intakeNeo1;
- private SparkPIDController intakePIDController;
- private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
  private RelativeEncoder intakeEncoder;
- private Rev2mDistanceSensor ringDetector;
+//  private Rev2mDistanceSensor ringDetector;
  private double intakeSetPoint = 1000;
  private DigitalInput beamBreak = new DigitalInput(IntakeConstants.BEAM_BREAK_PORT);
+ public static boolean hasRing = false;
 
   public Intake(int id) {
-    ringDetector = new Rev2mDistanceSensor(Port.kOnboard);
+    // ringDetector = new Rev2mDistanceSensor(Port.kOnboard);
     intakeNeo1 = new CANSparkMax(id, MotorType.kBrushless);
-    intakeNeo1.setInverted(true);
+    intakeNeo1.setInverted(false);
+    intakeNeo1.setIdleMode(IdleMode.kBrake);
 
-    intakePIDController = intakeNeo1.getPIDController();
     intakeEncoder = intakeNeo1.getEncoder();
 
 
-    kP = 6e-5; 
-    kI = 0;
-    kD = 0; 
-    kIz = 0; 
-    kFF = 0.000015; 
-    kMaxOutput = 1; 
-    kMinOutput = -1;
-    maxRPM = 5700;
-
-    // set PID coefficients
-    intakePIDController.setP(kP);
-    intakePIDController.setI(kI);
-    intakePIDController.setD(kD);
-    intakePIDController.setIZone(kIz);
-    intakePIDController.setFF(kFF);
-    intakePIDController.setOutputRange(kMinOutput, kMaxOutput);
-
-    // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("P Gain", kP);
-    SmartDashboard.putNumber("I Gain", kI);
-    SmartDashboard.putNumber("D Gain", kD);
-    SmartDashboard.putNumber("I Zone", kIz);
-    SmartDashboard.putNumber("Feed Forward", kFF);
-    SmartDashboard.putNumber("Max Output", kMaxOutput);
-    SmartDashboard.putNumber("Min Output", kMinOutput);
+  
       
     SmartDashboard.putNumber("ProcessVariable", intakeEncoder.getVelocity());
 
@@ -77,37 +53,30 @@ public class Intake extends SubsystemBase {
    * @return a command
    */
 
-
-  public void move(boolean isForward){
-    System.out.println("moving intake" + intakeSetPoint);
-    if (intakeSetPoint>maxRPM) {
-      intakeSetPoint=maxRPM;
-    }
-    intakeSetPoint = Math.abs(intakeSetPoint);
-    if(isForward){
-      intakeSetPoint = -intakeSetPoint;
-    }
-    else{
-
-    }
-    intakePIDController.setReference(intakeSetPoint, CANSparkMax.ControlType.kVelocity);
+  
+  public void move(double speed) {
+    intakeNeo1.set(speed);
   }
 
   public void stopIntake(){
     intakeNeo1.set(0);
   }
 
-  private boolean getBeam(){
-    return beamBreak.get();
+  public BooleanSupplier getDeadBeam(){
+    return () -> beamBreak.get();
   }
 
-  private double getDistance(){
-    return ringDetector.GetRange();
+    public BooleanSupplier getBeam(){
+    return () -> !beamBreak.get();
   }
 
-  public boolean hasRing(double dist, double error) {
-    return getDistance() < dist - error;
-  }
+  // private double getDistance(){
+  //   return ringDetector.GetRange();
+  // }
+
+  // public boolean checkRing(double dist, double error) {
+  //   return getDistance() < dist - error;
+  // }
 
 
    public Command exampleMethodCommand() {

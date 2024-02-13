@@ -10,14 +10,16 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.*;
 import frc.robot.util.VorTXController;
 import frc.robot.Constants.*;
-import frc.robot.commands.intake.IntakeOut;
-import frc.robot.commands.intake.IntakeIn;
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,9 +31,15 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   public static VorTXController con1 = new VorTXController(0);
-  public static Intake intake = new Intake(59);
-  public static Arm arm = new Arm(51, 52, Constants.ArmConstants.motorToArmGearRatio);
-  public static Shooter shooter = new Shooter(61, 62);
+
+  public static Intake intake = new Intake(12);
+  public static IntakeCom intakecom = new IntakeCom(intake);
+
+  public static Arm arm = new Arm(10, 11, Constants.ArmConstants.motorToArmGearRatio);
+  public static ArmCom armcom = new ArmCom(arm);
+
+  public static Shooter shooter = new Shooter(13, 14);
+  public static ShooterCom shootercom = new ShooterCom(shooter);
   
 
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -66,10 +74,10 @@ public class RobotContainer {
     // left stick controls translation
     // right stick controls the desired angle NOT angular rotation
     // Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
-    //     // () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-    //     // () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-    //     // () -> con1.getRightX(),
-    //     // () -> con1.getRightY()
+    //     () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
+    //     () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
+    //     () -> con1.getRightX(),
+    //     () -> con1.getRightY()
     //   );
 
 
@@ -80,14 +88,20 @@ public class RobotContainer {
   //  .getEntry();
   
 
-    Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-        () -> MathUtil.applyDeadband(-con1.getRightX(), OperatorConstants.LEFT_X_DEADBAND),
-        () -> MathUtil.applyDeadband(con1.getRightY(), OperatorConstants.LEFT_Y_DEADBAND)
-      );
+    // Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
+    //     () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
+    //     () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
+    //     () -> MathUtil.applyDeadband(con1.getRightX(), OperatorConstants.LEFT_X_DEADBAND),
+    //     () -> MathUtil.applyDeadband(con1.getRightY(), OperatorConstants.LEFT_Y_DEADBAND)
+    //   );
 
-    drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
+    Command driveGoodAndAwesomeThankYouCole = drivebase.driveCommand(
+      () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
+      () -> MathUtil.applyDeadband(-con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
+      () -> MathUtil.applyDeadband(con1.getRightX(), OperatorConstants.LEFT_X_DEADBAND)
+    );
+
+    drivebase.setDefaultCommand(driveGoodAndAwesomeThankYouCole);
 
     arm.setDefaultCommand(
       new RunCommand(
@@ -96,12 +110,20 @@ public class RobotContainer {
       )
     );
 
-    shooter.setDefaultCommand(
-      new RunCommand(
-        shooter::coast,
-        shooter
-      )
-    );
+    if(Intake.hasRing) {
+      shooter.setDefaultCommand(
+        new RunCommand(
+          () -> shooter.move(.10), 
+          shooter)
+      );
+    }
+    else {
+      shooter.setDefaultCommand(
+        new RunCommand(
+          () -> shooter.move(0), 
+          shooter)
+      );
+    }
 
 
     // // go brrrrrrrrrrrrrrrr and vibrate when we have a ring (hopefully)
@@ -109,8 +131,8 @@ public class RobotContainer {
     //   new RunCommand(
     //     () -> {
     //       if (fIntakecom.hasRing(IntakeConstants.ringDistanceMeters, IntakeConstants.ringDistanceErrorMeters)) {
-  //           con1.setRumble(RumbleType.kBothRumble, 1);
-  //         }
+    //         con1.setRumble(RumbleType.kBothRumble, 1);
+    //       }
     //     }
     //   )
     // );
@@ -122,7 +144,7 @@ public class RobotContainer {
       )
     );
     
-    // https://www.desmos.com/calculator/ewzddexzei
+    // https://www.desmos.com/calculator/yq54mg57ry
 
 
     
@@ -149,26 +171,65 @@ public class RobotContainer {
             )
           )
         );
+        
+          con1.square.whileTrue(
+            new SequentialCommandGroup(
+              new RunCommand(
+                intakecom::intakeNote, 
+                intake
+                ).until(intake.getBeam()),
+                
+              new RunCommand(
+                  intakecom::fixOvershoot, 
+                  intake
+                ).until(intake.getDeadBeam()),
 
-        //Takes note out
+              new RunCommand(
+                () -> intake.move(.1), 
+                intake).withTimeout(.3)
+            )
+          );
+
         con1.circle.whileTrue(
-          new IntakeOut(intake)
+            new RunCommand(
+              () -> intake.move(-.8), 
+              intake)
         );
 
-        //Brings Note In
-        con1.square.whileTrue(
-          new IntakeIn(intake)
-        );
+
+        // con1.l2.whileTrue(
+        //   new RunCommand(
+        //     () -> shooter.move(.65),
+        //     shooter).alongWith(
+        //       new RunCommand(
+        //         () -> intake.move(.65), 
+        //         intake)
+        //       )
+        //     );
 
         con1.l2.whileTrue(
-          new RunCommand(
-            () -> shooter.shoot(con1.getL2Axis()),
-            shooter
+          new SequentialCommandGroup(
+            new RunCommand(
+              () -> shooter.move(.65), 
+              shooter).withTimeout(2),
+            
+            new RunCommand(
+              () -> intake.move(.65), 
+              intake).alongWith(
+                new RunCommand(
+                  () -> shooter.move(.65), 
+                  shooter)
+              )
           )
         );
 
+            
+
+
+
+
         InstantCommand moveArmToAmp = new InstantCommand(
-          () -> arm.moveToSetpoint(ArmConstants.ampArmPos, 1),
+          () -> arm.moveToSetpoint(ArmConstants.ampArmPos, 2),
           arm
         );
 
@@ -179,7 +240,7 @@ public class RobotContainer {
         //Goes towards floor
         con1.l1.whileTrue(
           new RunCommand(
-            () -> arm.down(0.25),
+            () -> arm.down(0.5),
             arm
           )
         );
@@ -194,7 +255,7 @@ public class RobotContainer {
         //Goes up
         con1.r1.whileTrue(
           new RunCommand(
-            () -> arm.up(0.25),
+            () -> arm.up(0.5),
             arm
           )
         );

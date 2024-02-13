@@ -159,5 +159,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    SmartDashboard.putNumber("LeftX", RobotContainer.con1.getLeftX());
+    SmartDashboard.putNumber("LeftY", RobotContainer.con1.getLeftY());
+    SmartDashboard.putNumber("RightX", RobotContainer.con1.getRightX());
+  }
 }

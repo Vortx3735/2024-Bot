@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
@@ -29,9 +30,11 @@ public class Arm extends SubsystemBase {
     this.ArmNeo2 = new CANSparkMax(rightMotor, MotorType.kBrushless);
 
     ArmNeo1.setInverted(true);
+    ArmNeo1.setIdleMode(IdleMode.kBrake);
+    ArmNeo2.setIdleMode(IdleMode.kBrake);
     this.ArmNeo2.follow(ArmNeo1, true);
 
-    this.hold = new PIDController(0.01, 0, 0);
+    this.hold = new PIDController(0.04, 0, 0);
 
     this.setpoint = 0;
     this.motorToArmGearRatio = motorToArmGearRatio;
