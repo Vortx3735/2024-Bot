@@ -14,10 +14,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.*;
-import frc.robot.util.VorTXController;
+import frc.robot.util.VorTXControllerXbox;
 import frc.robot.Constants.*;
 import frc.robot.commands.*;
 
@@ -30,7 +28,7 @@ import frc.robot.commands.*;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  public static VorTXController con1 = new VorTXController(0);
+  public static VorTXControllerXbox con1 = new VorTXControllerXbox(0);
 
   public static Intake intake = new Intake(12);
   public static IntakeCom intakecom = new IntakeCom(intake);
@@ -164,7 +162,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-        con1.options.whileTrue(
+        con1.menu.whileTrue(
           ( 
             new InstantCommand(
               drivebase::zeroGyro
@@ -172,7 +170,7 @@ public class RobotContainer {
           )
         );
         
-          con1.square.whileTrue(
+          con1.xButton.whileTrue(
             new SequentialCommandGroup(
               new RunCommand(
                 intakecom::intakeNote, 
@@ -190,7 +188,7 @@ public class RobotContainer {
             )
           );
 
-        con1.circle.whileTrue(
+        con1.bButton.whileTrue(
             new RunCommand(
               () -> intake.move(-.8), 
               intake)
@@ -207,7 +205,7 @@ public class RobotContainer {
         //       )
         //     );
 
-        con1.l2.whileTrue(
+        con1.rb.whileTrue(
           new SequentialCommandGroup(
             new RunCommand(
               () -> shooter.move(.65), 
@@ -233,12 +231,12 @@ public class RobotContainer {
           arm
         );
 
-        con1.triangle.whileTrue(
+        con1.yButton.whileTrue(
           moveArmToAmp
         );
 
         //Goes towards floor
-        con1.l1.whileTrue(
+        con1.pov180.whileTrue(
           new RunCommand(
             () -> arm.down(0.5),
             arm
@@ -253,7 +251,7 @@ public class RobotContainer {
         // );
 
         //Goes up
-        con1.r1.whileTrue(
+        con1.pov0.whileTrue(
           new RunCommand(
             () -> arm.up(0.5),
             arm

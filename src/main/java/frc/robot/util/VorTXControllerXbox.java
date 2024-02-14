@@ -15,15 +15,14 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
  */
 public class VorTXControllerXbox extends XboxController {
 	public JoystickButton aButton, bButton, xButton, yButton, view, menu, ls, rs, lb, rb;
-	public XboxController c_driverController = new XboxController(3);
 	public POVButton pov0, pov45, pov90, pov135, pov180, pov225, pov270, pov315;
 
 	public VorTXControllerXbox(int port) {
 		super(port);
         		
-		xButton = new JoystickButton(this, 3);
 		aButton = new JoystickButton(this, 1);
 		bButton = new JoystickButton(this, 2);
+		xButton = new JoystickButton(this, 3);
 		yButton = new JoystickButton(this, 4);
 		lb = new JoystickButton(this, 5);
 		rb = new JoystickButton(this, 6);

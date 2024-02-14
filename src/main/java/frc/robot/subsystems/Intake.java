@@ -8,10 +8,8 @@ import java.util.function.BooleanSupplier;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import com.revrobotics.Rev2mDistanceSensor.Port;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
