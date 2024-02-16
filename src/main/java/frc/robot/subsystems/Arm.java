@@ -11,8 +11,11 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+
 
 public class Arm extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -20,6 +23,10 @@ public class Arm extends SubsystemBase {
   CANSparkMax ArmNeo2;
 
   private PIDController hold;
+  private double ki, kp, kd;
+
+  private ArmFeedforward armFF;
+  private double ka, kg, ks, kv;
 
   private int setpoint;
   private final double motorToArmGearRatio;
@@ -34,7 +41,32 @@ public class Arm extends SubsystemBase {
     ArmNeo2.setIdleMode(IdleMode.kBrake);
     this.ArmNeo2.follow(ArmNeo1, true);
 
-    this.hold = new PIDController(0.04, 0, 0);
+    // Arm Feed Forward
+    ka = 0.0;
+    kg = 0.0;
+    ks = 0.0;
+    kv = 0.0;
+
+    SmartDashboard.putNumber("arm//Arm ka (feedforward)", ka);
+    SmartDashboard.putNumber("arm//Arm kg (feedforward)", kg);
+    SmartDashboard.putNumber("arm//Arm ks (feedforward)", ks);
+    SmartDashboard.putNumber("arm//Arm kv (feedforward)", kv);
+
+    armFF = new ArmFeedforward(ks, kg, kv, ka);
+
+    // PID Controller
+
+    kp = 0.01;
+    ki = 0.0;
+    kd = 0.0;
+  
+    SmartDashboard.putNumber("arm//Arm kp (PID)", kp);
+    SmartDashboard.putNumber("arm//Arm ki (PID)", ki);
+    SmartDashboard.putNumber("arm//Arm kd (PID)", kd);
+
+    hold = new PIDController(kp, ki, kd);
+
+
 
     this.setpoint = 0;
     this.motorToArmGearRatio = motorToArmGearRatio;
@@ -74,9 +106,12 @@ public class Arm extends SubsystemBase {
 
   public void hold() {
     double pos = ArmNeo1.getEncoder().getPosition();
-    ArmNeo1.set(hold.calculate(pos, setpoint));
+    ArmNeo1.set(hold.calculate(pos, setpoint) + armFF.calculate(pos, kv));
 
     setpoint = (int)(pos);
+
+    
+
   }
 
   public double getArmAngle() {
@@ -84,6 +119,11 @@ public class Arm extends SubsystemBase {
     double armRotation = averageNeoRotations * motorToArmGearRatio;
     double armAngleDegrees = armRotation * 360;
     return armAngleDegrees;
+  }
+
+  public void setArmBrake(IdleMode mode) {
+    ArmNeo1.setIdleMode(mode);
+    ArmNeo2.setIdleMode(mode);
   }
 
   

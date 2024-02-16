@@ -10,14 +10,21 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ArmCom;
+import frc.robot.commands.IntakeCom;
+import frc.robot.commands.ShooterCom;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.SwerveSubsystem;
+import com.pathplanner.lib.auto.NamedCommands;
 import frc.robot.util.VorTXControllerXbox;
-import frc.robot.Constants.*;
-import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -42,6 +49,8 @@ public class RobotContainer {
 
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve"));
+
+
                                                                       
 
 
@@ -95,7 +104,7 @@ public class RobotContainer {
 
     Command driveGoodAndAwesomeThankYouCole = drivebase.driveCommand(
       () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(-con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
+      () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
       () -> MathUtil.applyDeadband(con1.getRightX(), OperatorConstants.LEFT_X_DEADBAND)
     );
 
@@ -208,14 +217,14 @@ public class RobotContainer {
         con1.rb.whileTrue(
           new SequentialCommandGroup(
             new RunCommand(
-              () -> shooter.move(.65), 
+              () -> shooter.move(1), // rev up shooter
               shooter).withTimeout(2),
             
             new RunCommand(
               () -> intake.move(.65), 
               intake).alongWith(
                 new RunCommand(
-                  () -> shooter.move(.65), 
+                  () -> shooter.move(1), // shooter
                   shooter)
               )
           )
@@ -267,7 +276,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new InstantCommand();
+    return drivebase.getAutonomousCommand("Test");
   }
 
   public void setDriveMode()

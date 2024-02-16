@@ -7,6 +7,8 @@ package frc.robot;
 import java.io.File;
 import java.io.IOException;
 
+import com.revrobotics.CANSparkBase.IdleMode;
+
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -87,6 +89,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
+    RobotContainer.arm.setArmBrake(IdleMode.kCoast);
     // m_robotContainer.setMotorBrake(true);
     // disabledTimer.reset();
     // disabledTimer.start();
@@ -128,6 +131,7 @@ public class Robot extends TimedRobot {
     // }
     // m_robotContainer.setDriveMode();
     // m_robotContainer.setMotorBrake(true);
+    RobotContainer.arm.setArmBrake(IdleMode.kBrake);
   
   }
 

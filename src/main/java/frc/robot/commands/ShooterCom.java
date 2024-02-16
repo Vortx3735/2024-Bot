@@ -4,14 +4,14 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 /** An example command that uses an example subsystem. */
 public class ShooterCom extends Command {
@@ -50,6 +50,23 @@ public class ShooterCom extends Command {
         );
       }
     }
+
+    public Command shootFromSub() {
+        return  new SequentialCommandGroup(
+            new RunCommand(
+              () -> shooter.move(1), // rev up shooter
+              shooter).withTimeout(2),
+            
+            new RunCommand(
+              () -> RobotContainer.intake.move(1), 
+              RobotContainer.intake).alongWith(
+                new RunCommand(
+                  () -> shooter.move(1), // shooter
+                  shooter)
+              )
+          );
+    }
+
 
   // Called when the command is initially scheduled.
   @Override

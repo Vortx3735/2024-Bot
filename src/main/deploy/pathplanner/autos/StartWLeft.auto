@@ -99,7 +99,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "RightToMid"
+                  "pathName": null
                 }
               },
               {

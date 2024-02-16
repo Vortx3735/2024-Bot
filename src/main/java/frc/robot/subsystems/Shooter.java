@@ -29,6 +29,7 @@ public class Shooter extends SubsystemBase {
     shooterNeo1.setIdleMode(IdleMode.kCoast);
     shooterNeo1.setIdleMode(IdleMode.kCoast);
     shooterEncoder = shooterNeo1.getEncoder();
+
       
     SmartDashboard.putNumber("shooter/Velocity", shooterEncoder.getVelocity());
 }
@@ -44,6 +45,8 @@ public class Shooter extends SubsystemBase {
 
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("shooter// Shooter RPM", shooterNeo1.getEncoder().getVelocity());
+    SmartDashboard.putNumber("shooter//Shooter Voltage", shooterNeo1.getBusVoltage());
   }
 
   @Override
