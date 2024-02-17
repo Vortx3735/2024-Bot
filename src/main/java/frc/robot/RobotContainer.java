@@ -125,12 +125,20 @@ public class RobotContainer {
       )
     );
 
-    shooter.setDefaultCommand(
-      new RunCommand(
-        shooter::coast,
-        shooter
-      )
-    );
+    if(Intake.hasRing = true){
+      shooter.setDefaultCommand(
+        new RunCommand(
+          () -> shooter.move(.5), 
+          shooter)
+      );
+    } else {
+      shooter.setDefaultCommand(
+        new RunCommand(
+          () -> shooter.move(0),
+          shooter
+        )
+      );
+    }
 
 
     // // go brrrrrrrrrrrrrrrr and vibrate when we have a ring (hopefully)
