@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ArmConstants;
+// import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmCom;
 import frc.robot.commands.IntakeCom;
@@ -110,11 +110,11 @@ public class RobotContainer {
       () -> MathUtil.applyDeadband(-con1.getRightX(), OperatorConstants.LEFT_X_DEADBAND)
     );
 
-    Command driveFieldOrientedSlow = drivebase.driveCommand(
-      () -> MathUtil.applyDeadband(-con1.getLeftY() / 2, OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(-con1.getLeftX() / 2, OperatorConstants.LEFT_X_DEADBAND),
-      () -> MathUtil.applyDeadband(-con1.getRightX() / 2, OperatorConstants.LEFT_X_DEADBAND)
-    );
+    // Command driveFieldOrientedSlow = drivebase.driveCommand(
+    //   () -> MathUtil.applyDeadband(-con1.getLeftY() / 2, OperatorConstants.LEFT_Y_DEADBAND),
+    //   () -> MathUtil.applyDeadband(-con1.getLeftX() / 2, OperatorConstants.LEFT_X_DEADBAND),
+    //   () -> MathUtil.applyDeadband(-con1.getRightX() / 2, OperatorConstants.LEFT_X_DEADBAND)
+    // );
     
     drivebase.setDefaultCommand(driveFieldOriented);
 
@@ -261,10 +261,10 @@ public class RobotContainer {
 
 
 
-    InstantCommand moveArmToAmp = new InstantCommand(
-      () -> arm.moveToSetpoint(ArmConstants.ampArmPos, 2),
-      arm
-    );
+    // InstantCommand moveArmToAmp = new InstantCommand(
+    //   () -> arm.moveToSetpoint(ArmConstants.ampArmPos, 2),
+    //   arm
+    // );
 
         // con1.yButton.whileTrue(
         //   moveArmToAmp

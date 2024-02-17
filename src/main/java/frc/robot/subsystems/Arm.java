@@ -8,12 +8,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+
 
 
 
@@ -29,7 +30,9 @@ public class Arm extends SubsystemBase {
   private double ka, kg, ks, kv;
 
   private int setpoint;
-  private final double motorToArmGearRatio;
+  // private final double motorToArmGearRatio;
+
+  private final DutyCycleEncoder armEncoder = new DutyCycleEncoder(0);
 
 
   public Arm(int leftMotor, int rightMotor, double motorToArmGearRatio) {
@@ -69,7 +72,7 @@ public class Arm extends SubsystemBase {
 
 
     this.setpoint = 0;
-    this.motorToArmGearRatio = motorToArmGearRatio;
+    // this.motorToArmGearRatio = motorToArmGearRatio;
   }
   
   /**
@@ -105,7 +108,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void hold() {
-    double pos = ArmNeo1.getEncoder().getPosition();
+    double pos = armEncoder.getAbsolutePosition();
     ArmNeo1.set(hold.calculate(pos, setpoint) + armFF.calculate(pos, kv));
 
     setpoint = (int)(pos);
@@ -115,10 +118,11 @@ public class Arm extends SubsystemBase {
   }
 
   public double getArmAngle() {
-    double averageNeoRotations = (ArmNeo1.getEncoder().getPosition() + ArmNeo2.getEncoder().getPosition())/2;
-    double armRotation = averageNeoRotations * motorToArmGearRatio;
-    double armAngleDegrees = armRotation * 360;
-    return armAngleDegrees;
+    // double averageNeoRotations = (ArmNeo1.getEncoder().getPosition() + ArmNeo2.getEncoder().getPosition())/2;
+    // double armRotation = averageNeoRotations * motorToArmGearRatio;
+    // double armAngleDegrees = armRotation * 360;
+    // return armAngleDegrees;
+    return armEncoder.getAbsolutePosition();
   }
 
   public void setArmBrake(IdleMode mode) {
