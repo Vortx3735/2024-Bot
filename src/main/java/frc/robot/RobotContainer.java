@@ -110,6 +110,12 @@ public class RobotContainer {
       () -> MathUtil.applyDeadband(-con1.getRightX(), OperatorConstants.LEFT_X_DEADBAND)
     );
 
+    Command driveFieldOrientedSlow = drivebase.driveCommand(
+      () -> MathUtil.applyDeadband(-con1.getLeftY() / 2, OperatorConstants.LEFT_Y_DEADBAND),
+      () -> MathUtil.applyDeadband(-con1.getLeftX() / 2, OperatorConstants.LEFT_X_DEADBAND),
+      () -> MathUtil.applyDeadband(-con1.getRightX() / 2, OperatorConstants.LEFT_X_DEADBAND)
+    );
+    
     drivebase.setDefaultCommand(driveFieldOriented);
 
     arm.setDefaultCommand(
@@ -223,13 +229,29 @@ public class RobotContainer {
           () -> intake.move(.65), 
           intake).alongWith(
             new RunCommand(
-              () -> shooter.move(1), // shooter
-              shooter)
+              () -> shooter.move(1), // rev up shooter
+              shooter).withTimeout(1),
+            
+            new RunCommand(
+              () -> intake.move(.65), 
+              intake).alongWith(
+                new RunCommand(
+                  () -> shooter.move(1), // shooter
+                  shooter)
+              )
           )
       )
     );
 
-        
+      con1.yButton.whileTrue(
+        new RunCommand(
+          () -> shooter.move(.2), 
+          shooter).alongWith(
+            new RunCommand(
+              () -> intake.move(.3), 
+              intake)
+          )
+      );      
 
 
 
@@ -239,9 +261,9 @@ public class RobotContainer {
       arm
     );
 
-    con1.yButton.whileTrue(
-      moveArmToAmp
-    );
+        // con1.yButton.whileTrue(
+        //   moveArmToAmp
+        // );
 
     //Goes up
     con1.povUp.whileTrue(
@@ -266,6 +288,20 @@ public class RobotContainer {
     //     )
     // );
        
+  }
+
+        con1.lb.whileTrue(
+          new RunCommand(
+            () -> drivebase.driveCommand
+            (
+              () -> MathUtil.applyDeadband(-con1.getLeftY() / 2, OperatorConstants.LEFT_Y_DEADBAND),
+              () -> MathUtil.applyDeadband(-con1.getLeftX() / 2, OperatorConstants.LEFT_X_DEADBAND),
+              () -> MathUtil.applyDeadband(-con1.getRightX() / 2, OperatorConstants.LEFT_X_DEADBAND),
+            ), drivebase)
+        );
+
+            
+        
   }
 
   /**

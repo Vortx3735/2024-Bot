@@ -30,7 +30,7 @@ public class IntakeCom extends Command {
   }
 
   public void intakeNote() {
-    intake.move(.4);
+    intake.move(.3);
   }
 
   public void fixOvershoot() {
@@ -40,7 +40,7 @@ public class IntakeCom extends Command {
   public Command intakeNoteCom() {
     return new SequentialCommandGroup(
       new RunCommand(
-        () -> RobotContainer.intake.move(.4), 
+        () -> RobotContainer.intake.move(.3), 
         RobotContainer.intake
         ).until(RobotContainer.intake.getBeam()),
         
