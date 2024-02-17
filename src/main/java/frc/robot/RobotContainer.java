@@ -23,7 +23,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveSubsystem;
-import com.pathplanner.lib.auto.NamedCommands;
+import frc.robot.subsystems.LED;
 import frc.robot.util.VorTXControllerXbox;
 
 /**
@@ -34,8 +34,8 @@ import frc.robot.util.VorTXControllerXbox;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-
   public static VorTXControllerXbox con1 = new VorTXControllerXbox(0);
+
 
   public static Intake intake = new Intake(12);
   public static IntakeCom intakecom = new IntakeCom(intake);
@@ -46,8 +46,10 @@ public class RobotContainer {
   public static Shooter shooter = new Shooter(13, 14);
   public static ShooterCom shootercom = new ShooterCom(shooter);
   
+  public static LED led = new LED(0, 0);
+  
 
-  private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+  public static final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve"));
 
 
@@ -117,20 +119,12 @@ public class RobotContainer {
       )
     );
 
-    if(Intake.hasRing) {
-      shooter.setDefaultCommand(
-        new RunCommand(
-          () -> shooter.move(.10), 
-          shooter)
-      );
-    }
-    else {
-      shooter.setDefaultCommand(
-        new RunCommand(
-          () -> shooter.move(0), 
-          shooter)
-      );
-    }
+    shooter.setDefaultCommand(
+      new RunCommand(
+        shooter::coast,
+        shooter
+      )
+    );
 
 
     // // go brrrrrrrrrrrrrrrr and vibrate when we have a ring (hopefully)
@@ -171,103 +165,108 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-        con1.menu.whileTrue(
-          ( 
-            new InstantCommand(
-              drivebase::zeroGyro
-            )
-          )
-        );
+    con1.menu.whileTrue(
+      ( 
+        new InstantCommand(
+          drivebase::zeroGyro
+        )
+      )
+    );
+    
+    con1.xButton.whileTrue(
+      new SequentialCommandGroup(
+        new RunCommand(
+          intakecom::intakeNote, 
+          intake
+          ).until(intake.getBeam()),
+          
+        new RunCommand(
+            intakecom::fixOvershoot, 
+            intake
+          ).until(intake.getDeadBeam()),
+
+        new RunCommand(
+          () -> intake.move(.1), 
+          intake).withTimeout(.3),
         
-          con1.xButton.whileTrue(
-            new SequentialCommandGroup(
-              new RunCommand(
-                intakecom::intakeNote, 
-                intake
-                ).until(intake.getBeam()),
-                
-              new RunCommand(
-                  intakecom::fixOvershoot, 
-                  intake
-                ).until(intake.getDeadBeam()),
+        new RunCommand(
+          intake::ringToggle,
+          intake
+        )
+      )
+    );
 
-              new RunCommand(
-                () -> intake.move(.1), 
-                intake).withTimeout(.3)
-            )
-          );
+    con1.bButton.whileTrue(
+        new RunCommand(
+          () -> intake.move(-.8), 
+          intake)
+    );
 
-        con1.bButton.whileTrue(
+
+    // con1.l2.whileTrue(
+    //   new RunCommand(
+    //     () -> shooter.move(.65),
+    //     shooter).alongWith(
+    //       new RunCommand(
+    //         () -> intake.move(.65), 
+    //         intake)
+    //       )
+    //     );
+
+    con1.rb.whileTrue(
+      new SequentialCommandGroup(
+        new RunCommand(
+          () -> shooter.move(1), // rev up shooter
+          shooter).withTimeout(2),
+        
+        new RunCommand(
+          () -> intake.move(.65), 
+          intake).alongWith(
             new RunCommand(
-              () -> intake.move(-.8), 
-              intake)
-        );
-
-
-        // con1.l2.whileTrue(
-        //   new RunCommand(
-        //     () -> shooter.move(.65),
-        //     shooter).alongWith(
-        //       new RunCommand(
-        //         () -> intake.move(.65), 
-        //         intake)
-        //       )
-        //     );
-
-        con1.rb.whileTrue(
-          new SequentialCommandGroup(
-            new RunCommand(
-              () -> shooter.move(1), // rev up shooter
-              shooter).withTimeout(2),
-            
-            new RunCommand(
-              () -> intake.move(.65), 
-              intake).alongWith(
-                new RunCommand(
-                  () -> shooter.move(1), // shooter
-                  shooter)
-              )
+              () -> shooter.move(1), // shooter
+              shooter)
           )
-        );
+      )
+    );
 
-            
+        
 
 
 
 
-        InstantCommand moveArmToAmp = new InstantCommand(
-          () -> arm.moveToSetpoint(ArmConstants.ampArmPos, 2),
-          arm
-        );
+    InstantCommand moveArmToAmp = new InstantCommand(
+      () -> arm.moveToSetpoint(ArmConstants.ampArmPos, 2),
+      arm
+    );
 
-        con1.yButton.whileTrue(
-          moveArmToAmp
-        );
+    con1.yButton.whileTrue(
+      moveArmToAmp
+    );
 
-        //Goes towards floor
-        con1.pov180.whileTrue(
-          new RunCommand(
-            () -> arm.down(0.5),
-            arm
-          )
-        );
+    //Goes up
+    con1.povUp.whileTrue(
+      new RunCommand(
+        () -> arm.up(0.5),
+        arm
+      )
+    );
 
-        // con1.r2.whileTrue(
-        //   new RunCommand(
-        //     armcom::reverseMotor,
-        //     armsub
-        //     )
-        // );
+    //Goes towards floor
+    con1.povDown.whileTrue(
+      new RunCommand(
+        () -> arm.down(0.5),
+        arm
+      )
+    );
 
-        //Goes up
-        con1.pov0.whileTrue(
-          new RunCommand(
-            () -> arm.up(0.5),
-            arm
-          )
-        );
-
-    }
+    // con1.r2.whileTrue(
+    //   new RunCommand(
+    //     armcom::reverseMotor,
+    //     armsub
+    //     )
+    // );
+       
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -279,13 +278,11 @@ public class RobotContainer {
     return drivebase.getAutonomousCommand("Test");
   }
 
-  public void setDriveMode()
-  {
+  public void setDriveMode() {
     // drivebase.setDefaultCommand();
   }
 
-  public void setMotorBrake(boolean brake)
-  {
+  public void setMotorBrake(boolean brake) {
     drivebase.setMotorBrake(brake);
   }
 }

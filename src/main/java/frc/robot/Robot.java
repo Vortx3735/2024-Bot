@@ -36,13 +36,11 @@ public class Robot extends TimedRobot {
   // private DigitalInput beamBreak = new DigitalInput(IntakeConstants.BEAM_BREAK_PORT);
 
 
-  public Robot()
-  {
+  public Robot() {
     instance = this;
   }
 
-  public static Robot getInstance()
-  {
+  public static Robot getInstance() {
     return instance;
   }
   /**
@@ -90,6 +88,8 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     RobotContainer.arm.setArmBrake(IdleMode.kCoast);
+    RobotContainer.drivebase.setMotorBrake(false);
+
     // m_robotContainer.setMotorBrake(true);
     // disabledTimer.reset();
     // disabledTimer.start();
@@ -113,11 +113,14 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    RobotContainer.led.setYellow();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+
+  }
 
   @Override
   public void teleopInit() {
@@ -132,12 +135,16 @@ public class Robot extends TimedRobot {
     // m_robotContainer.setDriveMode();
     // m_robotContainer.setMotorBrake(true);
     RobotContainer.arm.setArmBrake(IdleMode.kBrake);
+    RobotContainer.drivebase.setMotorBrake(true);
+    RobotContainer.led.noteCheck();
   
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+
+  }
 
   @Override
   public void testInit() {
@@ -154,11 +161,15 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+
+  }
 
   /** This function is called once when the robot is first started up. */
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+
+  }
 
   /** This function is called periodically whilst in simulation. */
   @Override

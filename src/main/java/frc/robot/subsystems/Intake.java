@@ -14,7 +14,6 @@ import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -58,16 +57,24 @@ public class Intake extends SubsystemBase {
     intakeNeo1.set(speed);
   }
 
-  public void stopIntake(){
+  public void stopIntake() {
     intakeNeo1.set(0);
   }
 
-  public BooleanSupplier getDeadBeam(){
+  public BooleanSupplier getDeadBeam() {
     return () -> beamBreak.get();
   }
 
-    public BooleanSupplier getBeam(){
+  public BooleanSupplier getBeam() {
     return () -> !beamBreak.get();
+  }
+
+  public boolean getRing() {
+    return hasRing;
+  }
+
+  public void ringToggle() {
+    hasRing ^= hasRing;
   }
 
   // private double getDistance(){
@@ -77,26 +84,6 @@ public class Intake extends SubsystemBase {
   // public boolean checkRing(double dist, double error) {
   //   return getDistance() < dist - error;
   // }
-
-
-   public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
-
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
-  }
 
   @Override
   public void periodic() {

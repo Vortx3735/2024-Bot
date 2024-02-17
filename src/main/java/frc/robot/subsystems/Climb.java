@@ -43,6 +43,7 @@ public class Climb extends SubsystemBase {
     shooterNeo1.set(0);
   }
 
+  @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("shooter// Shooter RPM", shooterNeo1.getEncoder().getVelocity());

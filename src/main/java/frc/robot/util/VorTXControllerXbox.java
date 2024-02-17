@@ -7,39 +7,40 @@
 
 package frc.robot.util;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 /**
  * Add your docs here.
  */
-public class VorTXControllerXbox extends XboxController {
-	public JoystickButton aButton, bButton, xButton, yButton, view, menu, ls, rs, lb, rb;
-	public POVButton pov0, pov45, pov90, pov135, pov180, pov225, pov270, pov315;
+public class VorTXControllerXbox extends CommandXboxController {
+	public Trigger aButton, bButton, xButton, yButton, view, menu, ls, rs, lb, rb, lt, rt,
+					povUp, povUpRight, povRight, povDownRight, povDown, povDownLeft, povLeft, povUpLeft;
 
 	public VorTXControllerXbox(int port) {
 		super(port);
         		
-		aButton = new JoystickButton(this, 1);
-		bButton = new JoystickButton(this, 2);
-		xButton = new JoystickButton(this, 3);
-		yButton = new JoystickButton(this, 4);
-		lb = new JoystickButton(this, 5);
-		rb = new JoystickButton(this, 6);
-		view = new JoystickButton(this, 7);
-		menu = new JoystickButton(this, 8);
-		ls = new JoystickButton(this, 9);
-		rs = new JoystickButton(this, 10);
+		aButton = this.a();
+		bButton = this.b();
+		xButton = this.x();
+		yButton = this.y();
+		lb = this.leftBumper();
+		rb = this.rightBumper();
+		view = this.back();
+		menu = this.start();
+		ls = this.leftStick();
+		rs = this.rightStick();
+		lt = this.leftTrigger();
+		rt = this.rightTrigger();
 
 		
-		pov0 = new POVButton(this, 0);
-		pov45 = new POVButton(this, 45);
-		pov90 = new POVButton(this, 90);
-		pov135 = new POVButton(this, 135);
-		pov180 = new POVButton(this, 180);
-		pov225 = new POVButton(this, 225);
-		pov270 = new POVButton(this, 270);
-		pov315 = new POVButton(this, 315);
+		povUp = this.povUp();
+		povUpRight = this.povUpRight();
+		povRight = this.povRight();
+		povDownRight = this.povDownRight();
+		povDown = this.povDown();
+		povDownLeft = this.povDownLeft();
+		povLeft = this.povLeft();
+		povUpLeft = this.povUpLeft();
 	}
 
 }
