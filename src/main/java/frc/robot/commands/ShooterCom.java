@@ -54,15 +54,15 @@ public class ShooterCom extends Command {
     public Command shootFromSub() {
         return  new SequentialCommandGroup(
             new RunCommand(
-              () -> shooter.move(1), // rev up shooter
-              shooter).withTimeout(2),
+              () -> RobotContainer.shooter.move(1), // rev up shooter
+              RobotContainer.shooter).withTimeout(2),
             
             new RunCommand(
               () -> RobotContainer.intake.move(1), 
               RobotContainer.intake).alongWith(
                 new RunCommand(
-                  () -> shooter.move(1), // shooter
-                  shooter)
+                  () -> RobotContainer.shooter.move(1), // shooter
+                  RobotContainer.shooter)
               )
           );
     }

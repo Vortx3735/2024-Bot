@@ -36,6 +36,8 @@ public class Intake extends SubsystemBase {
 
     intakeEncoder = intakeNeo1.getEncoder();
 
+    SmartDashboard.putBoolean("intake//Beam Break", beamBreak.get());
+
 
   
       

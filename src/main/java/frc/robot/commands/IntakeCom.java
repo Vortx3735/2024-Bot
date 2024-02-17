@@ -5,7 +5,10 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Intake;
+import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.*;
+
 
 /** An example command that uses an example subsystem. */
 public class IntakeCom extends Command {
@@ -32,6 +35,24 @@ public class IntakeCom extends Command {
 
   public void fixOvershoot() {
     intake.move(-.2);
+  }
+
+  public Command intakeNoteCom() {
+    return new SequentialCommandGroup(
+      new RunCommand(
+        () -> RobotContainer.intake.move(.4), 
+        RobotContainer.intake
+        ).until(RobotContainer.intake.getBeam()),
+        
+      new RunCommand(
+          () -> RobotContainer.intake.move(-.2), 
+          RobotContainer.intake
+        ).until(RobotContainer.intake.getDeadBeam()),
+
+      new RunCommand(
+        () -> RobotContainer.intake.move(.1), 
+        RobotContainer.intake).withTimeout(.3)
+    );
   }
 
   // Called when the command is initially scheduled.

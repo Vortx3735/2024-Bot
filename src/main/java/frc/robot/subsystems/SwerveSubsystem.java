@@ -2,6 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+//backleft - > frontright
+//backright - > frontleft
+//frontleft - > backright
+//frontright - > back left
+
 package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -85,8 +90,8 @@ public class SwerveSubsystem extends SubsystemBase {
     swervePID = new PIDController(0.0, 0.0, 0.0);
     addChild("swervePID", swervePID); // send PID values to smartDashboard
 
-    NamedCommands.registerCommand("Test", RobotContainer.shootercom.shootFromSub());
-    NamedCommands.registerCommand("Intake", new RunCommand(() -> RobotContainer.intake.move(1), RobotContainer.intake));
+    NamedCommands.registerCommand("Shoot", RobotContainer.shootercom.shootFromSub().withTimeout(3).asProxy());
+    NamedCommands.registerCommand("Intake", RobotContainer.intakecom.intakeNoteCom().withTimeout(2).asProxy());
   }
 
   /**

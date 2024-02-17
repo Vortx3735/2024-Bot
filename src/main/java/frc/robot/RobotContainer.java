@@ -102,13 +102,13 @@ public class RobotContainer {
     //     () -> MathUtil.applyDeadband(con1.getRightY(), OperatorConstants.LEFT_Y_DEADBAND)
     //   );
 
-    Command driveGoodAndAwesomeThankYouCole = drivebase.driveCommand(
-      () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-      () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-      () -> MathUtil.applyDeadband(con1.getRightX(), OperatorConstants.LEFT_X_DEADBAND)
+    Command driveFieldOriented = drivebase.driveCommand(
+      () -> MathUtil.applyDeadband(-con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
+      () -> MathUtil.applyDeadband(-con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
+      () -> MathUtil.applyDeadband(-con1.getRightX(), OperatorConstants.LEFT_X_DEADBAND)
     );
 
-    drivebase.setDefaultCommand(driveGoodAndAwesomeThankYouCole);
+    drivebase.setDefaultCommand(driveFieldOriented);
 
     arm.setDefaultCommand(
       new RunCommand(

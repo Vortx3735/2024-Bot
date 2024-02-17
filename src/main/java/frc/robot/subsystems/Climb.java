@@ -12,7 +12,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Shooter extends SubsystemBase {
+public class Climb extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   private CANSparkMax shooterNeo1;
   private CANSparkMax shooterNeo2;
@@ -20,14 +20,14 @@ public class Shooter extends SubsystemBase {
 
   // SHOOTER NEO 1 = Top Roller
   // SHOOTER NEO 2 = Bottom Roller`     
-  public Shooter(int topMotor, int bottomMotor) {
+  public Climb(int topMotor, int bottomMotor) {
     shooterNeo1 = new CANSparkMax(topMotor, MotorType.kBrushless);
     shooterNeo2 = new CANSparkMax(bottomMotor, MotorType.kBrushless);
 
 
     shooterNeo2.follow(shooterNeo1, false);
-    shooterNeo1.setIdleMode(IdleMode.kBrake);
-    shooterNeo2.setIdleMode(IdleMode.kBrake);
+    shooterNeo1.setIdleMode(IdleMode.kCoast);
+    shooterNeo1.setIdleMode(IdleMode.kCoast);
     shooterEncoder = shooterNeo1.getEncoder();
 
       
