@@ -73,8 +73,12 @@ public class Intake extends SubsystemBase {
     return hasRing;
   }
 
-  public void ringToggle() {
-    hasRing ^= hasRing;
+  public void ringTrue() {
+    hasRing = true;
+  }
+
+  public void ringFalse() {
+    hasRing = false;
   }
 
   // private double getDistance(){

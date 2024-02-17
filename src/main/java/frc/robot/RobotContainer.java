@@ -195,8 +195,8 @@ public class RobotContainer {
           () -> intake.move(.1), 
           intake).withTimeout(.3),
         
-        new RunCommand(
-          intake::ringToggle,
+        new InstantCommand(
+          intake::ringTrue,
           intake
         )
       )
@@ -237,7 +237,12 @@ public class RobotContainer {
               intake).alongWith(
                 new RunCommand(
                   () -> shooter.move(1), // shooter
-                  shooter)
+                  shooter).alongWith(
+                    new InstantCommand(
+                      intake::ringFalse,
+                      intake
+                    )
+                  )
               )
           )
       )
@@ -287,30 +292,20 @@ public class RobotContainer {
     //     armsub
     //     )
     // );
-       
+
+    con1.lb.whileTrue(
+      new RunCommand(
+        () -> drivebase.driveCommand
+        (
+          () -> MathUtil.applyDeadband(-con1.getLeftY() / 2, OperatorConstants.LEFT_Y_DEADBAND),
+          () -> MathUtil.applyDeadband(-con1.getLeftX() / 2, OperatorConstants.LEFT_X_DEADBAND),
+          () -> MathUtil.applyDeadband(-con1.getRightX() / 2, OperatorConstants.LEFT_X_DEADBAND)
+        ), drivebase)
+    );
+    
   }
 
-        //Goes up
-        con1.povUp.whileTrue(
-          new RunCommand(
-            () -> arm.up(0.5),
-            arm
-          )
-        );
 
-        con1.lb.whileTrue(
-          new RunCommand(
-            () -> drivebase.driveCommand
-            (
-              () -> MathUtil.applyDeadband(-con1.getLeftY() / 2, OperatorConstants.LEFT_Y_DEADBAND),
-              () -> MathUtil.applyDeadband(-con1.getLeftX() / 2, OperatorConstants.LEFT_X_DEADBAND),
-              () -> MathUtil.applyDeadband(-con1.getRightX() / 2, OperatorConstants.LEFT_X_DEADBAND),
-            ), drivebase)
-        );
-
-            
-        
-  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
