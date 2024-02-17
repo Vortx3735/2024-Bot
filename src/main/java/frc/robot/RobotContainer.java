@@ -290,6 +290,14 @@ public class RobotContainer {
        
   }
 
+        //Goes up
+        con1.povUp.whileTrue(
+          new RunCommand(
+            () -> arm.up(0.5),
+            arm
+          )
+        );
+
         con1.lb.whileTrue(
           new RunCommand(
             () -> drivebase.driveCommand
