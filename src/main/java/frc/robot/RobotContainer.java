@@ -159,7 +159,10 @@ public class RobotContainer {
       )
     );
     
-    // https://www.desmos.com/calculator/yq54mg57ry
+    // this is the better one incorporating gravity
+    // ethan is bad cole is better
+    // all hail king cole
+    // https://www.desmos.com/calculator/tw9xt9yvjt
 
 
     
