@@ -60,6 +60,12 @@ public final class Constants {
   public static class ArmConstants {
     public static final double motorToArmGearRatio = 1.0/27.0;
     public static final double ampArmPos = 200;
+    public static final double armLength = 1.25;
+    public static final double armPivotHeight = 0.875;
+  }
+
+  public static class ShooterConstants {
+    public static final double shooterRadius = 2.0/12.0;
   }
 
 
