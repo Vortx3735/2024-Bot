@@ -159,12 +159,14 @@ public class RobotContainer {
       )
     );
     
-    // this is the better one incorporating gravity
-    // ethan is bad cole is better
-    // all hail king cole
-    // https://www.desmos.com/calculator/bvahs1n1ch
+    // desmos from ayman that calculates arm angle, and scales rpm along with how far we get
+    // cole is unsure of the speaker measurements in this
+    // https://www.desmos.com/calculator/eqe7eypeiw
 
-
+    // desmos from cole that calculates arm angle and calculates rpm
+    // not calibrated bc we need to know the distance between the arm pivot and the subwoofer,
+    // and we need to know the starting angle of the arm when against the subwoofer
+    // https://www.desmos.com/calculator/jy7vomzel0
     
     
     
