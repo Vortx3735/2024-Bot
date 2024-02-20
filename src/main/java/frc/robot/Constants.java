@@ -68,5 +68,15 @@ public final class Constants {
     public static final double shooterRadius = 2.0/12.0;
   }
 
+  public static class VisionConstants {
+    public static final double limelightHeight = 0.0;
+    public static final double limelightDegrees = 0.0;
+  }
+
+  public static class FieldConstants {
+    public static final double speakerHeight = 0.0;
+    public static final double ampHeight = 0.0;
+  }
+
 
 }
