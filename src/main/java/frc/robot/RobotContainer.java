@@ -19,6 +19,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmCom;
 import frc.robot.commands.IntakeCom;
 import frc.robot.commands.ShooterCom;
+import frc.robot.subsystems.AdvantageScope;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -53,12 +54,7 @@ public class RobotContainer {
                                                                          "swerve"));
 
 
-                                                                      
-
-
-
-  
-
+  public static AdvantageScope advantagescope = new AdvantageScope();
                                                                    
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -243,20 +239,20 @@ public class RobotContainer {
           intake).alongWith(
             new RunCommand(
               () -> shooter.move(1), // rev up shooter
-              shooter).withTimeout(1),
+              shooter).withTimeout(1)
             
-            new RunCommand(
-              () -> intake.move(.65), 
-              intake).alongWith(
-                new RunCommand(
-                  () -> shooter.move(1), // shooter
-                  shooter).alongWith(
-                    new InstantCommand(
-                      intake::ringFalse,
-                      intake
-                    )
-                  )
-              )
+            // new RunCommand(
+            //   () -> intake.move(.65), 
+            //   intake).alongWith(
+            //     new RunCommand(
+            //       () -> shooter.move(1), // shooter
+            //       shooter)
+            //   )
+            
+          ),
+          new InstantCommand(
+              () -> intake.ringFalse(),
+              intake
           )
       )
     );

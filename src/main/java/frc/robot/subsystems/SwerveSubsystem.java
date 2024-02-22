@@ -20,17 +20,24 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.estimator.*;
 import frc.robot.RobotContainer;
 
 import java.io.File;
@@ -43,6 +50,8 @@ import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
+
+
 public class SwerveSubsystem extends SubsystemBase {
   /**
    * Swerve drive object.
@@ -53,7 +62,6 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public double maximumSpeed = Units.feetToMeters(14.5);
   static PIDController swervePID;
-
 
 
   public SwerveSubsystem(File directory) {
@@ -70,9 +78,6 @@ public class SwerveSubsystem extends SubsystemBase {
     System.out.println("\t\"angle\": " + angleConversionFactor + ",");
     System.out.println("\t\"drive\": " + driveConversionFactor);
     System.out.println("}");
-
-    
-
     
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
@@ -95,7 +100,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
     NamedCommands.registerCommand("Shoot", RobotContainer.shootercom.shootFromSub().withTimeout(3).asProxy());
     NamedCommands.registerCommand("Intake", RobotContainer.intakecom.intakeNoteCom().withTimeout(2).asProxy());
-  }
+
+}
+
+
 
   /**
    * Example command factory method.
@@ -104,7 +112,7 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public void setupPathPlanner() {
     AutoBuilder.configureHolonomic(
-        this::getPose, // Robot pose supplier
+        this::getSwervePose, // Robot pose supplier
         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
         this::getRobotVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this::setChassisSpeeds, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
@@ -275,12 +283,10 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void simulationPeriodic() {
-
-  }
+  public void simulationPeriodic() {}
 
   /**
-   * Get the swerve drive kinematics object.
+   * Get the swerve drive  object.
    *
    * @return {@link SwerveDriveKinematics} of the swerve drive.
    */
@@ -304,7 +310,7 @@ public class SwerveSubsystem extends SubsystemBase {
    *
    * @return The robot's pose
    */
-  public Pose2d getPose() {
+  public Pose2d getSwervePose() {
     return swerveDrive.getPose();
   }
 
@@ -350,7 +356,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * @return The yaw angle
    */
   public Rotation2d getHeading() {
-    return getPose().getRotation();
+    return getSwervePose().getRotation();
   }
 
   /**
