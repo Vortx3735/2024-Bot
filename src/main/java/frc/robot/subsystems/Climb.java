@@ -5,49 +5,47 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climb extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  private CANSparkMax shooterNeo1;
-  private CANSparkMax shooterNeo2;
-  private RelativeEncoder shooterEncoder;
+  private CANSparkMax climbNeo1;
+  private CANSparkMax climbNeo2;
+  private RelativeEncoder climbEncoder;
 
   // SHOOTER NEO 1 = Top Roller
   // SHOOTER NEO 2 = Bottom Roller`     
-  public Climb(int topMotor, int bottomMotor) {
-    shooterNeo1 = new CANSparkMax(topMotor, MotorType.kBrushless);
-    shooterNeo2 = new CANSparkMax(bottomMotor, MotorType.kBrushless);
+  public Climb(int leftMotor, int rightMotor) {
+    climbNeo1 = new CANSparkMax(leftMotor, MotorType.kBrushless);
+    climbNeo2 = new CANSparkMax(rightMotor, MotorType.kBrushless);
 
+    climbNeo1.setIdleMode(IdleMode.kCoast);    
+    climbNeo2.setIdleMode(IdleMode.kCoast);
 
-    shooterNeo2.follow(shooterNeo1, false);
-    shooterNeo1.setIdleMode(IdleMode.kCoast);
-    shooterNeo1.setIdleMode(IdleMode.kCoast);
-    shooterEncoder = shooterNeo1.getEncoder();
+    climbNeo2.follow(climbNeo1);
 
-      
-    SmartDashboard.putNumber("shooter/Velocity", shooterEncoder.getVelocity());
-}
+    climbEncoder = climbNeo1.getEncoder();
+  }
 
   public void move(double speed) {
-    shooterNeo1.set(speed);
+    climbNeo1.set(speed);
   }
 
 
   public void coast() {
-    shooterNeo1.set(0);
+    climbNeo1.set(0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("shooter// Shooter RPM", shooterNeo1.getEncoder().getVelocity());
-    SmartDashboard.putNumber("shooter//Shooter Voltage", shooterNeo1.getBusVoltage());
+    SmartDashboard.putNumber("climb/Climb RPM", climbEncoder.getVelocity()); // Climb Velocity
+    SmartDashboard.putNumber("climb/Climb Voltage", climbNeo1.getBusVoltage()); // Climb Voltage
   }
 
   @Override

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 // import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmCom;
+import frc.robot.commands.ClimbCom;
 import frc.robot.commands.IntakeCom;
 import frc.robot.commands.ShooterCom;
 import frc.robot.subsystems.AdvantageScope;
@@ -24,6 +25,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.LED;
 import frc.robot.util.VorTXControllerXbox;
 
@@ -48,6 +50,9 @@ public class RobotContainer {
   public static ShooterCom shootercom = new ShooterCom(shooter);
   
   public static LED led = new LED(0, 0);
+
+  public static Climb climb = new Climb(15, 16);
+  public static ClimbCom climbcom = new ClimbCom(climb);
   
 
   public static final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -135,6 +140,10 @@ public class RobotContainer {
         )
       );
     }
+
+    climb.setDefaultCommand(
+      RobotContainer.climbcom.getDefaultCommand()
+    );
 
 
     // // go brrrrrrrrrrrrrrrr and vibrate when we have a ring (hopefully)
@@ -310,6 +319,10 @@ public class RobotContainer {
           () -> MathUtil.applyDeadband(-con1.getLeftX() / 2, OperatorConstants.LEFT_X_DEADBAND),
           () -> MathUtil.applyDeadband(-con1.getRightX() / 2, OperatorConstants.LEFT_X_DEADBAND)
         ), drivebase)
+    );
+
+    con1.aButton.whileTrue(
+      RobotContainer.climbcom.getMoveCommand(1.0)
     );
     
   }
