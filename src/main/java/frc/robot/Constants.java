@@ -59,7 +59,8 @@ public final class Constants {
 
   public static class ArmConstants {
     public static final double motorToArmGearRatio = 1.0/27.0;
-    public static final double ampArmPos = 200;
+    public static final double ampArmPos = 0.262;
+    public static final double groundArmPos = .01;
     public static final double armLength = 1.25;
     public static final double armPivotHeight = 0.875;
   }
@@ -76,6 +77,11 @@ public final class Constants {
   public static class FieldConstants {
     public static final double speakerHeight = 0.0;
     public static final double ampHeight = 0.0;
+  }
+
+  public static class ClimbConstants {
+    public static final double CLIMB_LENGTH = 0.9;
+    public static final float CLIMB_SOFT_LIMIT_FWD = 0;
   }
 
 

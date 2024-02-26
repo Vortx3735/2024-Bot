@@ -6,11 +6,16 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkLimitSwitch;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.*;
+
 
 public class Climb extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -27,18 +32,29 @@ public class Climb extends SubsystemBase {
     climbNeo1.setIdleMode(IdleMode.kCoast);    
     climbNeo2.setIdleMode(IdleMode.kCoast);
 
-    climbNeo2.follow(climbNeo1);
+    climbNeo1.setInverted(false);
+    climbNeo2.setInverted(true);
+    // climbNeo2.follow(climbNeo1, true);
 
     climbEncoder = climbNeo1.getEncoder();
+
+    // climbNeo1.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimbConstants.CLIMB_SOFT_LIMIT_FWD);
+    // climbNeo1.setSoftLimit(SoftLimitDirection.kReverse, 0);
   }
 
   public void move(double speed) {
     climbNeo1.set(speed);
+    climbNeo2.set(speed);
   }
 
+  // public void setReverseSoftLimit(int limit){
+  //   climbNeo1.setSoftLimit(SoftLimitDirection.kReverse, limit);
+  //   climbNeo2.setSoftLimit(SoftLimitDirection.kReverse, limit);
+  // }
 
   public void coast() {
     climbNeo1.set(0);
+    climbNeo2.set(0);
   }
 
   @Override

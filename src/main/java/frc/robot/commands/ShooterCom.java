@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.nio.ReadOnlyBufferException;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -32,24 +34,44 @@ public class ShooterCom extends Command {
     addRequirements(shooter);
   }
 
-  public void shoot() {
-      if(Intake.hasRing) {
-        
-        new ParallelCommandGroup(
-          new RunCommand(
-            () -> shooter.move(.75), 
-            shooter
-            ),
-          new SequentialCommandGroup(
-            new WaitCommand(2),
-            new RunCommand(
-              () -> RobotContainer.intake.move(.25), 
-              RobotContainer.intake
-              )
-          )
-        );
-      }
+  public Command shooterIdle() {
+    if(RobotContainer.intake.getRing() == true){
+      return new RunCommand(
+        () -> RobotContainer.shooter.move(.5), 
+        RobotContainer.shooter);
+    } else {
+      return new RunCommand(
+        () -> RobotContainer.shooter.move(0),
+        RobotContainer.shooter);
     }
+  }
+
+  // public void shoot() {
+  //     if(Intake.hasRing) {
+        
+  //       new ParallelCommandGroup(
+  //         new RunCommand(
+  //           () -> shooter.move(.75), 
+  //           shooter
+  //           ),
+  //         new SequentialCommandGroup(
+  //           new WaitCommand(2),
+  //           new RunCommand(
+  //             () -> RobotContainer.intake.move(.25), 
+  //             RobotContainer.intake
+  //             )
+  //         )
+  //       );
+  //     }
+  //   }
+
+  public Command firstShotFromSub() {
+    return new RunCommand(
+      () -> RobotContainer.arm.down(.5), 
+      RobotContainer.arm).withTimeout(.2).andThen(
+        shootFromSub()
+      );
+  }
 
     public Command shootFromSub() {
         return  new SequentialCommandGroup(

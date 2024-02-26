@@ -38,20 +38,20 @@ import frc.robot.util.VorTXControllerXbox;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static VorTXControllerXbox con1 = new VorTXControllerXbox(0);
+  public static VorTXControllerXbox con2 = new VorTXControllerXbox(1);
 
-
-  public static Intake intake = new Intake(12);
+  public static Intake intake = new Intake(16);
   public static IntakeCom intakecom = new IntakeCom(intake);
 
-  public static Arm arm = new Arm(10, 11, Constants.ArmConstants.motorToArmGearRatio);
+  public static Arm arm = new Arm(12, 13, Constants.ArmConstants.motorToArmGearRatio);
   public static ArmCom armcom = new ArmCom(arm);
 
-  public static Shooter shooter = new Shooter(13, 14);
+  public static Shooter shooter = new Shooter(15, 14);
   public static ShooterCom shootercom = new ShooterCom(shooter);
   
   public static LED led = new LED(0, 0);
 
-  public static Climb climb = new Climb(15, 16);
+  public static Climb climb = new Climb(10, 11);
   public static ClimbCom climbcom = new ClimbCom(climb);
   
 
@@ -126,24 +126,16 @@ public class RobotContainer {
       )
     );
 
-    if(Intake.hasRing = true){
-      shooter.setDefaultCommand(
-        new RunCommand(
-          () -> shooter.move(.5), 
-          shooter)
-      );
-    } else {
-      shooter.setDefaultCommand(
-        new RunCommand(
-          () -> shooter.move(0),
-          shooter
-        )
-      );
-    }
-
-    climb.setDefaultCommand(
-      RobotContainer.climbcom.getDefaultCommand()
+    shooter.setDefaultCommand(
+      new RunCommand(
+        () -> shooter.move(0), 
+        shooter)
     );
+
+
+    // climb.setDefaultCommand(
+    //   RobotContainer.climbcom.getDefaultCommand()
+    // );
 
 
     // // go brrrrrrrrrrrrrrrr and vibrate when we have a ring (hopefully)
@@ -197,21 +189,9 @@ public class RobotContainer {
       )
     );
     
-    con1.xButton.whileTrue(
+    con2.xButton.whileTrue(
       new SequentialCommandGroup(
-        new RunCommand(
-          intakecom::intakeNote, 
-          intake
-          ).until(intake.getBeam()),
-          
-        new RunCommand(
-            intakecom::fixOvershoot, 
-            intake
-          ).until(intake.getDeadBeam()),
-
-        new RunCommand(
-          () -> intake.move(.1), 
-          intake).withTimeout(.3),
+        intakecom.intakeNoteCom(),
         
         new InstantCommand(
           intake::ringTrue,
@@ -220,7 +200,15 @@ public class RobotContainer {
       )
     );
 
-    con1.bButton.whileTrue(
+    if(intake.getRing()) {
+      con2.rb.whileFalse(
+        new RunCommand(
+          () -> shooter.move(.5), 
+          shooter)
+      );
+    }
+
+    con2.bButton.whileTrue(
         new RunCommand(
           () -> intake.move(-.8), 
           intake)
@@ -237,18 +225,18 @@ public class RobotContainer {
     //       )
     //     );
 
-    con1.rb.whileTrue(
+    con2.rb.whileTrue(
       new SequentialCommandGroup(
         new RunCommand(
-          () -> shooter.move(1), // rev up shooter
-          shooter).withTimeout(2),
+          () -> shooter.move(.65), // rev up shooter
+          shooter).withTimeout(1.5),
         
         new RunCommand(
-          () -> intake.move(.65), 
+          () -> intake.move(.3), 
           intake).alongWith(
             new RunCommand(
-              () -> shooter.move(1), // rev up shooter
-              shooter).withTimeout(1)
+              () -> shooter.move(.65), // rev up shooter
+              shooter).withTimeout(1.25)
             
             // new RunCommand(
             //   () -> intake.move(.65), 
@@ -266,12 +254,12 @@ public class RobotContainer {
       )
     );
 
-      con1.yButton.whileTrue(
+      con2.yButton.whileTrue(
         new RunCommand(
-          () -> shooter.move(.2), 
+          () -> shooter.move(.5), 
           shooter).alongWith(
             new RunCommand(
-              () -> intake.move(.3), 
+              () -> intake.move(.5), 
               intake)
           )
       );      
@@ -279,30 +267,33 @@ public class RobotContainer {
 
 
 
-    // InstantCommand moveArmToAmp = new InstantCommand(
-    //   () -> arm.moveToSetpoint(ArmConstants.ampArmPos, 2),
-    //   arm
-    // );
+    RunCommand moveArmToAmp = new RunCommand(
+      () -> arm.moveToSetpoint(Constants.ArmConstants.ampArmPos, 7),
+      arm
+    );
 
-        // con1.yButton.whileTrue(
-        //   moveArmToAmp
-        // );
+    con2.povLeft.whileTrue(
+      moveArmToAmp
+    );
 
     //Goes up
-    con1.povUp.whileTrue(
-      new RunCommand(
-        () -> arm.up(0.5),
-        arm
-      )
+    // con2.povLeft.whileTrue(
+    //   new RunCommand(
+    //     () -> arm.up(0.5),
+    //     arm
+    //   )
+    // );
+    
+    RunCommand moveArmToGround = new RunCommand(
+      () -> arm.moveToSetpoint(Constants.ArmConstants.groundArmPos, 4),
+      arm
     );
 
     //Goes towards floor
-    con1.povDown.whileTrue(
-      new RunCommand(
-        () -> arm.down(0.5),
-        arm
-      )
+    con2.povRight.whileTrue(
+      moveArmToGround
     );
+
 
     // con1.r2.whileTrue(
     //   new RunCommand(
@@ -321,9 +312,28 @@ public class RobotContainer {
         ), drivebase)
     );
 
-    con1.aButton.whileTrue(
-      RobotContainer.climbcom.getMoveCommand(1.0)
-    );
+    // con2.aButton.whileTrue(
+    //   RobotContainer.climbcom.getMoveCommand(-.25)
+    // );
+
+    // con2.povDown.whileTrue(
+    //   new RunCommand(
+    //     () -> climb.move(-.25), 
+    //     climb)
+    // );
+
+    // // con2.yButton.whileTrue(climbcom.getMoveCommand(.25));
+    // con2.povUp.whileTrue(
+    //   new RunCommand(
+    //     () -> climb.move(.25), 
+    //     climb)
+    // );
+
+    // con2.view.whileTrue(
+    //   new RunCommand(
+    //     // () -> climb.setReverseSoftLimit(-5000), 
+    //     climb)
+    // );
     
   }
 

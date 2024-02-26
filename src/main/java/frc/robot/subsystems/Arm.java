@@ -34,6 +34,9 @@ public class Arm extends SubsystemBase {
   // private final double motorToArmGearRatio;
 
   private final DutyCycleEncoder armEncoder = new DutyCycleEncoder(0);
+  private double position = 0;
+  private double raw_position;
+  private double offset = .836;
 
 
   public Arm(int leftMotor, int rightMotor, double motorToArmGearRatio) {
@@ -44,6 +47,9 @@ public class Arm extends SubsystemBase {
     ArmNeo1.setIdleMode(IdleMode.kBrake);
     ArmNeo2.setIdleMode(IdleMode.kBrake);
     this.ArmNeo2.follow(ArmNeo1, true);
+
+    // armEncoder.reset();
+    armEncoder.setPositionOffset(offset);
 
     // Arm Feed Forward
     ka = 0.0;
@@ -92,6 +98,7 @@ public class Arm extends SubsystemBase {
 
   //add soft limits based on encoder position
   public void up(double percentSpeed) {
+    if(position < .24)
     move(percentSpeed);
   }
 
@@ -100,30 +107,27 @@ public class Arm extends SubsystemBase {
   }
 
   public void down(double percentSpeed) {
-    move(-percentSpeed);
+    if(position > .02 || position < .9) {
+      move(-percentSpeed);
+    }
   }
 
 
-  public void moveToSetpoint(double setPointDegrees, double p) {
-    move((setPointDegrees - getArmAngle()) * p);
+  public void moveToSetpoint(double setPointPos, double p) {
+    move((setPointPos - getArmPos()) * p);
   }
-
+  
   public void hold() {
-    double pos = armEncoder.getAbsolutePosition();
-    ArmNeo1.set(hold.calculate(pos, setpoint) + armFF.calculate(pos, kv));
-
-    setpoint = (int)(pos);
-
-    
-
+    // double pos = armEncoder.getAbsolutePosition();
+    ArmNeo1.set(hold.calculate(position * 2 * Math.PI, setpoint * 2 * Math.PI) + armFF.calculate(position * 2 * Math.PI, kv));
   }
 
-  public double getArmAngle() {
+  public double getArmPos() {
     // double averageNeoRotations = (ArmNeo1.getEncoder().getPosition() + ArmNeo2.getEncoder().getPosition())/2;
     // double armRotation = averageNeoRotations * motorToArmGearRatio;
     // double armAngleDegrees = armRotation * 360;
     // return armAngleDegrees;
-    return armEncoder.getAbsolutePosition();
+    return position;
   }
 
   public void setArmBrake(IdleMode mode) {
@@ -158,6 +162,15 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    raw_position = armEncoder.getAbsolutePosition();
+    if(raw_position < offset){
+      position = 1 + raw_position - offset;
+    } else {
+      position = raw_position - offset;
+    }
+    SmartDashboard.putNumber("arm//ArmEncoder", position);
+    SmartDashboard.putNumber("arm//ArmEncoder without math", armEncoder.getAbsolutePosition());
+
   }
 
   @Override

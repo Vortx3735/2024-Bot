@@ -98,6 +98,7 @@ public class SwerveSubsystem extends SubsystemBase {
     swervePID = new PIDController(0.0, 0.0, 0.0);
     addChild("swervePID", swervePID); // send PID values to smartDashboard
 
+    NamedCommands.registerCommand("FirstShot", RobotContainer.shootercom.firstShotFromSub().withTimeout(4).asProxy());
     NamedCommands.registerCommand("Shoot", RobotContainer.shootercom.shootFromSub().withTimeout(3).asProxy());
     NamedCommands.registerCommand("Intake", RobotContainer.intakecom.intakeNoteCom().withTimeout(2).asProxy());
 

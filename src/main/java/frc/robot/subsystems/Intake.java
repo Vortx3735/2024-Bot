@@ -6,16 +6,16 @@ package frc.robot.subsystems;
 
 import java.util.function.BooleanSupplier;
 
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.SparkLimitSwitch;
 
-import com.revrobotics.CANSparkBase.IdleMode;
-
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.RobotContainer;
 
 
 public class Intake extends SubsystemBase {
@@ -24,21 +24,24 @@ public class Intake extends SubsystemBase {
  private RelativeEncoder intakeEncoder;
 //  private Rev2mDistanceSensor ringDetector;
  private double intakeSetPoint = 1000;
- private DigitalInput beamBreak = new DigitalInput(IntakeConstants.BEAM_BREAK_PORT);
- public static boolean hasRing = false;
+//  private DigitalInput beamBreak = new DigitalInput(IntakeConstants.BEAM_BREAK_PORT);\
+ private SparkLimitSwitch beamBreakOvershoot;
+ private SparkLimitSwitch beamBreakNote;
+ public static Boolean hasRing = false;
+ public static boolean intakingRing = false;
 
   public Intake(int id) {
     // ringDetector = new Rev2mDistanceSensor(Port.kOnboard);
     intakeNeo1 = new CANSparkMax(id, MotorType.kBrushless);
     intakeNeo1.setInverted(false);
     intakeNeo1.setIdleMode(IdleMode.kBrake);
+    beamBreakOvershoot = intakeNeo1.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed);
+    beamBreakNote = intakeNeo1.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed);
+
 
     intakeEncoder = intakeNeo1.getEncoder();
 
-    SmartDashboard.putBoolean("intake//Beam Break", beamBreak.get());
-
-
-  
+    SmartDashboard.putBoolean("intake//Beam Break", beamBreakOvershoot.isPressed());
       
     SmartDashboard.putNumber("ProcessVariable", intakeEncoder.getVelocity());
 
@@ -61,12 +64,12 @@ public class Intake extends SubsystemBase {
     intakeNeo1.set(0);
   }
 
-  public BooleanSupplier getDeadBeam() {
-    return () -> beamBreak.get();
+  public BooleanSupplier getOvershootBeam() {
+    return () -> hasRing;
   }
 
-  public BooleanSupplier getBeam() {
-    return () -> !beamBreak.get();
+  public BooleanSupplier getNoteBeam() {
+    return () -> intakingRing;
   }
 
   public boolean getRing() {
@@ -91,7 +94,17 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    if(beamBreakOvershoot.isPressed() == false){
+      ringTrue();
+    } else { 
+      ringFalse();
+    }
+
+    if(beamBreakNote.isPressed() == false) {
+      intakingRing = true;
+    } else {
+      intakingRing = false;
+    }
   }
 
   @Override

@@ -40,19 +40,14 @@ public class IntakeCom extends Command {
   public Command intakeNoteCom() {
     return new SequentialCommandGroup(
       new RunCommand(
-        () -> RobotContainer.intake.move(.3), 
+        () -> RobotContainer.intake.move(.5), 
         RobotContainer.intake
-        ).until(RobotContainer.intake.getBeam()),
+        ).until(RobotContainer.intake.getNoteBeam()),
         
       new RunCommand(
-          () -> RobotContainer.intake.move(-.2), 
+          () -> RobotContainer.intake.move(.2), 
           RobotContainer.intake
-        ).until(RobotContainer.intake.getDeadBeam()),
-
-      new RunCommand(
-        () -> RobotContainer.intake.move(.1), 
-        RobotContainer.intake).withTimeout(.3)
-    );
+        ).until(RobotContainer.intake.getOvershootBeam()));
   }
 
   // Called when the command is initially scheduled.
