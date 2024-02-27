@@ -49,7 +49,7 @@ public class RobotContainer {
   public static Shooter shooter = new Shooter(15, 14);
   public static ShooterCom shootercom = new ShooterCom(shooter);
   
-  public static LED led = new LED(0, 0);
+  public static LED led = new LED(1, 36);
 
   public static Climb climb = new Climb(10, 11);
   public static ClimbCom climbcom = new ClimbCom(climb);
