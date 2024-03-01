@@ -45,7 +45,8 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("shooter// Shooter RPM", shooterNeo1.getEncoder().getVelocity());
+    SmartDashboard.putNumber("shooter// Shooter Bottom RPM", shooterNeo2.getEncoder().getVelocity());
+    SmartDashboard.putNumber("shooter// Shooter Top RPM", shooterNeo1.getEncoder().getVelocity());
     SmartDashboard.putNumber("shooter//Shooter Voltage", shooterNeo1.getBusVoltage());
   }
 

@@ -56,7 +56,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    RobotContainer.drivebase.setMotorBrake(true);
     
     enableLiveWindowInTest(true); //enabling test mode
     SmartDashboard.putData(CommandScheduler.getInstance());
@@ -98,7 +97,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     RobotContainer.arm.setArmBrake(IdleMode.kCoast);
-    RobotContainer.drivebase.setMotorBrake(false);
 
     // m_robotContainer.setMotorBrake(true);
     // disabledTimer.reset();
@@ -117,6 +115,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+
+    CommandScheduler.getInstance().cancelAll();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)

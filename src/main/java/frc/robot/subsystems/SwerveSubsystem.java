@@ -98,7 +98,9 @@ public class SwerveSubsystem extends SubsystemBase {
     swervePID = new PIDController(0.0, 0.0, 0.0);
     addChild("swervePID", swervePID); // send PID values to smartDashboard
 
-    NamedCommands.registerCommand("FirstShot", RobotContainer.shootercom.firstShotFromSub().withTimeout(4).asProxy());
+    swerveDrive.setMotorIdleMode(true);
+
+    NamedCommands.registerCommand("FirstShot", RobotContainer.shootercom.firstShotFromSub().withTimeout(5).asProxy());
     NamedCommands.registerCommand("Shoot", RobotContainer.shootercom.shootFromSub().withTimeout(3).asProxy());
     NamedCommands.registerCommand("Intake", RobotContainer.intakecom.intakeNoteCom().withTimeout(2).asProxy());
 
@@ -229,6 +231,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * @return Drive command.
    */
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
+    // swerveDrive.setHeadingCorrection(false, 0.5);
     return run(() -> {
       // Make the robot move
       swerveDrive.drive(new Translation2d(Math.pow(translationX.getAsDouble(), 3) * swerveDrive.getMaximumVelocity(),

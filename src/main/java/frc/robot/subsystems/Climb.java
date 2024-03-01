@@ -29,10 +29,10 @@ public class Climb extends SubsystemBase {
     climbNeo1 = new CANSparkMax(leftMotor, MotorType.kBrushless);
     climbNeo2 = new CANSparkMax(rightMotor, MotorType.kBrushless);
 
-    climbNeo1.setIdleMode(IdleMode.kCoast);    
-    climbNeo2.setIdleMode(IdleMode.kCoast);
+    climbNeo1.setIdleMode(IdleMode.kBrake);    
+    climbNeo2.setIdleMode(IdleMode.kBrake);
 
-    climbNeo1.setInverted(false);
+    climbNeo1.setInverted(true);
     climbNeo2.setInverted(true);
     // climbNeo2.follow(climbNeo1, true);
 
@@ -42,9 +42,22 @@ public class Climb extends SubsystemBase {
     // climbNeo1.setSoftLimit(SoftLimitDirection.kReverse, 0);
   }
 
-  public void move(double speed) {
+  public void moveLeft(double speed) {
+    climbNeo1.set(speed);
+  }
+
+  public void moveRight(double speed) {
+    climbNeo2.set(speed);
+  }
+
+  public void moveBoth(double speed) {
     climbNeo1.set(speed);
     climbNeo2.set(speed);
+  }
+
+  public void setIdle(IdleMode idle) { 
+    climbNeo1.setIdleMode(idle);
+    climbNeo2.setIdleMode(idle);
   }
 
   // public void setReverseSoftLimit(int limit){
