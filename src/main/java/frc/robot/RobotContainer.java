@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 // import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArmCom;
+import frc.robot.commands.AutoAim;
 import frc.robot.commands.ClimbCom;
 import frc.robot.commands.IntakeCom;
 import frc.robot.commands.ShooterCom;
@@ -48,6 +49,8 @@ public class RobotContainer {
 
   public static Shooter shooter = new Shooter(15, 14);
   public static ShooterCom shootercom = new ShooterCom(shooter);
+  
+  public static AutoAim autoaim = new AutoAim(arm, shooter);
   
   public static LED led = new LED(1, 36);
 
@@ -182,10 +185,8 @@ public class RobotContainer {
   private void configureBindings() {
 
     con1.menu.whileTrue(
-      ( 
-        new InstantCommand(
-          drivebase::zeroGyro
-        )
+      new InstantCommand(
+        drivebase::zeroGyro
       )
     );
     

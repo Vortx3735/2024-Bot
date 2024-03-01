@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -68,6 +69,10 @@ public class Robot extends TimedRobot {
     // update swerve pose in advantagescope field
     RobotContainer.advantagescope.m_field.setRobotPose(RobotContainer.drivebase.getSwervePose());
 
+    for (int port = 5800; port <= 5807; port++) {
+      PortForwarder.add(port, "limelight.local", port);
+    }
+
   }
 
   /**
@@ -118,7 +123,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    RobotContainer.led.setYellow();
   }
 
   /** This function is called periodically during autonomous. */
@@ -140,9 +144,7 @@ public class Robot extends TimedRobot {
     // m_robotContainer.setDriveMode();
     // m_robotContainer.setMotorBrake(true);
     RobotContainer.arm.setArmBrake(IdleMode.kBrake);
-    RobotContainer.drivebase.setMotorBrake(true);
-    RobotContainer.led.noteCheck();
-  
+    RobotContainer.drivebase.setMotorBrake(true);  
   }
 
   /** This function is called periodically during operator control. */

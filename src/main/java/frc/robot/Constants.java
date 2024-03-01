@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.util.LinearInterpolator;
 import swervelib.math.Matter;
 import swervelib.parser.PIDFConfig;
 
@@ -21,8 +22,9 @@ public final class Constants {
 
 
   //meesheeshooballooogaggoogaggo woogo wogo bo
+  //everything is in metric units and degrees
   
-  //this robot mass is a complete guess and we should get a scale to test for actual mass
+  //need to reweigh with climb installed
   public static final double ROBOT_MASS = 107*0.453592; //(148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
@@ -61,13 +63,34 @@ public final class Constants {
     public static final double motorToArmGearRatio = 1.0/27.0;
     public static final double ampArmPos = 0.262;
     public static final double groundArmPos = .01;
-    public static final double armLength = 1.25;
-    public static final double armPivotHeight = 0.875;
+    public static final double armLength = 24.727914/39.37;
+    public static final double[][] armAngleArray = {
+      // test for different angles from different x distances
+      {0, 0}
+    };
+    public static final LinearInterpolator interpolateArmAngle = new LinearInterpolator(armAngleArray);
+  }
+
+  public static class ShooterConstants {
+    public static final double shooterRadius = 2.0/39.37;
+    public static final double shooterLength = 5.639686/39.37;
+    public static final double[][] shooterSpeedArray = {
+      // test for different speeds from different angles
+      {0, 0}
+    };
+    public static final LinearInterpolator interpolateShooterSpeed = new LinearInterpolator(shooterSpeedArray);
+
   }
 
   public static class VisionConstants {
     public static final double limelightHeight = 0.0;
     public static final double limelightDegrees = 0.0;
+    public static final double heightFromGround = 0.0;
+    public static final int[] speakerMidTags = {4,7};
+    public static final int[] speakerSideTags = {3,8};
+    public static final int[] ampTags = {5,6};
+    public static final double speakerTagHeight = 0.0;
+
   }
 
   public static class FieldConstants {

@@ -1,105 +1,79 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
-public class LED extends SubsystemBase {
-    AddressableLED m_led;
-    AddressableLEDBuffer ledBuffer;
+public class LED extends SubsystemBase{
+    private final AddressableLED m_led;
+    private final AddressableLEDBuffer m_ledBuffer;
+    private int m_rainbowFirstPixelHue;
+
 
     public LED(int port, int length) {
         m_led = new AddressableLED(port);
-        ledBuffer = new AddressableLEDBuffer(length);
-
-        m_led.setLength(ledBuffer.getLength());
-        m_led.setData(ledBuffer);
-
+        m_ledBuffer = new AddressableLEDBuffer(36);
+        m_led.setLength(m_ledBuffer.getLength());
+        m_led.setData(m_ledBuffer);
         m_led.start();
-    }
-
-    public void noteCheck() {
-        if(RobotContainer.intake.getRing() == true) {
-            setGreen();
-        } else {
-            setRed();
-        }
-    }
-
-    public void setCustom(int r, int g, int b) {
-        for (var i = 0; i < ledBuffer.getLength(); i++) { 
-            ledBuffer.setRGB(i, r, g, b);
-         }
-         
-         m_led.setData(ledBuffer);
-    }
-
-    public void setGreen() {
-        for (var i = 0; i < ledBuffer.getLength(); i++) { 
-            ledBuffer.setRGB(i, 0, 255, 0);
-         }
-         
-         m_led.setData(ledBuffer);
-    }
-
-    public void setRed() {
-        for (var i = 0; i < ledBuffer.getLength(); i++) { 
-            ledBuffer.setRGB(i, 255, 0, 0);
-         }
-         
-         m_led.setData(ledBuffer);
-    }
-
-    public void setYellow() {
-        for (var i = 0; i < ledBuffer.getLength(); i++) { 
-            ledBuffer.setRGB(i, 255, 255, 0);
-         }
-         
-         m_led.setData(ledBuffer);
-    }
-
-    public void setVorTXGreen() {
-        for (var i = 0; i < ledBuffer.getLength(); i++) { 
-            ledBuffer.setRGB(i, 197, 124, 65);
-         }
-         
-         m_led.setData(ledBuffer);
-    }
-
-    public void setVorTXBlue() {
-        for (var i = 0; i < ledBuffer.getLength(); i++) { 
-            ledBuffer.setRGB(i, 0, 51, 76);
-         }
-         
-         m_led.setData(ledBuffer);
-    }
-
-    private void rainbow() {
-        int rainbowFirstPixelHue = 0;
-        // For every pixel
-        for (var i = 0; i < ledBuffer.getLength(); i++) {
-            // Calculate the hue - hue is easier for rainbows because the color
-            // shape is a circle so only one value needs to precess
-            final int hue = (rainbowFirstPixelHue + (i * 180 / ledBuffer.getLength())) % 180;
-            // Set the value
-            ledBuffer.setHSV(i, hue, 255, 128);
-        }
-        // Increase by to make the rainbow "move"
-        rainbowFirstPixelHue += 3;
-        // Check bounds
-        rainbowFirstPixelHue %= 180;
     }
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
-        rainbow();
-        m_led.setData(ledBuffer);
+        if (DriverStation.isEnabled()) {
+            setLEDs();
+        }
     }
 
     @Override
     public void simulationPeriodic() {
-        // This method will be called once per scheduler run during simulation
+
+    }
+
+
+    public void rainbow() {
+        // For every pixel
+        for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+        // Calculate the hue - hue is easier for rainbows because the color
+        // shape is a circle so only one value needs to precess
+        final var hue = (m_rainbowFirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
+        // Set the value
+        m_ledBuffer.setHSV(i, hue, 255, 128);
+        }
+        // Increase by to make the rainbow "move"
+        m_rainbowFirstPixelHue += 3;
+        // Check bounds
+        m_rainbowFirstPixelHue %= 180;
+        m_led.setData(m_ledBuffer);
+    }
+
+    private void setLEDs() {
+        setVorTXGreen();
+        m_led.setData(m_ledBuffer);
+    }
+
+    private void setColor(Color color) {
+        for (var i = 0; i < m_ledBuffer.getLength(); i++) { 
+            m_ledBuffer.setLED(i, color);
+        }
+    }
+
+    private void setVorTXGreen() {
+        for (var i = 0; i < m_ledBuffer.getLength(); i++) { 
+            m_ledBuffer.setRGB(i, 197, 124, 65);
+        }
+    }
+
+    private void funny() {
+        int r = (int) RobotContainer.con2.getLeftX();
+        int g = (int) RobotContainer.con2.getLeftY();
+        int b = (int) RobotContainer.con2.getRightX();
+        for (var i = 0; i < m_ledBuffer.getLength(); i++) { 
+            m_ledBuffer.setRGB(i, r, g, b);
+        }
     }
 }
