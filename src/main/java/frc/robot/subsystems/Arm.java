@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -34,7 +36,7 @@ public class Arm extends SubsystemBase {
   // private final double motorToArmGearRatio;
 
   private final DutyCycleEncoder armEncoder = new DutyCycleEncoder(0);
-  private double position = 0;
+  public double position = 0;
   private double raw_position;
   private double offset = .836;
 
@@ -107,8 +109,10 @@ public class Arm extends SubsystemBase {
   }
 
   public void down(double percentSpeed) {
-    if(position > .02 || position < .9) {
+    if(position > .025) {
       move(-percentSpeed);
+    } else {
+      move(0);
     }
   }
 
@@ -116,9 +120,10 @@ public class Arm extends SubsystemBase {
   public void moveToSetpoint(double setPointPos, double p) {
     move((setPointPos - getArmPos()) * p);
   }
-  
+
   public void hold() {
     // double pos = armEncoder.getAbsolutePosition();
+    setpoint = (int)position;
     ArmNeo1.set(hold.calculate(position * 2 * Math.PI, setpoint * 2 * Math.PI) + armFF.calculate(position * 2 * Math.PI, kv));
   }
 
@@ -128,6 +133,10 @@ public class Arm extends SubsystemBase {
     // double armAngleDegrees = armRotation * 360;
     // return armAngleDegrees;
     return position;
+  }
+
+  public BooleanSupplier getArmDown() {
+    return () -> position <= .025;
   }
 
   public void setArmBrake(IdleMode mode) {
@@ -170,7 +179,6 @@ public class Arm extends SubsystemBase {
     }
     SmartDashboard.putNumber("arm//ArmEncoder", position);
     SmartDashboard.putNumber("arm//ArmEncoder without math", armEncoder.getAbsolutePosition());
-
   }
 
   @Override

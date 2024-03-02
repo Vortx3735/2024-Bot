@@ -4,19 +4,27 @@
 
 package frc.robot.commands;
 
+import java.util.List;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
+import com.ctre.phoenix6.hardware.Pigeon2;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.SwerveSubsystem;
-import java.util.List;
-import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 import swervelib.SwerveController;
-import swervelib.math.SwerveMath;
-import com.ctre.phoenix6.hardware.Pigeon2;;
+import swervelib.math.SwerveMath;;
 
 /**
  * A more advanced Swerve Control System that has 4 buttons for which direction to face
@@ -111,6 +119,7 @@ public class AbsoluteDriveAdv extends Command
       resetHeading = false;
     }
 
+
     ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(vX.getAsDouble(), vY.getAsDouble(), headingX, headingY);
 
     // Limit velocity to prevent tippy
@@ -128,6 +137,60 @@ public class AbsoluteDriveAdv extends Command
     } else {
       swerve.drive(translation, desiredSpeeds.omegaRadiansPerSecond, true);
     }
+  }
+
+  public static Command trackApriltagDrive() {
+    //wrap in an if statement for if limelight is reading apriltag
+    double displacementX = 0; //getLimelightX
+    double goalX = 0; //getLimelight center postition + offset of limelight
+    double error = 0; //error for angle
+    if(displacementX < goalX - error) {
+      return RobotContainer.drivebase.driveCommand(
+        () -> MathUtil.applyDeadband(-RobotContainer.con1.getLeftY(), Constants.OperatorConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(-RobotContainer.con1.getLeftX(), Constants.OperatorConstants.LEFT_X_DEADBAND),
+        () -> .2);
+    } else if (displacementX > goalX + error){
+      return RobotContainer.drivebase.driveCommand(
+        () -> MathUtil.applyDeadband(-RobotContainer.con1.getLeftY(), Constants.OperatorConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(-RobotContainer.con1.getLeftX(), Constants.OperatorConstants.LEFT_X_DEADBAND),
+        () -> -.2);
+    } else {
+      return new InstantCommand(); //could make LED blink or smth
+    }
+  }
+
+  public static Command slowSwerveCommand() {
+    return RobotContainer.drivebase.driveCommand(
+        () -> MathUtil.applyDeadband(-RobotContainer.con1.getLeftY()*.5, Constants.OperatorConstants.LEFT_Y_DEADBAND),
+        () -> MathUtil.applyDeadband(-RobotContainer.con1.getLeftX()*.5, Constants.OperatorConstants.LEFT_X_DEADBAND),
+        () -> MathUtil.applyDeadband(-RobotContainer.con1.getRightX()*.5, Constants.OperatorConstants.LEFT_X_DEADBAND)
+    );
+  }
+
+  public static Command driveFieldOriented() { 
+    return RobotContainer.drivebase.driveCommand(
+      () -> MathUtil.applyDeadband(-RobotContainer.con1.getLeftY(), Constants.OperatorConstants.LEFT_Y_DEADBAND),
+      () -> MathUtil.applyDeadband(-RobotContainer.con1.getLeftX(), Constants.OperatorConstants.LEFT_X_DEADBAND),
+      () -> MathUtil.applyDeadband(-RobotContainer.con1.getRightX(), Constants.OperatorConstants.LEFT_X_DEADBAND)
+    );
+  }
+
+  public static Command driveDefault() {
+    // if(RobotContainer.con1.lb.getAsBoolean() == true) {
+    //   return slowSwerveCommand();
+    // } else if (RobotContainer.con1.rb.getAsBoolean() == true) {
+    //   return trackApriltagDrive();
+    // } else {
+    //   return driveFieldOriented();
+    // }
+    return driveFieldOriented();
+  }
+
+  public static Command driveDefaultCom() {
+      return new RunCommand(
+        () -> driveFieldOriented(), 
+        RobotContainer.drivebase
+      );
   }
 
   // Called once the command ends or is interrupted.

@@ -9,6 +9,7 @@ import java.io.File;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 // import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AbsoluteDriveAdv;
 import frc.robot.commands.ArmCom;
 import frc.robot.commands.AutoAim;
 import frc.robot.commands.ClimbCom;
@@ -63,6 +65,7 @@ public class RobotContainer {
 
 
   public static AdvantageScope advantagescope = new AdvantageScope();
+
                                                                    
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -113,12 +116,6 @@ public class RobotContainer {
       () -> MathUtil.applyDeadband(-con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
       () -> MathUtil.applyDeadband(-con1.getRightX(), OperatorConstants.LEFT_X_DEADBAND)
     );
-
-    // Command driveFieldOrientedSlow = drivebase.driveCommand(
-    //   () -> MathUtil.applyDeadband(-con1.getLeftY() / 2, OperatorConstants.LEFT_Y_DEADBAND),
-    //   () -> MathUtil.applyDeadband(-con1.getLeftX() / 2, OperatorConstants.LEFT_X_DEADBAND),
-    //   () -> MathUtil.applyDeadband(-con1.getRightX() / 2, OperatorConstants.LEFT_X_DEADBAND)
-    // );
     
     drivebase.setDefaultCommand(driveFieldOriented);
 
@@ -129,11 +126,7 @@ public class RobotContainer {
       )
     );
 
-    shooter.setDefaultCommand(
-      new RunCommand(
-        () -> shooter.move(0), 
-        shooter)
-    );
+    shooter.setDefaultCommand(shootercom.shooterIdle());
 
 
     // climb.setDefaultCommand(
@@ -158,6 +151,12 @@ public class RobotContainer {
         intake
       )
     );
+
+    climb.setDefaultCommand(
+      new RunCommand(
+        () -> climb.coast(),
+        climb)
+    );
     
     // desmos from ayman that calculates arm angle, and scales rpm along with how far we get
     // cole is unsure of the speaker measurements in this
@@ -167,8 +166,6 @@ public class RobotContainer {
     // not calibrated bc we need to know the distance between the arm pivot and the subwoofer,
     // and we need to know the starting angle of the arm when against the subwoofer
     // https://www.desmos.com/calculator/jy7vomzel0
-    
-    
     
 
   }
@@ -202,7 +199,7 @@ public class RobotContainer {
     );
 
     if(intake.getRing()) {
-      con2.rb.whileFalse(
+      con1.rb.whileFalse(
         new RunCommand(
           () -> shooter.move(.5), 
           shooter)
@@ -303,39 +300,47 @@ public class RobotContainer {
     //     )
     // );
 
-    con1.lb.whileTrue(
-      new RunCommand(
-        () -> drivebase.driveCommand
-        (
-          () -> MathUtil.applyDeadband(-con1.getLeftY() / 2, OperatorConstants.LEFT_Y_DEADBAND),
-          () -> MathUtil.applyDeadband(-con1.getLeftX() / 2, OperatorConstants.LEFT_X_DEADBAND),
-          () -> MathUtil.applyDeadband(-con1.getRightX() / 2, OperatorConstants.LEFT_X_DEADBAND)
-        ), drivebase)
-    );
+    con1.lb.onTrue(
+      new InstantCommand(
+        () -> drivebase.togglePrecisionMode(),
+        drivebase)
+      );
 
     // con2.aButton.whileTrue(
     //   RobotContainer.climbcom.getMoveCommand(-.25)
     // );
 
-    // con2.povDown.whileTrue(
-    //   new RunCommand(
-    //     () -> climb.move(-.25), 
-    //     climb)
-    // );
+    con2.povDown.whileTrue(
+      new RunCommand(
+        () -> climb.moveBoth(-.25), 
+        climb)
+    );
 
     // // con2.yButton.whileTrue(climbcom.getMoveCommand(.25));
-    // con2.povUp.whileTrue(
-    //   new RunCommand(
-    //     () -> climb.move(.25), 
-    //     climb)
-    // );
+    con2.povUp.whileTrue(
+      new RunCommand(
+        () -> climb.moveBoth(.25), 
+        climb)
+    );
 
     // con2.view.whileTrue(
     //   new RunCommand(
     //     // () -> climb.setReverseSoftLimit(-5000), 
     //     climb)
     // );
-    
+
+    con1.lt.whileTrue(
+      new RunCommand(
+        () -> climb.moveBoth(-0.5),
+        climb)
+    );
+
+    con1.rt.whileTrue(
+      new RunCommand(
+        () -> climb.moveBoth(0.5),
+        climb)
+    );
+
   }
 
 

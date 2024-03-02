@@ -37,9 +37,15 @@ public class ClimbCom extends Command {
   }
 
   // returns move command, takes in speed parameter
-  public Command getMoveCommand(double speed){
+  public Command getMoveLeftCommand(double speed){
     return new RunCommand(
-        () -> climb.move(speed),
+        () -> climb.moveLeft(speed),
+        climb);
+  }
+
+  public Command getMoveRightCommand(double speed){
+    return new RunCommand(
+        () -> climb.moveRight(speed),
         climb);
   }
 

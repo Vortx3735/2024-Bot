@@ -40,12 +40,12 @@ public class IntakeCom extends Command {
   public Command intakeNoteCom() {
     return new SequentialCommandGroup(
       new RunCommand(
-        () -> RobotContainer.intake.move(.5), 
+        () -> RobotContainer.intake.move(.45), 
         RobotContainer.intake
         ).until(RobotContainer.intake.getNoteBeam()),
         
       new RunCommand(
-          () -> RobotContainer.intake.move(.2), 
+          () -> RobotContainer.intake.move(.18), 
           RobotContainer.intake
         ).until(RobotContainer.intake.getOvershootBeam()));
   }
