@@ -10,7 +10,6 @@
 package frc.robot.subsystems;
 
 import java.io.File;
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;

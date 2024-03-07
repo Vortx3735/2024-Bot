@@ -34,6 +34,11 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("shooter/Velocity", shooterEncoder.getVelocity());
 }
 
+  public void setBrakeMode(IdleMode mode) {
+    shooterNeo1.setIdleMode(mode);
+    shooterNeo2.setIdleMode(mode);
+  }
+
   public void move(double speed) {
     shooterNeo1.set(speed);
   }

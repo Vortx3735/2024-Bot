@@ -13,10 +13,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 
 
 public class Intake extends SubsystemBase {
@@ -42,9 +39,7 @@ public class Intake extends SubsystemBase {
 
     intakeEncoder = intakeNeo1.getEncoder();
 
-    SmartDashboard.putBoolean("intake//Beam Break Overshoot", beamBreakOvershoot.isPressed());
-    SmartDashboard.putBoolean("intake//Beam Break Intaking", beamBreakNote.isPressed());
-
+   
     SmartDashboard.putNumber("ProcessVariable", intakeEncoder.getVelocity());
 
     SmartDashboard.getNumber("intake/Intake Setpoint", intakeSetPoint);
@@ -107,6 +102,10 @@ public class Intake extends SubsystemBase {
     } else {
       intakingRing = false;
     }
+
+    SmartDashboard.putBoolean("intake//Beam Break Overshoot", beamBreakOvershoot.isPressed());
+    SmartDashboard.putBoolean("intake//Beam Break Intaking", beamBreakNote.isPressed());
+
   }
 
   @Override
