@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2396779676524248,
-        "y": 6.972922934792553
+        "x": 1.953777787185204,
+        "y": 6.766315416890094
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.355271319776003,
-        "y": 6.97892778425677
+        "x": 2.4,
+        "y": 6.99
       },
       "prevControl": {
-        "x": 2.9854469104256807,
-        "y": 6.983139518944838
+        "x": 2.459887572153566,
+        "y": 6.97791287298644
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LeftNoteStart"
+      "linkedName": "StartWLeft(1stNote)"
     }
   ],
   "rotationTargets": [],
