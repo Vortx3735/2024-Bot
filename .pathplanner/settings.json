@@ -4,9 +4,11 @@
   "holonomicMode": true,
   "pathFolders": [
     "AutoMid",
+    "MiddleCollectNotes",
     "MiddleToLeft",
-    "StartWRight",
+    "RightMiddleCollectNotes",
     "StartWLeft",
+    "StartWRight",
     "test"
   ],
   "autoFolders": [],

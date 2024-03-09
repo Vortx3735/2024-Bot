@@ -356,7 +356,28 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
+    
+    // TEST, center 3 note auton (including pre-loaded note)
     return drivebase.getAutonomousCommand("Test");
+
+    // StartWLeft, 3 note auton (including pre-loaded note)
+    // return drivebase.getAutonomousCommand("StartWLeft");
+
+    // StartWRight, 3 note auton (including pre-loaded note)
+    // return drivebase.getAutonomousCommand("StartWRight");
+    
+    /* 
+    // MiddleCollectNotes, Shoots first note, Grabs left close note,
+    // shoots, goes to middle, shoots far left note towards our field,
+    // Intakes next middle note)
+    */
+    // return drivebase.getAutonomousCommand("MiddleCollectNotes");
+
+    /*
+     * MiddleCollectNotes Right, Starts at Right, grabs right close note,
+     * shoots at speaker, goes to middle, intakes far right middle note,
+     * 
+     */
   }
 
   public void setDriveMode() {

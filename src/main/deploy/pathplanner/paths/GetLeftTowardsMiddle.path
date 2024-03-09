@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.85,
-        "y": 6.66
+        "x": 7.6959479575960765,
+        "y": 7.448481871337808
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1528164350678247,
-        "y": 6.9422694561552065
+        "x": 7.061844534332959,
+        "y": 7.576752127880077
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "EndCollectLeftMiddleNote"
     },
     {
       "anchor": {
-        "x": 2.4,
-        "y": 6.99
+        "x": 7.6959479575960765,
+        "y": 5.7709816602287605
       },
       "prevControl": {
-        "x": 2.459887572153566,
-        "y": 6.97791287298644
+        "x": 6.919204975072237,
+        "y": 5.774394896358782
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "StartWLeft(1stNote)"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "StartWLeft",
+  "folder": "MiddleCollectNotes",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

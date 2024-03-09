@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.85,
-        "y": 6.66
+        "x": 2.3827613259743963,
+        "y": 7.000505163953823
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1528164350678247,
-        "y": 6.9422694561552065
+        "x": 1.4045531343362296,
+        "y": 7.245668223268115
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CollectLeftNoteEnd"
     },
     {
       "anchor": {
-        "x": 2.4,
-        "y": 6.99
+        "x": 0.6908496734225504,
+        "y": 6.760525166907149
       },
       "prevControl": {
-        "x": 2.459887572153566,
-        "y": 6.97791287298644
+        "x": 1.457985028324009,
+        "y": 6.783659322899507
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "StartWLeft(1stNote)"
+      "linkedName": "EndShootLeftNote"
     }
   ],
   "rotationTargets": [],
@@ -39,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
-    "rotateFast": false
+    "rotation": 59.369668000093256,
+    "rotateFast": true
   },
   "reversed": false,
-  "folder": "StartWLeft",
+  "folder": "MiddleCollectNotes",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }

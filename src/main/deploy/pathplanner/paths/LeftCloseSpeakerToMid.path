@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8497034308863576,
-        "y": 6.168568730663333
+        "x": 2.126389367759025,
+        "y": 6.621846647109852
       },
       "isLocked": false,
       "linkedName": "LeftCloseSpeaker"
@@ -20,8 +20,8 @@
         "y": 5.552676883131545
       },
       "prevControl": {
-        "x": 1.6209877327162063,
-        "y": 5.655055550851843
+        "x": 1.7292740925823513,
+        "y": 5.660746774844404
       },
       "nextControl": null,
       "isLocked": false,
