@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.29,
-      "y": 7.0
+      "x": 1.3980637718174258,
+      "y": 5.533277153939328
     },
-    "rotation": 45.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -22,15 +22,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Intake"
+                  "pathName": "CenterAuto_getCenterNote"
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "CollectLeftNote"
+                  "name": "Intake"
                 }
               }
             ]
@@ -39,7 +39,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ShootLeftNote"
+            "pathName": "CenterAuto_shootCenterNote"
           }
         },
         {
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CollectLeftMiddleNote"
+                  "pathName": "CenterAuto_goToMid"
                 }
               },
               {
@@ -65,12 +65,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
           }
         }
       ]

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4,
-        "y": 5.55
+        "x": 7.782585161096735,
+        "y": 0.7683573777134415
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9948809128387501,
-        "y": 5.30841523221508
+        "x": 6.6225905415017134,
+        "y": 0.8999144542310111
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "EndGetFarRightMiddle"
     },
     {
       "anchor": {
-        "x": 2.461392173112862,
-        "y": 4.220656098999452
+        "x": 7.6516601653439835,
+        "y": 2.438694006822968
       },
       "prevControl": {
-        "x": 1.7904400619778704,
-        "y": 4.230523041810261
+        "x": 7.498738758975548,
+        "y": 2.54454646557125
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,14 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -15.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "test",
-  "previewStartingState": {
-    "rotation": 0,
-    "velocity": 0
-  },
-  "useDefaultConstraints": true
+  "folder": "RightMiddleCollectNotes",
+  "previewStartingState": null,
+  "useDefaultConstraints": false
 }

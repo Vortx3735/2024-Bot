@@ -97,6 +97,7 @@ public class SwerveSubsystem extends SubsystemBase {
     NamedCommands.registerCommand("FirstShot", RobotContainer.shootercom.firstShotFromSub().withTimeout(5).asProxy());
     NamedCommands.registerCommand("Shoot", RobotContainer.shootercom.shootFromSub().withTimeout(3).asProxy());
     NamedCommands.registerCommand("Intake", RobotContainer.intakecom.intakeNoteCom().withTimeout(2).asProxy());
+    // NamedCommands.registerCommand("moveArmUp", )
 
 }
 

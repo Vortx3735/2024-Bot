@@ -87,6 +87,19 @@ public class ShooterCom extends Command {
           );
     }
 
+    // public Command moveArmUp(){
+    //   return new RunCommand(
+    //     () -> RobotContainer.arm.up(.5), 
+    //     RobotContainer.arm).withTimeout(1).andThen(
+    //       shootFromSub()
+    //     );
+    // }
+
+    // public Command moveArmDown(){
+    //   return new RunCommand(
+    //     () -> RobotContainer.arm.down(.5), 
+    //     RobotContainer.arm).withTimeout(1);
+    // }
 
   // Called when the command is initially scheduled.
   @Override

@@ -358,7 +358,7 @@ public class RobotContainer {
     // An example command will be run in autonomous
     
     // TEST, center 3 note auton (including pre-loaded note)
-    return drivebase.getAutonomousCommand("Test");
+    // return drivebase.getAutonomousCommand("Test");
 
     // StartWLeft, 3 note auton (including pre-loaded note)
     // return drivebase.getAutonomousCommand("StartWLeft");
@@ -378,6 +378,8 @@ public class RobotContainer {
      * shoots at speaker, goes to middle, intakes far right middle note,
      * 
      */
+
+     return drivebase.getAutonomousCommand("MoveForwardCenter");
   }
 
   public void setDriveMode() {
