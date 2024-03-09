@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
-    SmartDashboard.putNumber("shooter/Shooter Setpoint", value);
+    // SmartDashboard.putNumber("shooter/Shooter Setpoint", value);
 
     // update swerve pose in advantagescope field
     RobotContainer.advantagescope.m_field.setRobotPose(RobotContainer.drivebase.getSwervePose());
@@ -73,8 +73,6 @@ public class Robot extends TimedRobot {
     for (int port = 5800; port <= 5807; port++) {
       PortForwarder.add(port, "limelight.local", port);
     }
-
-    RobotContainer.shooter.setBrakeMode(IdleMode.kBrake);
 
   }
 
@@ -92,8 +90,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    value = SmartDashboard.getNumber("shooter/Shooter Setpoint", 1.0);
-    SmartDashboard.putNumber("shooter/Shooter Setpoint 2", value);
+    //value = SmartDashboard.getNumber("shooter/Shooter Setpoint", 1.0);
+    //SmartDashboard.putNumber("shooter/Shooter Setpoint 2", value);
     // SmartDashboard.putBoolean("intake/Beam Break",beamBreak.get());
   }
 
@@ -110,11 +108,11 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     RobotContainer.drivebase.setPresisionModeFalse();
-    if (disabledTimer.hasElapsed(Constants.Drivebase.WHEEL_LOCK_TIME))
-    {
-      // m_robotContainer.setMotorBrake(false);
-      // disabledTimer.stop();
-    }
+    // if (disabledTimer.hasElapsed(Constants.Drivebase.WHEEL_LOCK_TIME))
+    // {
+    //   // m_robotContainer.setMotorBrake(false);
+    //   // disabledTimer.stop();
+    // }
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */

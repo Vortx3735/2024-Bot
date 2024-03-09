@@ -25,13 +25,13 @@ public class Shooter extends SubsystemBase {
     shooterNeo2 = new CANSparkMax(bottomMotor, MotorType.kBrushless);
 
 
-    shooterNeo2.follow(shooterNeo1, false);
+    // shooterNeo2.follow(shooterNeo1, false);
     shooterNeo1.setIdleMode(IdleMode.kBrake);
     shooterNeo2.setIdleMode(IdleMode.kBrake);
     shooterEncoder = shooterNeo1.getEncoder();
 
       
-    SmartDashboard.putNumber("shooter/Velocity", shooterEncoder.getVelocity());
+    // SmartDashboard.putNumber("shooter/Velocity", shooterEncoder.getVelocity());
 }
 
   public void setBrakeMode(IdleMode mode) {
@@ -41,18 +41,20 @@ public class Shooter extends SubsystemBase {
 
   public void move(double speed) {
     shooterNeo1.set(speed);
+    shooterNeo2.set(speed);
   }
   
   public void coast() {
     shooterNeo1.set(0);
+    shooterNeo2.set(0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("shooter// Shooter Bottom RPM", shooterNeo2.getEncoder().getVelocity());
-    SmartDashboard.putNumber("shooter// Shooter Top RPM", shooterNeo1.getEncoder().getVelocity());
-    SmartDashboard.putNumber("shooter//Shooter Voltage", shooterNeo1.getBusVoltage());
+    //SmartDashboard.putNumber("shooter// Shooter Bottom RPM", shooterNeo2.getEncoder().getVelocity());
+    //SmartDashboard.putNumber("shooter// Shooter Top RPM", shooterNeo1.getEncoder().getVelocity());
+    //SmartDashboard.putNumber("shooter//Shooter Voltage", shooterNeo1.getBusVoltage());
   }
 
   @Override

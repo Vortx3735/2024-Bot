@@ -41,6 +41,9 @@ public class Arm extends SubsystemBase {
 
 
   public Arm(int leftMotor, int rightMotor, double motorToArmGearRatio) {
+    
+    
+
     this.ArmNeo1 = new CANSparkMax(leftMotor, MotorType.kBrushless);
     this.ArmNeo2 = new CANSparkMax(rightMotor, MotorType.kBrushless);
 
@@ -58,10 +61,10 @@ public class Arm extends SubsystemBase {
     ks = 0.0;
     kv = 0.0;
 
-    SmartDashboard.putNumber("arm//Arm ka (feedforward)", ka);
-    SmartDashboard.putNumber("arm//Arm kg (feedforward)", kg);
-    SmartDashboard.putNumber("arm//Arm ks (feedforward)", ks);
-    SmartDashboard.putNumber("arm//Arm kv (feedforward)", kv);
+    // SmartDashboard.putNumber("arm//Arm ka (feedforward)", ka);
+    // SmartDashboard.putNumber("arm//Arm kg (feedforward)", kg);
+    // SmartDashboard.putNumber("arm//Arm ks (feedforward)", ks);
+    // SmartDashboard.putNumber("arm//Arm kv (feedforward)", kv);
 
     armFF = new ArmFeedforward(ks, kg, kv, ka);
 
@@ -71,9 +74,9 @@ public class Arm extends SubsystemBase {
     ki = 0.0;
     kd = 0.0;
   
-    SmartDashboard.putNumber("arm//Arm kp (PID)", kp);
-    SmartDashboard.putNumber("arm//Arm ki (PID)", ki);
-    SmartDashboard.putNumber("arm//Arm kd (PID)", kd);
+    // SmartDashboard.putNumber("arm//Arm kp (PID)", kp);
+    // SmartDashboard.putNumber("arm//Arm ki (PID)", ki);
+    // SmartDashboard.putNumber("arm//Arm kd (PID)", kd);
 
     hold = new PIDController(kp, ki, kd);
 
@@ -177,7 +180,7 @@ public class Arm extends SubsystemBase {
       position = raw_position - offset;
     }
     SmartDashboard.putNumber("arm//ArmEncoder", position);
-    SmartDashboard.putNumber("arm//ArmEncoder without math", armEncoder.getAbsolutePosition());
+    //SmartDashboard.putNumber("arm//ArmEncoder without math", armEncoder.getAbsolutePosition());
   }
 
   @Override

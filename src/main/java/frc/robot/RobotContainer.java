@@ -304,6 +304,12 @@ public class RobotContainer {
         drivebase)
       );
 
+    con1.rb.onTrue(
+      new InstantCommand(
+        () -> drivebase.toggleTrackSpeakerMode(),
+      drivebase)
+    );
+
     // con2.aButton.whileTrue(
     //   RobotContainer.climbcom.getMoveCommand(-.25)
     // );

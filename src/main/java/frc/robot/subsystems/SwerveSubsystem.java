@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+import frc.robot.commands.AbsoluteDriveAdv;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.math.SwerveMath;
@@ -225,6 +226,15 @@ public class SwerveSubsystem extends SubsystemBase {
    */
 
   private boolean precisionMode = false;
+  private boolean trackSpeaker = false;
+
+  public void toggleTrackSpeakerMode() {
+    precisionMode = !precisionMode;
+  }
+
+  public void toggleTrackSpeakerFalse() {
+    precisionMode = false;
+  }
 
   public void togglePrecisionMode() {
     precisionMode = !precisionMode;
@@ -237,10 +247,11 @@ public class SwerveSubsystem extends SubsystemBase {
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
     // swerveDrive.setHeadingCorrection(false, 0.5);
     return run(() -> {
-      double scale = precisionMode ? 0.5 : 1.0;
-      double xInput = Math.pow(translationX.getAsDouble(), 3) * scale;
-      double yInput = Math.pow(translationY.getAsDouble(), 3) * scale;
-      double rInput = Math.pow(angularRotationX.getAsDouble(), 3) * scale;
+      double driveScale = precisionMode ? 0.5 : 1.0;
+      double turnScale = precisionMode ? 0.5 : 1.0;
+      double xInput = Math.pow(translationX.getAsDouble(), 3) * driveScale;
+      double yInput = Math.pow(translationY.getAsDouble(), 3) * driveScale;
+      double rInput = trackSpeaker ? AbsoluteDriveAdv.trackApriltagDrive() : Math.pow(angularRotationX.getAsDouble(), 3) * turnScale;
       // Make the robot move
       swerveDrive.drive(new Translation2d(xInput * swerveDrive.getMaximumVelocity(),
                                           yInput * swerveDrive.getMaximumVelocity()),

@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.util.LinearInterpolator;
 import swervelib.math.Matter;
 import swervelib.parser.PIDFConfig;
@@ -24,8 +25,8 @@ public final class Constants {
   //meesheeshooballooogaggoogaggo woogo wogo bo
   //everything is in metric units and degrees
   
-  //this robot mass is a complete guess and we should get a scale to test for actual mass
-  public static final double ROBOT_MASS = 123*0.453592; //(148 - 20.3) * 0.453592; // 32lbs * kg per pound
+  public static final double MASS_IN_POUNDS = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 116+13.5 : 116+11.2; //
+  public static final double ROBOT_MASS = MASS_IN_POUNDS*0.453592; //converting pounds to kg
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
 

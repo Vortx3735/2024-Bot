@@ -24,9 +24,9 @@ public class LED extends SubsystemBase{
 
     @Override
     public void periodic() {
-        if (DriverStation.isEnabled()) {
-            setLEDs();
-        }
+        // if (DriverStation.isEnabled()) {
+        //     setLEDs();
+        // }
     }
 
     @Override

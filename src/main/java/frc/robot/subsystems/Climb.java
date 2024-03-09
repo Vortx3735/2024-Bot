@@ -68,8 +68,8 @@ public class Climb extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("climb/Climb RPM", climbEncoder.getVelocity()); // Climb Velocity
-    SmartDashboard.putNumber("climb/Climb Voltage", climbNeo1.getBusVoltage()); // Climb Voltage
+    //SmartDashboard.putNumber("climb/Climb RPM", climbEncoder.getVelocity()); // Climb Velocity
+    //SmartDashboard.putNumber("climb/Climb Voltage", climbNeo1.getBusVoltage()); // Climb Voltage
   }
 
   @Override

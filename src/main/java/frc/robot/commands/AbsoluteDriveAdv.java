@@ -125,8 +125,8 @@ public class AbsoluteDriveAdv extends Command
     translation = SwerveMath.limitVelocity(translation, swerve.getFieldVelocity(), swerve.getSwervePose(),
                                            Constants.LOOP_TIME, Constants.ROBOT_MASS, List.of(Constants.CHASSIS),
                                            swerve.getSwerveDriveConfiguration());
-    SmartDashboard.putNumber("LimitedTranslation", translation.getX());
-    SmartDashboard.putString("Translation", translation.toString());
+    // SmartDashboard.putNumber("LimitedTranslation", translation.getX());
+    // SmartDashboard.putString("Translation", translation.toString());
 
     // Make the robot move
     if (headingX == 0 && headingY == 0 && Math.abs(headingAdjust.getAsDouble()) > 0) {
@@ -137,24 +137,11 @@ public class AbsoluteDriveAdv extends Command
     }
   }
 
-  public static Command trackApriltagDrive() {
+  public static double trackApriltagDrive() {
     //wrap in an if statement for if limelight is reading apriltag
-    double displacementX = 0; //getLimelightX
-    double goalX = 0; //getLimelight center postition + offset of limelight
-    double error = 0; //error for angle
-    if(displacementX < goalX - error) {
-      return RobotContainer.drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(-RobotContainer.con1.getLeftY(), Constants.OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(-RobotContainer.con1.getLeftX(), Constants.OperatorConstants.LEFT_X_DEADBAND),
-        () -> .2);
-    } else if (displacementX > goalX + error){
-      return RobotContainer.drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(-RobotContainer.con1.getLeftY(), Constants.OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(-RobotContainer.con1.getLeftX(), Constants.OperatorConstants.LEFT_X_DEADBAND),
-        () -> -.2);
-    } else {
-      return new InstantCommand(); //could make LED blink or smth
-    }
+    double speakerPixelPosition = 0; //getLimelightX
+    double screenCenter = 0; //getLimelight center postition + offset of limelight
+    return (speakerPixelPosition-screenCenter) * 3;
   }
 
   public static Command slowSwerveCommand() {
