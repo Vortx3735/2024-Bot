@@ -138,7 +138,7 @@ public class Arm extends SubsystemBase {
   }
 
   public BooleanSupplier getArmDown() {
-    return () -> position <= .75;
+    return () -> position <= .1;
   }
 
   public void setArmBrake(IdleMode mode) {

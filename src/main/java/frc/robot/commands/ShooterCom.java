@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter;
 
@@ -65,7 +66,7 @@ public class ShooterCom extends Command {
 
   public Command firstShotFromSub() {
     return new RunCommand(
-      () -> RobotContainer.arm.moveToSetpoint(.732, 4), 
+      () -> RobotContainer.arm.moveToSetpoint(Constants.ArmConstants.groundArmPos, 4), 
       RobotContainer.arm).until(RobotContainer.arm.getArmDown()).andThen(
         shootFromSub()
       );
@@ -75,7 +76,7 @@ public class ShooterCom extends Command {
         return  new SequentialCommandGroup(
             new RunCommand(
               () -> RobotContainer.shooter.move(1), // rev up shooter
-              RobotContainer.shooter).withTimeout(1.5),
+              RobotContainer.shooter).withTimeout(2),
             
             new RunCommand(
               () -> RobotContainer.intake.move(1), 

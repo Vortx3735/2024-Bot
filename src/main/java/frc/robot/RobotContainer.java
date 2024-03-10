@@ -225,7 +225,7 @@ public class RobotContainer {
       new SequentialCommandGroup(
         new RunCommand(
           () -> shooter.move(.8), // rev up shooter
-          shooter).withTimeout(1.5),
+          shooter).withTimeout(2),
         
         new RunCommand(
           () -> intake.move(.5), 
