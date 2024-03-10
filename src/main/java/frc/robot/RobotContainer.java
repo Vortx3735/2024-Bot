@@ -27,7 +27,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.LED;
 import frc.robot.util.VorTXControllerXbox;
 
 /**
@@ -52,7 +51,7 @@ public class RobotContainer {
   
   public static AutoAim autoaim = new AutoAim(arm, shooter);
   
-  public static LED led = new LED(1, 36);
+  // public static LED led = new LED(1, 36);
 
   public static Climb climb = new Climb(10, 11);
   public static ClimbCom climbcom = new ClimbCom(climb);
