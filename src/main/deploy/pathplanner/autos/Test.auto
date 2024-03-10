@@ -37,9 +37,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "ToSpeaker"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ToSpeaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shooterIdle"
+                }
+              }
+            ]
           }
         },
         {
@@ -63,14 +76,33 @@
                 "data": {
                   "name": "Intake"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shooterIdle"
+                }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "SpeakerToSub"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SpeakerToSub"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shooterIdle"
+                }
+              }
+            ]
           }
         },
         {

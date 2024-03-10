@@ -41,7 +41,7 @@ public class Shooter extends SubsystemBase {
 
   public void move(double speed) {
     shooterNeo1.set(speed);
-    shooterNeo2.set(speed);
+    shooterNeo2.set(-speed);
   }
   
   public void coast() {

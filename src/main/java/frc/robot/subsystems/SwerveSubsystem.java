@@ -94,10 +94,12 @@ public class SwerveSubsystem extends SubsystemBase {
 
     swerveDrive.setMotorIdleMode(true);
 
-    NamedCommands.registerCommand("FirstShot", RobotContainer.shootercom.firstShotFromSub().withTimeout(5).asProxy());
-    NamedCommands.registerCommand("Shoot", RobotContainer.shootercom.shootFromSub().withTimeout(3).asProxy());
+    NamedCommands.registerCommand("FirstShot", RobotContainer.shootercom.firstShotFromSub().withTimeout(4).asProxy());
+    NamedCommands.registerCommand("Shoot", RobotContainer.shootercom.shootFromSubOther().withTimeout(1).asProxy());
     NamedCommands.registerCommand("Intake", RobotContainer.intakecom.intakeNoteCom().withTimeout(2).asProxy());
-    // NamedCommands.registerCommand("moveArmUp", )
+    NamedCommands.registerCommand("shooterIdle", RobotContainer.shootercom.autonShooterIdle().withTimeout(1.5).asProxy());
+    // NamedCommands.registerCommand("moveArmUp", RobotContainer.shootercom.moveArmUp().asProxy());
+    // NamedCommands.registerCommand("moveArmDown", RobotContainer.shootercom.moveArmDown().asProxy());
 
 }
 
@@ -121,8 +123,8 @@ public class SwerveSubsystem extends SubsystemBase {
                                          new PIDConstants(swerveDrive.swerveController.config.headingPIDF.p,
                                                           swerveDrive.swerveController.config.headingPIDF.i,
                                                           swerveDrive.swerveController.config.headingPIDF.d),
-                                         // Rotation PID constants
-                                         4.5,
+                                         // Rotation PID onstants
+                                         4.602,
                                          // Max module speed, in m/s
                                          swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters(),
                                          // Drive base radius in meters. Distance from robot center to furthest module.
@@ -172,6 +174,42 @@ public class SwerveSubsystem extends SubsystemBase {
             0.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
            );
   }
+
+
+
+  /**
+   * 
+   *     /_/_/_/_/    /_/_/_/_/_/    /_/     /_/        /_/          /_/_/     /_/         
+   *     /_/              /_/        /_/     /_/       /_//_/        /_/ /_/   /_/
+   *     /_/_/_/_/        /_/        /_/_/_/_/_/      /_/  /_/       /_/   /_/ /_/
+   *     /_/              /_/        /_/     /_/     /_/_/_/_/_/     /_/    /_//_/
+   *     /_/_/_/_/        /_/        /_/     /_/    /_/      /_/     /_/       /_/
+   * 
+   * 
+   *     /_/          /_/_/_/_/    /_/_/_/_/
+   *     /_/          /_/          /_/
+   *     /_/          /_/_/_/_/    /_/_/_/_/
+   *     /_/          /_           /_/
+   *     /_/_/_/_/    /_/_/_/_/    /_/_/_/_/
+   * 
+   * 
+   *     /_/       /_/     /_/      /_/          /_/_/_/_/_/
+   *      /_/     /_/_/   /_/      /_//_/        /_/
+   *       /_/  /_/  /_/ /_/      /_/  /_/       /_/_/_/_/_/
+   *        /_/_/     /_/_/      /_/_/_/_/_/             /_/
+   *         /_/       /_/      /_/       /_/    /_/_/_/_/_/
+   * 
+   * 
+   *     /_/   /_/   /_/_/_/_/    /_/_/_/_/
+   *     /_/   /_/   /_/          /_/   /_/
+   *     /_/_/_/_/   /_/_/_/_/    /_/
+   *     /_/   /_/   /_/          /_/
+   *     /_/   /_/   /_/_/_/_/    /_/
+   * 
+   * 
+   * 
+   */    
+
 
   /**
    * Command to drive the robot using translative values and heading as a setpoint.

@@ -224,15 +224,15 @@ public class RobotContainer {
     con2.rb.whileTrue(
       new SequentialCommandGroup(
         new RunCommand(
-          () -> shooter.move(.65), // rev up shooter
+          () -> shooter.move(.8), // rev up shooter
           shooter).withTimeout(1.5),
         
         new RunCommand(
-          () -> intake.move(.3), 
+          () -> intake.move(.5), 
           intake).alongWith(
-            new RunCommand(
-              () -> shooter.move(.65), // rev up shooter
-              shooter).withTimeout(1.25)
+        new RunCommand(
+          () -> shooter.move(.8), // rev up shooter
+          shooter).withTimeout(1.25)
             
             // new RunCommand(
             //   () -> intake.move(.65), 
@@ -273,12 +273,12 @@ public class RobotContainer {
     );
 
     //Goes up
-    // con2.povLeft.whileTrue(
-    //   new RunCommand(
-    //     () -> arm.up(0.5),
-    //     arm
-    //   )
-    // );
+    con1.povLeft.whileTrue(
+      new RunCommand(
+        () -> arm.up(0.5),
+        arm
+      )
+    );
     
     RunCommand moveArmToGround = new RunCommand(
       () -> arm.moveToSetpoint(Constants.ArmConstants.groundArmPos, 4),
@@ -291,12 +291,12 @@ public class RobotContainer {
     );
 
 
-    // con1.r2.whileTrue(
-    //   new RunCommand(
-    //     armcom::reverseMotor,
-    //     armsub
-    //     )
-    // );
+    con1.povRight.whileTrue(
+      new RunCommand(
+        () -> arm.down(.5),
+        arm
+        )
+    );
 
     con1.lb.onTrue(
       new InstantCommand(
@@ -314,18 +314,24 @@ public class RobotContainer {
     //   RobotContainer.climbcom.getMoveCommand(-.25)
     // );
 
-    con2.povDown.whileTrue(
-      new RunCommand(
-        () -> climb.moveBoth(-.25), 
-        climb)
-    );
+    // con2.povDown.whileTrue(
+    //   new RunCommand(
+    //     () -> climb.moveRight(-.25), 
+    //     climb)
+    // );
 
     // // con2.yButton.whileTrue(climbcom.getMoveCommand(.25));
-    con2.povUp.whileTrue(
-      new RunCommand(
-        () -> climb.moveBoth(.25), 
-        climb)
-    );
+    // con1.povUp.whileTrue(
+    //   new RunCommand(
+    //     () -> climb.moveLeft(.25), 
+    //     climb)
+    // );
+
+    // con1.povUp.whileTrue(
+    //   new RunCommand(
+    //     () -> climb.moveLeft(.25), 
+    //     climb)
+    // );
 
     // con2.view.whileTrue(
     //   new RunCommand(
@@ -333,13 +339,13 @@ public class RobotContainer {
     //     climb)
     // );
 
-    con1.lt.whileTrue(
+    con2.lt.whileTrue(
       new RunCommand(
         () -> climb.moveBoth(-0.5),
         climb)
     );
 
-    con1.rt.whileTrue(
+    con2.rt.whileTrue(
       new RunCommand(
         () -> climb.moveBoth(0.5),
         climb)
@@ -379,7 +385,9 @@ public class RobotContainer {
      * 
      */
 
-     return drivebase.getAutonomousCommand("MoveForwardCenter");
+    //  return drivebase.getAutonomousCommand("MoveForwardCenter");
+
+    return drivebase.getAutonomousCommand("Test");
   }
 
   public void setDriveMode() {

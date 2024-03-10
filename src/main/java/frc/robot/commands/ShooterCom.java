@@ -65,7 +65,7 @@ public class ShooterCom extends Command {
 
   public Command firstShotFromSub() {
     return new RunCommand(
-      () -> RobotContainer.arm.down(.5), 
+      () -> RobotContainer.arm.moveToSetpoint(.732, 4), 
       RobotContainer.arm).until(RobotContainer.arm.getArmDown()).andThen(
         shootFromSub()
       );
@@ -75,7 +75,7 @@ public class ShooterCom extends Command {
         return  new SequentialCommandGroup(
             new RunCommand(
               () -> RobotContainer.shooter.move(1), // rev up shooter
-              RobotContainer.shooter).withTimeout(2),
+              RobotContainer.shooter).withTimeout(1.5),
             
             new RunCommand(
               () -> RobotContainer.intake.move(1), 
@@ -85,6 +85,29 @@ public class ShooterCom extends Command {
                   RobotContainer.shooter)
               )
           );
+    }
+
+    public Command shootFromSubOther() {
+        return  new SequentialCommandGroup(
+            new RunCommand(
+              () -> RobotContainer.shooter.move(1), // rev up shooter
+              RobotContainer.shooter).withTimeout(.5),
+            
+            new RunCommand(
+              () -> RobotContainer.intake.move(1), 
+              RobotContainer.intake).alongWith(
+                new RunCommand(
+                  () -> RobotContainer.shooter.move(1), // shooter
+                  RobotContainer.shooter)
+              )
+          );
+    }
+
+    public Command autonShooterIdle() {
+      return new RunCommand(
+          () -> RobotContainer.shooter.move(1),
+          RobotContainer.shooter
+      );
     }
 
     // public Command moveArmUp(){
@@ -100,6 +123,32 @@ public class ShooterCom extends Command {
     //     () -> RobotContainer.arm.down(.5), 
     //     RobotContainer.arm).withTimeout(1);
     // }
+
+
+    /**
+   * 
+   *     /_/_/_/_/    /_/_/_/_/_/    /_/     /_/        /_/          /_/_/     /_/         
+   *     /_/              /_/        /_/     /_/       /_//_/        /_/ /_/   /_/
+   *     /_/_/_/_/        /_/        /_/_/_/_/_/      /_/  /_/       /_/   /_/ /_/
+   *     /_/              /_/        /_/     /_/     /_/_/_/_/_/     /_/    /_//_/
+   *     /_/_/_/_/        /_/        /_/     /_/    /_/      /_/     /_/       /_/
+   * 
+   * 
+   *     /_/          /_/_/_/_/    /_/_/_/_/
+   *     /_/          /_/          /_/
+   *     /_/          /_/_/_/_/    /_/_/_/_/
+   *     /_/          /_           /_/
+   *     /_/_/_/_/    /_/_/_/_/    /_/_/_/_/
+   * 
+   * 
+   *     /_/       /_/     /_/      /_/
+   *      /_/     /_/_/   /_/      /_/
+   *       /_/  /_/  /_/ /_/      /_/
+   *        /_/_/     /_/_/      /_/
+   *         /_/       /_/      /_/
+   * 
+   * 
+   */
 
   // Called when the command is initially scheduled.
   @Override
