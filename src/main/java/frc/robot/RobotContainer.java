@@ -314,11 +314,11 @@ public class RobotContainer {
     //   RobotContainer.climbcom.getMoveCommand(-.25)
     // );
 
-    // con2.povDown.whileTrue(
-    //   new RunCommand(
-    //     () -> climb.moveRight(-.25), 
-    //     climb)
-    // );
+    con2.povDown.whileTrue(
+      new RunCommand(
+        () -> climb.moveRight(-.25), 
+        climb)
+    );
 
     // // con2.yButton.whileTrue(climbcom.getMoveCommand(.25));
     // con1.povUp.whileTrue(

@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "FirstShot"
+            "name": "firstshotrev"
           }
         },
         {
@@ -75,12 +75,6 @@
                 "type": "named",
                 "data": {
                   "name": "Intake"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "shooterIdle"
                 }
               }
             ]

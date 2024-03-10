@@ -66,11 +66,42 @@ public class ShooterCom extends Command {
 
   public Command firstShotFromSub() {
     return new RunCommand(
-      () -> RobotContainer.arm.moveToSetpoint(Constants.ArmConstants.groundArmPos, 4), 
-      RobotContainer.arm).until(RobotContainer.arm.getArmDown()).andThen(
+      () ->
+        RobotContainer.arm.moveToSetpoint(Constants.ArmConstants.groundArmPos, 4), 
+        RobotContainer.arm
+      ).until(RobotContainer.arm.getArmDown()).andThen(
         shootFromSub()
-      );
+    );
   }
+
+  public Command firstShotFromSubasdf() {
+    return  new RunCommand(
+        () ->
+          RobotContainer.arm.moveToSetpoint(Constants.ArmConstants.groundArmPos, 4), 
+          RobotContainer.arm
+      ).until(
+        RobotContainer.arm.getArmDown()
+      ).alongWith(new RunCommand(() -> RobotContainer.shooter.move(1), 
+      RobotContainer.shooter).withTimeout(2)).andThen(
+        shootFromSubasdf()
+    );
+  }
+
+  public Command shootFromSubasdf() {
+        return  new SequentialCommandGroup(
+            // new RunCommand(
+            //   () -> RobotContainer.shooter.move(1), // rev up shooter
+            //   RobotContainer.shooter).withTimeout(2),
+            
+            new RunCommand(
+              () -> RobotContainer.intake.move(1), 
+              RobotContainer.intake).alongWith(
+                new RunCommand(
+                  () -> RobotContainer.shooter.move(1), // shooter
+                  RobotContainer.shooter)
+              )
+          );
+    }
 
     public Command shootFromSub() {
         return  new SequentialCommandGroup(
