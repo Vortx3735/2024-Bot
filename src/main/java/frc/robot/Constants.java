@@ -62,8 +62,8 @@ public final class Constants {
 
   public static class ArmConstants {
     public static final double motorToArmGearRatio = 1.0/27.0;
-    public static final double ampArmPos = 0.326;
-    public static final double groundArmPos = .078;
+    public static final double ampArmPos = 0.858;
+    public static final double groundArmPos = 0.612;
     public static final double armLength = 24.727914/39.37;
     public static final double[][] armAngleArray = {
       // test for different angles from different x distances

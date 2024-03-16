@@ -82,7 +82,7 @@ public class ShooterCom extends Command {
       ).until(
         RobotContainer.arm.getArmDown()
       ).alongWith(new RunCommand(() -> RobotContainer.shooter.move(1), 
-      RobotContainer.shooter).withTimeout(2)).andThen(
+      RobotContainer.shooter).withTimeout(2.5)).andThen(
         shootFromSubasdf()
     );
   }

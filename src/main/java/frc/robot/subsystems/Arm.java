@@ -17,6 +17,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
+import frc.robot.Constants;
+
 
 
 
@@ -37,7 +39,7 @@ public class Arm extends SubsystemBase {
   private final DutyCycleEncoder armEncoder = new DutyCycleEncoder(0);
   public double position = 0;
   private double raw_position;
-  private double offset = .836;
+  private double offset = .3;
 
 
   public Arm(int leftMotor, int rightMotor, double motorToArmGearRatio) {
@@ -138,7 +140,7 @@ public class Arm extends SubsystemBase {
   }
 
   public BooleanSupplier getArmDown() {
-    return () -> position <= .1;
+    return () -> position <= Constants.ArmConstants.groundArmPos + .1 ;
   }
 
   public void setArmBrake(IdleMode mode) {

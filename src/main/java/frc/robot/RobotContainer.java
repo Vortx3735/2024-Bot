@@ -338,13 +338,13 @@ public class RobotContainer {
     //     climb)
     // );
 
-    con2.lt.whileTrue(
+    con1.lt.whileTrue(
       new RunCommand(
         () -> climb.moveBoth(-0.5),
         climb)
     );
 
-    con2.rt.whileTrue(
+    con1.rt.whileTrue(
       new RunCommand(
         () -> climb.moveBoth(0.5),
         climb)
