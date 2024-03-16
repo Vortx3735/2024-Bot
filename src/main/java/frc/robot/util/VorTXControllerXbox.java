@@ -43,4 +43,40 @@ public class VorTXControllerXbox extends CommandXboxController {
 		povUpLeft = this.povUpLeft();
 	}
 
+
+	public double joystickFix(boolean isLeft, boolean isX) {
+		double root2 = Math.sqrt(2);
+		double x;
+		double y;
+		x = (isLeft) ? getHID().getLeftX() : getHID().getRightX();
+		y = (isLeft) ? getHID().getLeftY() : getHID().getRightY();
+		double magnitude = Math.sqrt(x*x + y*y);
+		double[] joystick = {
+			Math.signum(x) * Math.min(Math.abs(x*root2), magnitude),
+			Math.signum(y) * Math.min(Math.abs(y*root2), magnitude)
+		};
+		return (isX) ? joystick[0] : joystick[1];
+	}
+
+	@Override
+	public double getLeftX() {
+		return joystickFix(true, true);
+	}
+
+	@Override
+	public double getLeftY() {
+		return joystickFix(true, false);
+	}
+	
+	@Override
+	public double getRightX() {
+		return joystickFix(false, true);
+	}
+
+	@Override
+	public double getRightY() {
+		return joystickFix(false, false);
+	}
+
+
 }

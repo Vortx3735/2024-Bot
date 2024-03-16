@@ -288,11 +288,10 @@ public class SwerveSubsystem extends SubsystemBase {
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
     // swerveDrive.setHeadingCorrection(false, 0.5);
     return run(() -> {
-      double driveScale = precisionMode ? 0.5 : 1.0;
-      double turnScale = precisionMode ? 0.5 : 1.0;
-      double xInput = Math.pow(translationX.getAsDouble(), 3) * driveScale;
-      double yInput = Math.pow(translationY.getAsDouble(), 3) * driveScale;
-      double rInput = trackSpeaker ? AbsoluteDriveAdv.trackApriltagDrive() : Math.pow(angularRotationX.getAsDouble(), 3) * turnScale;
+      double speedScale = precisionMode ? 0.5 : 1.0;
+      double xInput = Math.pow(translationX.getAsDouble(), 3) * speedScale;
+      double yInput = Math.pow(translationY.getAsDouble(), 3) * speedScale;
+      double rInput = trackSpeaker ? AbsoluteDriveAdv.trackApriltagDrive() : Math.pow(angularRotationX.getAsDouble(), 3) * speedScale;
       // Make the robot move
       swerveDrive.drive(new Translation2d(xInput * maximumSpeed,//swerveDrive.getMaximumVelocity(),
                                           yInput * maximumSpeed),//swerveDrive.getMaximumVelocity()),
