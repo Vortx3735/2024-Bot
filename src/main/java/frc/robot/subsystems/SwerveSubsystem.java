@@ -54,7 +54,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Maximum speed of the robot in meters per second, used to limit acceleration.
    */
-  public double maximumSpeed = Units.feetToMeters(14.5);
+  public double maximumSpeed = Units.feetToMeters(15.1);
   static PIDController swervePID;
 
 
@@ -294,9 +294,13 @@ public class SwerveSubsystem extends SubsystemBase {
       double yInput = Math.pow(translationY.getAsDouble(), 3) * driveScale;
       double rInput = trackSpeaker ? AbsoluteDriveAdv.trackApriltagDrive() : Math.pow(angularRotationX.getAsDouble(), 3) * turnScale;
       // Make the robot move
-      swerveDrive.drive(new Translation2d(xInput * swerveDrive.getMaximumVelocity(),
-                                          yInput * swerveDrive.getMaximumVelocity()),
-                                          rInput * swerveDrive.getMaximumAngularVelocity(),
+      swerveDrive.drive(new Translation2d(xInput * maximumSpeed,//swerveDrive.getMaximumVelocity(),
+                                          yInput * maximumSpeed),//swerveDrive.getMaximumVelocity()),
+                                          rInput *  SwerveMath.calculateMaxAngularVelocity(
+                                            maximumSpeed,
+                                            Math.abs(swerveDrive.swerveDriveConfiguration.moduleLocationsMeters[0].getX()),
+                                            Math.abs(swerveDrive.swerveDriveConfiguration.moduleLocationsMeters[0].getY())
+                                          ),//swerveDrive.getMaximumAngularVelocity(),
                         true,
                         false);
     });

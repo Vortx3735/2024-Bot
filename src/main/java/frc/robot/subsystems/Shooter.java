@@ -5,19 +5,15 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   private CANSparkMax shooterNeo1;
   private CANSparkMax shooterNeo2;
-  private RelativeEncoder shooterEncoder;
-
   // SHOOTER NEO 1 = Top Roller
   // SHOOTER NEO 2 = Bottom Roller`     
   public Shooter(int topMotor, int bottomMotor) {
@@ -28,7 +24,7 @@ public class Shooter extends SubsystemBase {
     // shooterNeo2.follow(shooterNeo1, false);
     shooterNeo1.setIdleMode(IdleMode.kBrake);
     shooterNeo2.setIdleMode(IdleMode.kBrake);
-    shooterEncoder = shooterNeo1.getEncoder();
+    shooterNeo1.getEncoder();
 
       
     // SmartDashboard.putNumber("shooter/Velocity", shooterEncoder.getVelocity());

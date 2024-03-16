@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -69,9 +68,9 @@ public class LED extends SubsystemBase{
     }
 
     private void funny() {
-        int r = (int) RobotContainer.con2.getLeftX();
-        int g = (int) RobotContainer.con2.getLeftY();
-        int b = (int) RobotContainer.con2.getRightX();
+        int r = (int) RobotContainer.con2.getLeftX()*25500;
+        int g = (int) RobotContainer.con2.getLeftY()*25500;
+        int b = (int) RobotContainer.con2.getRightX()*25500;
         for (var i = 0; i < m_ledBuffer.getLength(); i++) { 
             m_ledBuffer.setRGB(i, r, g, b);
         }
