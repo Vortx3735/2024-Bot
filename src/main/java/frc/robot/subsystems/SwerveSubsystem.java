@@ -50,7 +50,7 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Swerve drive object.
    */
-  private final SwerveDrive swerveDrive;
+  public final SwerveDrive swerveDrive;
   /**
    * Maximum speed of the robot in meters per second, used to limit acceleration.
    */
@@ -270,11 +270,11 @@ public class SwerveSubsystem extends SubsystemBase {
   private boolean trackSpeaker = false;
 
   public void toggleTrackSpeakerMode() {
-    precisionMode = !precisionMode;
+    trackSpeaker = !trackSpeaker;
   }
 
   public void toggleTrackSpeakerFalse() {
-    precisionMode = false;
+    trackSpeaker = false;
   }
 
   public void togglePrecisionMode() {
@@ -285,13 +285,38 @@ public class SwerveSubsystem extends SubsystemBase {
     precisionMode = false;
   }
 
+  public static double trackApriltagDrive() {
+    // kP (constant of proportionality)
+    // this is a hand-tuned number that determines the aggressiveness of our proportional control loop
+    // if it is too high, the robot will oscillate.
+    // if it is too low, the robot will never reach its target
+    // if the robot never turns in the correct direction, kP should be inverted.
+    double kP = .01;
+
+    // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
+    // your limelight 3 feed, tx should return roughly 31 degrees.
+    double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
+
+    // convert to radians per second for our drive method
+    targetingAngularVelocity *= SwerveMath.calculateMaxAngularVelocity(
+      RobotContainer.drivebase.maximumSpeed,
+      Math.abs(RobotContainer.drivebase.swerveDrive.swerveDriveConfiguration.moduleLocationsMeters[0].getX()),
+      Math.abs(RobotContainer.drivebase.swerveDrive.swerveDriveConfiguration.moduleLocationsMeters[0].getY())
+    ) * 2;
+
+    //invert since tx is positive when the target is to the right of the crosshair
+    targetingAngularVelocity *= -1.0;
+
+    return targetingAngularVelocity;
+  }
+
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
     // swerveDrive.setHeadingCorrection(false, 0.5);
     return run(() -> {
       double speedScale = precisionMode ? 0.5 : 1.0;
       double xInput = Math.pow(translationX.getAsDouble(), 3) * speedScale;
       double yInput = Math.pow(translationY.getAsDouble(), 3) * speedScale;
-      double rInput = trackSpeaker ? AbsoluteDriveAdv.trackApriltagDrive() : Math.pow(angularRotationX.getAsDouble(), 3) * speedScale;
+      double rInput = trackSpeaker ? trackApriltagDrive() : Math.pow(angularRotationX.getAsDouble(), 3) * speedScale;
       // Make the robot move
       swerveDrive.drive(new Translation2d(xInput * maximumSpeed,//swerveDrive.getMaximumVelocity(),
                                           yInput * maximumSpeed),//swerveDrive.getMaximumVelocity()),

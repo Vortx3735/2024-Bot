@@ -18,7 +18,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.Drivebase;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.util.LimelightHelpers;
 import swervelib.SwerveController;
 import swervelib.math.SwerveMath;;
 
@@ -135,12 +137,7 @@ public class AbsoluteDriveAdv extends Command
     }
   }
 
-  public static double trackApriltagDrive() {
-    //wrap in an if statement for if limelight is reading apriltag
-    double speakerPixelPosition = 0; //getLimelightX
-    double screenCenter = 0; //getLimelight center postition + offset of limelight
-    return (speakerPixelPosition-screenCenter) * 3;
-  }
+  
 
   public static Command slowSwerveCommand() {
     return RobotContainer.drivebase.driveCommand(

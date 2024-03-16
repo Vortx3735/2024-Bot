@@ -297,13 +297,13 @@ public class RobotContainer {
         )
     );
 
-    con1.lb.onTrue(
+    con1.lb.toggleOnTrue(
       new InstantCommand(
         () -> drivebase.togglePrecisionMode(),
         drivebase)
       );
 
-    con1.rb.onTrue(
+    con1.rb.toggleOnTrue(
       new InstantCommand(
         () -> drivebase.toggleTrackSpeakerMode(),
       drivebase)
