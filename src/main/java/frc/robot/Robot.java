@@ -13,7 +13,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -33,7 +33,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private Timer disabledTimer;
 
   // private DigitalInput beamBreak = new DigitalInput(IntakeConstants.BEAM_BREAK_PORT);
 
@@ -64,7 +63,6 @@ public class Robot extends TimedRobot {
 
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
-    disabledTimer = new Timer();
     // SmartDashboard.putNumber("shooter/Shooter Setpoint", value);
 
     // update swerve pose in advantagescope field

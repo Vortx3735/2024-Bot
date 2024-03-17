@@ -10,11 +10,12 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkLimitSwitch;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 
 public class Intake extends SubsystemBase {
@@ -63,33 +64,6 @@ public class Intake extends SubsystemBase {
     intakeNeo1.set(0);
   }
 
-
-
-  /**
-   * 
-   *     /_/_/_/_/    /_/_/_/_/_/    /_/     /_/        /_/          /_/_/     /_/         
-   *     /_/              /_/        /_/     /_/       /_//_/        /_/ /_/   /_/
-   *     /_/_/_/_/        /_/        /_/_/_/_/_/      /_/  /_/       /_/   /_/ /_/
-   *     /_/              /_/        /_/     /_/     /_/_/_/_/_/     /_/    /_//_/
-   *     /_/_/_/_/        /_/        /_/     /_/    /_/      /_/     /_/       /_/
-   * 
-   * 
-   *     /_/          /_/_/_/_/    /_/_/_/_/
-   *     /_/          /_/          /_/
-   *     /_/          /_/_/_/_/    /_/_/_/_/
-   *     /_/          /_           /_/
-   *     /_/_/_/_/    /_/_/_/_/    /_/_/_/_/
-   * 
-   * 
-   *     /_/       /_/     /_/      /_/
-   *      /_/     /_/_/   /_/      /_/
-   *       /_/  /_/  /_/ /_/      /_/
-   *        /_/_/     /_/_/      /_/
-   *         /_/       /_/      /_/
-   * 
-   * 
-   */
-
   public BooleanSupplier getOvershootBeam() {
     return () -> hasRing;
   }
@@ -108,6 +82,16 @@ public class Intake extends SubsystemBase {
 
   public void ringFalse() {
     hasRing = false;
+  }
+
+  public void rumbleCon(double intensity) {
+    RobotContainer.con1.setRumble(RumbleType.kBothRumble, intensity);
+    RobotContainer.con2.setRumble(RumbleType.kBothRumble, intensity);
+  }
+
+  public void stopRumble() {
+    RobotContainer.con1.setRumble(RumbleType.kBothRumble, 0);
+    RobotContainer.con2.setRumble(RumbleType.kBothRumble, 0);
   }
 
   // private double getDistance(){

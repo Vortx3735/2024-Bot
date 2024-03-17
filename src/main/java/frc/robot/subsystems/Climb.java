@@ -7,8 +7,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -16,7 +14,6 @@ public class Climb extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   private CANSparkMax climbNeo1;
   private CANSparkMax climbNeo2;
-  private RelativeEncoder climbEncoder;
 
   // SHOOTER NEO 1 = Top Roller
   // SHOOTER NEO 2 = Bottom Roller`     
@@ -31,7 +28,6 @@ public class Climb extends SubsystemBase {
     climbNeo2.setInverted(false);
     // climbNeo2.follow(climbNeo1, true);
 
-    climbEncoder = climbNeo1.getEncoder();
 
     // climbNeo1.setSoftLimit(SoftLimitDirection.kForward, Constants.ClimbConstants.CLIMB_SOFT_LIMIT_FWD);
     // climbNeo1.setSoftLimit(SoftLimitDirection.kReverse, 0);

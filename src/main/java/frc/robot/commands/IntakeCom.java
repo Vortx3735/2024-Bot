@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.Intake;
 import frc.robot.RobotContainer;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.*;
 
 
@@ -42,12 +41,22 @@ public class IntakeCom extends Command {
       new RunCommand(
         () -> RobotContainer.intake.move(.45), 
         RobotContainer.intake
-        ).until(RobotContainer.intake.getNoteBeam()),
+      ).until(RobotContainer.intake.getNoteBeam()),
         
       new RunCommand(
-          () -> RobotContainer.intake.move(.18), 
-          RobotContainer.intake
-        ).until(RobotContainer.intake.getOvershootBeam()));
+        () -> RobotContainer.intake.move(.18), 
+        RobotContainer.intake
+      ).until(RobotContainer.intake.getOvershootBeam()),
+
+      new RunCommand(
+        () -> RobotContainer.intake.rumbleCon(1),
+        RobotContainer.intake
+      ).withTimeout(0.5).andThen(
+        new RunCommand(
+          () -> RobotContainer.intake.stopRumble(),
+          RobotContainer.intake)
+      )
+    );
   }
 
   // Called when the command is initially scheduled.
