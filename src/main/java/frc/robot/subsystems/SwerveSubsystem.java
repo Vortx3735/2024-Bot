@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+import frc.robot.commands.AbsoluteDriveAdv;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.math.SwerveMath;
@@ -43,6 +44,7 @@ import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import frc.robot.util.LimelightHelpers;
+import frc.robot.Constants.Drivebase;
 
 
 
@@ -54,7 +56,6 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Maximum speed of the robot in meters per second, used to limit acceleration.
    */
-  public double maximumSpeed = Units.feetToMeters(15.1);
   static PIDController swervePID;
 
 
@@ -78,9 +79,9 @@ public class SwerveSubsystem extends SubsystemBase {
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try
     {
-      swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed);
+      swerveDrive = new SwerveParser(directory).createSwerveDrive(Drivebase.maximumSpeed);
       // Alternative method if you don't want to supply the conversion factor via JSON files.
-      // swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed, angleConversionFactor, driveConversionFactor);
+      // swerveDrive = new SwerveParser(directory).createSwerveDrive(Drivebase.maximumSpeed, angleConversionFactor, driveConversionFactor);
     } catch (Exception e)
     {
       throw new RuntimeException(e);
@@ -321,7 +322,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     // convert to radians per second for our drive method
     targetingAngularVelocity *= SwerveMath.calculateMaxAngularVelocity(
-      RobotContainer.drivebase.maximumSpeed,
+      Drivebase.maximumSpeed,
       Math.abs(RobotContainer.drivebase.swerveDrive.swerveDriveConfiguration.moduleLocationsMeters[0].getX()),
       Math.abs(RobotContainer.drivebase.swerveDrive.swerveDriveConfiguration.moduleLocationsMeters[0].getY())
     ) * 2;
@@ -340,17 +341,18 @@ public class SwerveSubsystem extends SubsystemBase {
       double yInput = Math.pow(translationY.getAsDouble(), 3) * speedScale;
       double rInput = trackSpeaker ? trackApriltagDrive() : Math.pow(angularRotationX.getAsDouble(), 3) * speedScale;
       // Make the robot move
-      swerveDrive.drive(new Translation2d(xInput * maximumSpeed,//swerveDrive.getMaximumVelocity(),
-                                          yInput * maximumSpeed),//swerveDrive.getMaximumVelocity()),
+      swerveDrive.drive(new Translation2d(xInput * Drivebase.maximumSpeed,//swerveDrive.getMaximumVelocity(),
+                                          yInput * Drivebase.maximumSpeed),//swerveDrive.getMaximumVelocity()),
                                           rInput *  SwerveMath.calculateMaxAngularVelocity(
-                                            maximumSpeed,
+                                            Drivebase.maximumSpeed,
                                             Math.abs(swerveDrive.swerveDriveConfiguration.moduleLocationsMeters[0].getX()),
                                             Math.abs(swerveDrive.swerveDriveConfiguration.moduleLocationsMeters[0].getY())
                                           ),//swerveDrive.getMaximumAngularVelocity(),
-                        true,
+                        true, 
                         false);
     });
   }
+
 
   /**
    * The primary method for controlling the drivebase.  Takes a {@link Translation2d} and a rotation rate, and
@@ -491,7 +493,7 @@ public class SwerveSubsystem extends SubsystemBase {
                                                         headingX,
                                                         headingY,
                                                         getHeading().getRadians(),
-                                                        maximumSpeed);
+                                                        Drivebase.maximumSpeed);
   }
 
   /**
@@ -510,7 +512,7 @@ public class SwerveSubsystem extends SubsystemBase {
                                                         yInput,
                                                         angle.getRadians(),
                                                         getHeading().getRadians(),
-                                                        maximumSpeed);
+                                                        Drivebase.maximumSpeed);
   }
 
   /**

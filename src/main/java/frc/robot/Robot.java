@@ -90,6 +90,9 @@ public class Robot extends TimedRobot {
     //value = SmartDashboard.getNumber("shooter/Shooter Setpoint", 1.0);
     //SmartDashboard.putNumber("shooter/Shooter Setpoint 2", value);
     // SmartDashboard.putBoolean("intake/Beam Break",beamBreak.get());
+    SmartDashboard.putNumber("LeftX", RobotContainer.con1.getLeftX());
+    SmartDashboard.putNumber("LeftY", RobotContainer.con1.getLeftY());
+    SmartDashboard.putNumber("RightX", RobotContainer.con1.getRightX());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -181,8 +184,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
-    SmartDashboard.putNumber("LeftX", RobotContainer.con1.getLeftX());
-    SmartDashboard.putNumber("LeftY", RobotContainer.con1.getLeftY());
-    SmartDashboard.putNumber("RightX", RobotContainer.con1.getRightX());
+    
   }
 }

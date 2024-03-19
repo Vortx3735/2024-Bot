@@ -108,7 +108,7 @@ public class VorTXControllerXbox extends CommandXboxController {
 	}
 
 	public double getTrueLeftY() {
-		return getHID().getLeftX();
+		return getHID().getLeftY();
 	}
 
 	public double getTrueRightX() {
