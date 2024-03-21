@@ -39,10 +39,10 @@ public class LED extends SubsystemBase{
 
     public void rainbow() {
         // For every pixel
-        for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+        for (int i = 0; i < m_ledBuffer.getLength(); i++) {
             // Calculate the hue - hue is easier for rainbows because the color
             // shape is a circle so only one value needs to precess
-            final var hue = (m_rainbowFirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
+            final int hue = (m_rainbowFirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
             // Set the value
             m_ledBuffer.setHSV(i, hue, 255, 128);
         }
@@ -55,36 +55,37 @@ public class LED extends SubsystemBase{
 
     public void noteCheck() {
         if(RobotContainer.intake.getRing()) {
-            for(var i = 0; i < m_ledBuffer.getLength(); i++) {
+            for(int i = 0; i < m_ledBuffer.getLength(); i++) {
                 m_ledBuffer.setLED(i, Color.kYellow);
             }
         } else {
-            for(var i = 0; i < m_ledBuffer.getLength(); i++) {
+            for(int i = 0; i < m_ledBuffer.getLength(); i++) {
                 m_ledBuffer.setLED(i, Color.kBlue);
             }
         }
         m_led.setData(m_ledBuffer);
     }
 
-    public void vorTXStreak(int streakLength) {
-        endOfStreak = startOfStreak + streakLength;
-        for(var i = startOfStreak; i < endOfStreak; i++) {
-            m_ledBuffer.setLED(i, Color.kGreen);
-            m_ledBuffer.setLED(i + streakLength+1, Color.kBlue);
+    public void vorTXStreak() {
+        endOfStreak = startOfStreak + m_ledBuffer.getLength()/2;
+        for(int i = startOfStreak; i < endOfStreak; i++) {
+            m_ledBuffer.setLED(i % m_ledBuffer.getLength(), Color.kGreen);
+            m_ledBuffer.setLED((i+(m_ledBuffer.getLength()/2)) % m_ledBuffer.getLength(), Color.kBlue);
         }
         startOfStreak++;
-        m_led.setData(m_ledBuffer);       
+        startOfStreak %= m_ledBuffer.getLength();
+        m_led.setData(m_ledBuffer);      
     }
 
     public void setColor(Color color) {
-        for (var i = 0; i < m_ledBuffer.getLength(); i++) { 
+        for (int i = 0; i < m_ledBuffer.getLength(); i++) { 
             m_ledBuffer.setLED(i, color);
         }
         m_led.setData(m_ledBuffer);
     }
 
     public void setVorTXGreen() {
-        for (var i = 0; i < m_ledBuffer.getLength(); i++) { 
+        for (int i = 0; i < m_ledBuffer.getLength(); i++) { 
             m_ledBuffer.setRGB(i, 127, 194, 65);
         }
         m_led.setData(m_ledBuffer);
@@ -94,7 +95,7 @@ public class LED extends SubsystemBase{
         int r = (int) RobotContainer.con2.getLeftX()*25500;
         int g = (int) RobotContainer.con2.getLeftY()*25500;
         int b = (int) RobotContainer.con2.getRightX()*25500;
-        for (var i = 0; i < m_ledBuffer.getLength(); i++) { 
+        for (int i = 0; i < m_ledBuffer.getLength(); i++) { 
             m_ledBuffer.setRGB(i, r, g, b);
         }
         m_led.setData(m_ledBuffer);
