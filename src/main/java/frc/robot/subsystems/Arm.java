@@ -44,15 +44,15 @@ public class Arm extends SubsystemBase {
 
   public Arm(int leftMotor, int rightMotor, double motorToArmGearRatio) {
     
-    
+    //1 is left and 2 is right
 
     this.ArmNeo1 = new CANSparkMax(leftMotor, MotorType.kBrushless);
     this.ArmNeo2 = new CANSparkMax(rightMotor, MotorType.kBrushless);
 
-    ArmNeo1.setInverted(true);
+    ArmNeo1.setInverted(false);
     ArmNeo1.setIdleMode(IdleMode.kBrake);
     ArmNeo2.setIdleMode(IdleMode.kBrake);
-    this.ArmNeo2.follow(ArmNeo1, true);
+    ArmNeo2.follow(ArmNeo1, false);
 
     // armEncoder.reset();
     armEncoder.setPositionOffset(offset);

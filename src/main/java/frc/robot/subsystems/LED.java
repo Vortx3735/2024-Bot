@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
@@ -10,13 +11,14 @@ import frc.robot.RobotContainer;
 public class LED extends SubsystemBase{
     private final AddressableLED m_led;
     private final AddressableLEDBuffer m_ledBuffer;
-    private int m_rainbowFirstPixelHue, startOfStreak, endOfStreak;
-
+    private int m_rainbowFirstPixelHue;
+    private double startOfStreak, endOfStreak;
+    
 
     public LED(int port, int length) {
         m_rainbowFirstPixelHue = 0;
-        startOfStreak = 0;
-        endOfStreak = 0;
+        startOfStreak = 0.0;
+        endOfStreak = 0.0;
         m_led = new AddressableLED(port);
         m_ledBuffer = new AddressableLEDBuffer(length);
         m_led.setLength(m_ledBuffer.getLength());
@@ -68,11 +70,11 @@ public class LED extends SubsystemBase{
 
     public void vorTXStreak() {
         endOfStreak = startOfStreak + m_ledBuffer.getLength()/2;
-        for(int i = startOfStreak; i < endOfStreak; i++) {
+        for(int i = (int) startOfStreak; i < (int) endOfStreak; i++) {
             m_ledBuffer.setLED(i % m_ledBuffer.getLength(), Color.kGreen);
             m_ledBuffer.setLED((i+(m_ledBuffer.getLength()/2)) % m_ledBuffer.getLength(), Color.kBlue);
         }
-        startOfStreak++;
+        startOfStreak += 0.25;
         startOfStreak %= m_ledBuffer.getLength();
         m_led.setData(m_ledBuffer);      
     }
@@ -84,17 +86,10 @@ public class LED extends SubsystemBase{
         m_led.setData(m_ledBuffer);
     }
 
-    public void setVorTXGreen() {
-        for (int i = 0; i < m_ledBuffer.getLength(); i++) { 
-            m_ledBuffer.setRGB(i, 127, 194, 65);
-        }
-        m_led.setData(m_ledBuffer);
-    }
-
     public void funny() {
-        int r = (int) RobotContainer.con2.getLeftX()*25500;
-        int g = (int) RobotContainer.con2.getLeftY()*25500;
-        int b = (int) RobotContainer.con2.getRightX()*25500;
+        int r = (int) MathUtil.applyDeadband(Math.abs(RobotContainer.con2.getLeftX()), 0.1)*255;
+        int g = (int) MathUtil.applyDeadband(Math.abs(RobotContainer.con2.getLeftY()), 0.1)*255;
+        int b = (int) MathUtil.applyDeadband(Math.abs(RobotContainer.con2.getRightX()), 0.1)*255;
         for (int i = 0; i < m_ledBuffer.getLength(); i++) { 
             m_ledBuffer.setRGB(i, r, g, b);
         }

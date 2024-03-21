@@ -24,6 +24,7 @@ import frc.robot.commands.ShooterCom;
 import frc.robot.subsystems.AdvantageScope;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Climb;
@@ -51,7 +52,7 @@ public class RobotContainer {
   
   public static AutoAim autoaim = new AutoAim(arm, shooter);
   
-  // public static LED led = new LED(1, 36);
+  public static LED led = new LED(0, 16);
 
   public static Climb climb = new Climb(10, 11);
   public static ClimbCom climbcom = new ClimbCom(climb);
@@ -69,44 +70,6 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-    // AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
-    //                                                                () -> MathUtil.applyDeadband(con1.getLeftY(),
-    //                                                                                             OperatorConstants.LEFT_Y_DEADBAND),
-    //                                                                () -> MathUtil.applyDeadband(con1.getLeftX(),
-    //                                                                                             OperatorConstants.LEFT_X_DEADBAND),
-    //                                                                () -> MathUtil.applyDeadband(con1.getRightX(),
-    //                                                                OperatorConstants.RIGHT_X_DEADBAND),
-    //                                                                () -> con1.triangle.getAsBoolean(),
-    //                                                                () -> con1.cross.getAsBoolean(),
-    //                                                                () -> con1.square.getAsBoolean(),
-    //                                                                () -> con1.circle.getAsBoolean(),
-    //                                                                18);
-    // // Applies deadbands and inverts controls because joysticks
-    // are back-right positive while robot
-    // controls are front-left positive
-    // left stick controls translation
-    // right stick controls the desired angle NOT angular rotation
-    // Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
-    //     () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-    //     () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-    //     () -> con1.getRightX(),
-    //     () -> con1.getRightY()
-    //   );
-
-
-
-  //   Shuffleboard.getTab("shooter")
-  //  .add("Shooter Setpoint", 2000)
-  //  .withWidget(BuiltInWidgets.kNumberSlider) // specify the widget here
-  //  .getEntry();
-  
-
-    // Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
-    //     () -> MathUtil.applyDeadband(con1.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
-    //     () -> MathUtil.applyDeadband(con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
-    //     () -> MathUtil.applyDeadband(con1.getRightX(), OperatorConstants.LEFT_X_DEADBAND),
-    //     () -> MathUtil.applyDeadband(con1.getRightY(), OperatorConstants.LEFT_Y_DEADBAND)
-    //   );
 
     Command driveFieldOriented = drivebase.driveCommand(
       () -> MathUtil.applyDeadband(-con1.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
