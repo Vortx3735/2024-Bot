@@ -46,16 +46,7 @@ public class IntakeCom extends Command {
       new RunCommand(
         () -> RobotContainer.intake.move(.18), 
         RobotContainer.intake
-      ).until(RobotContainer.intake.getOvershootBeam()),
-
-      new RunCommand(
-        () -> RobotContainer.intake.rumbleCon(1),
-        RobotContainer.intake
-      ).withTimeout(0.5).andThen(
-        new RunCommand(
-          () -> RobotContainer.intake.stopRumble(),
-          RobotContainer.intake)
-      )
+      ).until(RobotContainer.intake.getOvershootBeam())
     );
   }
 

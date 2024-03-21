@@ -185,23 +185,8 @@ public class RobotContainer {
     );
     
     con2.xButton.whileTrue(
-      new SequentialCommandGroup(
-        intakecom.intakeNoteCom(),
-        
-        new InstantCommand(
-          intake::ringTrue,
-          intake
-        )
-      )
+        intakecom.intakeNoteCom()
     );
-
-    if(intake.getRing()) {
-      con1.rb.whileFalse(
-        new RunCommand(
-          () -> shooter.move(.5), 
-          shooter)
-      );
-    }
 
     con2.bButton.whileTrue(
         new RunCommand(
