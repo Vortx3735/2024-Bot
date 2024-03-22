@@ -41,7 +41,7 @@ public final class Constants {
 
     // Hold time on motor brakes when disabled
     public static final double WHEEL_LOCK_TIME = 10; // seconds
-    public static final double maximumSpeed = Units.feetToMeters(17.1);
+    public static final double maximumSpeed = Units.feetToMeters(15.5);
   }
 
   public static class OperatorConstants {
@@ -63,8 +63,9 @@ public final class Constants {
 
   public static class ArmConstants {
     public static final double motorToArmGearRatio = 1.0/27.0;
-    public static final double ampArmPos = 0.570;
-    public static final double groundArmPos = 0.314;
+    public static final double ampArmPos = 0.577;
+    public static final double groundArmPos = 0.321;
+    public static final double armTravelPos = groundArmPos + 0.05;
     public static final double armLength = 24.727914/39.37;
     public static final double[][] armAngleArray = {
       // test for different angles from different x distances

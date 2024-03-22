@@ -197,6 +197,27 @@ public class RobotContainer {
       )
     );
 
+    con2.rt.whileTrue(
+      new RunCommand(
+          () -> intake.move(.8), 
+          intake).alongWith(
+        new RunCommand(
+          () -> shooter.move(.8), // rev up shooter
+          shooter))
+    );
+
+    con2.lt.whileTrue(
+      new RunCommand(
+        () -> shooter.move(1), 
+        shooter)
+    );
+
+    con2.lb.whileTrue(
+      new RunCommand(
+        () -> arm.moveToSetpoint(Constants.ArmConstants.armTravelPos, 3), 
+        arm)
+    );
+
       con2.yButton.whileTrue(
         new RunCommand(
           () -> shooter.move(.5), 
@@ -263,7 +284,12 @@ public class RobotContainer {
 
     con2.povDown.whileTrue(
       new RunCommand(
-        () -> climb.moveRight(-.25), 
+        () -> climb.moveLeft(-.25), 
+        climb)
+    );
+    con2.povUp.whileTrue(
+      new RunCommand(
+        () -> climb.moveLeft(.25), 
         climb)
     );
 
@@ -334,7 +360,9 @@ public class RobotContainer {
 
     //  return drivebase.getAutonomousCommand("MoveForwardCenter");
 
-    return drivebase.getAutonomousCommand("Test");
+    // return drivebase.getAutonomousCommand("Test");
+
+    return drivebase.getAutonomousCommand("RightMiddleCollectNotes");
   }
 
   public void setDriveMode() {

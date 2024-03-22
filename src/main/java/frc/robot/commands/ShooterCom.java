@@ -79,10 +79,9 @@ public class ShooterCom extends Command {
         () ->
           RobotContainer.arm.moveToSetpoint(Constants.ArmConstants.groundArmPos, 4), 
           RobotContainer.arm
-      ).until(
-        RobotContainer.arm.getArmDown()
-      ).alongWith(new RunCommand(() -> RobotContainer.shooter.move(1), 
-      RobotContainer.shooter).withTimeout(2.5)).andThen(
+      ).until(RobotContainer.arm.getArmDown()).alongWith(
+        new RunCommand(() -> RobotContainer.shooter.move(1), 
+      RobotContainer.shooter).withTimeout(2)).andThen(
         shootFromSubasdf()
     );
   }
@@ -122,14 +121,14 @@ public class ShooterCom extends Command {
     public Command shootFromSubOther() {
         return  new SequentialCommandGroup(
             new RunCommand(
-              () -> RobotContainer.shooter.move(1), // rev up shooter
+              () -> RobotContainer.shooter.move(0.8), // rev up shooter
               RobotContainer.shooter).withTimeout(.5),
             
             new RunCommand(
               () -> RobotContainer.intake.move(1), 
               RobotContainer.intake).alongWith(
                 new RunCommand(
-                  () -> RobotContainer.shooter.move(1), // shooter
+                  () -> RobotContainer.shooter.move(0.8), // shooter
                   RobotContainer.shooter)
               )
           );

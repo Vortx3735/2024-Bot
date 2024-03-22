@@ -117,6 +117,7 @@ public class Intake extends SubsystemBase {
     }
 
     SmartDashboard.putBoolean("intake//Beam Break Overshoot", beamBreakOvershoot.get()); //.isPressed()
+    SmartDashboard.putBoolean("intake//Beam Break Overshoot has Ring", hasRing); //.isPressed()
     SmartDashboard.putBoolean("intake//Beam Break Intaking", beamBreakNote.get()); //.isPressed()
 
   }

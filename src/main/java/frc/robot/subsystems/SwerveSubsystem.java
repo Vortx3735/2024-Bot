@@ -73,6 +73,7 @@ public class SwerveSubsystem extends SubsystemBase {
     System.out.println("\t\"drive\": " + driveConversionFactor);
     System.out.println("}");
     
+    
 
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -92,13 +93,11 @@ public class SwerveSubsystem extends SubsystemBase {
     swervePID = new PIDController(0.0, 0.0, 0.0);
     addChild("swervePID", swervePID); // send PID values to smartDashboard
 
-    swerveDrive.setMotorIdleMode(true);
-
     NamedCommands.registerCommand("FirstShot", RobotContainer.shootercom.firstShotFromSub().withTimeout(4).asProxy());
     NamedCommands.registerCommand("Shoot", RobotContainer.shootercom.shootFromSubOther().withTimeout(1).asProxy());
     NamedCommands.registerCommand("Intake", RobotContainer.intakecom.intakeNoteCom().withTimeout(2).asProxy());
     NamedCommands.registerCommand("shooterIdle", RobotContainer.shootercom.autonShooterIdle().withTimeout(1.5).asProxy());
-    NamedCommands.registerCommand("firstshotrev", RobotContainer.shootercom.firstShotFromSubasdf().withTimeout(4).asProxy());
+    NamedCommands.registerCommand("firstshotrev", RobotContainer.shootercom.firstShotFromSubasdf().withTimeout(2.2).asProxy());
 
     // NamedCommands.registerCommand("moveArmUp", RobotContainer.shootercom.moveArmUp().asProxy());
     // NamedCommands.registerCommand("moveArmDown", RobotContainer.shootercom.moveArmDown().asProxy());
@@ -313,7 +312,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // if it is too high, the robot will oscillate.
     // if it is too low, the robot will never reach its target
     // if the robot never turns in the correct direction, kP should be inverted.
-    double kP = .01;
+    double kP = .001;
 
     // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
     // your limelight 3 feed, tx should return roughly 31 degrees.
@@ -335,7 +334,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public Command driveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier angularRotationX) {
     // swerveDrive.setHeadingCorrection(false, 0.5);
     return run(() -> {
-      double speedScale = precisionMode ? 0.5 : 1.0;
+      double speedScale = precisionMode ? 0.3 : 1.0;
       double xInput = Math.pow(translationX.getAsDouble(), 3) * speedScale;
       double yInput = Math.pow(translationY.getAsDouble(), 3) * speedScale;
       double rInput = trackSpeaker ? trackApriltagDrive() : Math.pow(angularRotationX.getAsDouble(), 3) * speedScale;

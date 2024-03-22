@@ -87,9 +87,9 @@ public class LED extends SubsystemBase{
     }
 
     public void funny() {
-        int r = (int) MathUtil.applyDeadband(Math.abs(RobotContainer.con2.getLeftX()), 0.1)*255;
-        int g = (int) MathUtil.applyDeadband(Math.abs(RobotContainer.con2.getLeftY()), 0.1)*255;
-        int b = (int) MathUtil.applyDeadband(Math.abs(RobotContainer.con2.getRightX()), 0.1)*255;
+        int r = (int) Math.abs(MathUtil.applyDeadband(RobotContainer.con2.getLeftX(), 0.1)*255);
+        int g = (int) Math.abs(MathUtil.applyDeadband(RobotContainer.con2.getLeftY(), 0.1)*255);
+        int b = (int) Math.abs(MathUtil.applyDeadband(RobotContainer.con2.getRightX(), 0.1)*255);
         for (int i = 0; i < m_ledBuffer.getLength(); i++) { 
             m_ledBuffer.setRGB(i, r, g, b);
         }

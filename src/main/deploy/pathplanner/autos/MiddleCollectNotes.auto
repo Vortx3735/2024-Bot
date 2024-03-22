@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "FirstShot"
+            "name": "firstshotrev"
           }
         },
         {
@@ -37,9 +37,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "ShootLeftNote"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ShootLeftNote"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shooterIdle"
+                }
+              }
+            ]
           }
         },
         {

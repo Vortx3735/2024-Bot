@@ -57,6 +57,9 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     CameraServer.startAutomaticCapture();
+
+    RobotContainer.drivebase.swerveDrive.setMotorIdleMode(true);
+
     
     enableLiveWindowInTest(true); //enabling test mode
     SmartDashboard.putData(CommandScheduler.getInstance());
@@ -115,6 +118,7 @@ public class Robot extends TimedRobot {
     //   // disabledTimer.stop();
     // }
     RobotContainer.led.vorTXStreak();
+    // RobotContainer.led.noteCheck();
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */

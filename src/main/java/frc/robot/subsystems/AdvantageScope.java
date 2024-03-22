@@ -36,6 +36,7 @@ public class AdvantageScope extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // advantage scope stuff
+    
     publisher.set(m_field.getRobotPose());
     SmartDashboard.putData("Field", m_field);
   }

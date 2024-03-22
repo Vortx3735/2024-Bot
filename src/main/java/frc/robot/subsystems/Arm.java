@@ -52,7 +52,7 @@ public class Arm extends SubsystemBase {
     ArmNeo1.setInverted(false);
     ArmNeo1.setIdleMode(IdleMode.kBrake);
     ArmNeo2.setIdleMode(IdleMode.kBrake);
-    ArmNeo2.follow(ArmNeo1, false);
+    this.ArmNeo2.follow(ArmNeo1, false);
 
     // armEncoder.reset();
     armEncoder.setPositionOffset(offset);
@@ -104,8 +104,7 @@ public class Arm extends SubsystemBase {
 
   //add soft limits based on encoder position
   public void up(double percentSpeed) {
-    if(position < .24)
-    move(percentSpeed);
+      move(percentSpeed);
   }
 
   public void coast() {
@@ -140,7 +139,7 @@ public class Arm extends SubsystemBase {
   }
 
   public BooleanSupplier getArmDown() {
-    return () -> position <= Constants.ArmConstants.groundArmPos + .1 ;
+    return () -> position <= (Constants.ArmConstants.groundArmPos + .05);
   }
 
   public void setArmBrake(IdleMode mode) {

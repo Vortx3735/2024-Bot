@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.77394722463558,
-      "y": 4.3485892457987285
+      "x": 0.97,
+      "y": 4.5
     },
     "rotation": -60.00343398747677
   },
@@ -14,38 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "FirstShot"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CollectRightClose_1"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "ShootRightClose_1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "name": "firstshotrev"
           }
         },
         {
@@ -65,12 +34,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
           }
         }
       ]
