@@ -197,17 +197,19 @@ public class RobotContainer {
       )
     );
 
-      con2.yButton.whileTrue(
-        new RunCommand(
-          () -> shooter.move(.5), 
-          shooter).alongWith(
-            new RunCommand(
-              () -> intake.move(.5), 
-              intake)
-          )
-      );      
+    con2.yButton.whileTrue(
+      new RunCommand(
+        () -> shooter.move(.5), 
+        shooter).alongWith(
+          new RunCommand(
+            () -> intake.move(.5), 
+            intake)
+        )
+    );      
 
-
+    con2.aButton.whileTrue(
+      autoaim.aimSpeaker()
+    );
 
 
     RunCommand moveArmToAmp = new RunCommand(

@@ -65,7 +65,9 @@ public final class Constants {
     public static final double motorToArmGearRatio = 1.0/27.0;
     public static final double ampArmPos = 0.570;
     public static final double groundArmPos = 0.314;
-    public static final double armLength = 24.727914/39.37;
+    public static final double armLength = Units.inchesToMeters(24.727914);
+    public static final double encoderPitchDiameter = 62.23*1000;
+    public static final double pivotHeight = Units.inchesToMeters(10.907);
     public static final double[][] armAngleArray = {
       // test for different angles from different x distances
       {0, 0}
@@ -74,8 +76,10 @@ public final class Constants {
   }
 
   public static class ShooterConstants {
-    public static final double shooterRadius = 2.0/39.37;
-    public static final double shooterLength = 5.639686/39.37;
+    public static final double shooterRadius = Units.inchesToMeters(2.0);
+    public static final double shooterLength = Units.inchesToMeters(5.639686);
+    public static final double maxRPM = 5700;
+    public static final double differenceFromArm = Units.degreesToRadians(55);
     public static final double[][] shooterSpeedArray = {
       // test for different speeds from different angles
       {0, 0}
@@ -85,18 +89,17 @@ public final class Constants {
   }
 
   public static class VisionConstants {
-    public static final double limelightHeight = 0.0;
-    public static final double limelightDegrees = 0.0;
-    public static final double heightFromGround = 0.0;
+    public static final double limelightHeight = Units.inchesToMeters(15.325);
+    public static final double limelightDegrees = 50;
+    public static final double limelightXDistToArmPivot = Units.inchesToMeters(2.142);
+    public static final double limelightYDistToArmPivot = Units.inchesToMeters(4.418);
     public static final int[] speakerMidTags = {4,7};
     public static final int[] speakerSideTags = {3,8};
     public static final int[] ampTags = {5,6};
-    public static final double speakerTagHeight = 0.0;
-
   }
 
   public static class FieldConstants {
-    public static final double speakerHeight = 0.0;
+    public static final double speakerHeight = 2.045;
     public static final double ampHeight = 0.0;
   }
 
