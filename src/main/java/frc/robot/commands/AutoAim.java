@@ -88,6 +88,51 @@ public class AutoAim extends Command {
     }
   }
 
+  public Command aimSpeakerAuto() {
+    if(LimelightHelpers.getFiducialID("limelight") == VisionConstants.speakerMidTag) {
+      double kP = 0.1;
+      double xDistLLToShooter = ArmConstants.armLength*Math.cos(RobotContainer.arm.getRadiansTravelled()) 
+                                - ShooterConstants.shooterLength*Math.cos(RobotContainer.arm.getRadiansTravelled() 
+                                                                            + ShooterConstants.differenceFromArm)
+                                + VisionConstants.limelightXDistToArmPivot;
+      double yDistLLToShooter = ArmConstants.armLength*Math.sin(RobotContainer.arm.getRadiansTravelled()) 
+                                - ShooterConstants.shooterLength*Math.sin(RobotContainer.arm.getRadiansTravelled()
+                                                                            + ShooterConstants.differenceFromArm)
+                                - VisionConstants.limelightYDistToArmPivot;
+      double targetOffsetAngle_Vertical = LimelightHelpers.getTY("limelight");  
+  
+      double angleToGoalDegrees = VisionConstants.limelightDegrees + targetOffsetAngle_Vertical;
+      double angleToGoalRadians = Units.degreesToRadians(angleToGoalDegrees);
+  
+      //calculate distance
+      double distanceFromLimelightToGoalMeters = (FieldConstants.speakerHeight - VisionConstants.limelightHeight) / Math.tan(angleToGoalRadians);
+      double xShooterToGoal = distanceFromLimelightToGoalMeters + xDistLLToShooter;
+  
+      double yShooterToGoal = FieldConstants.speakerHeight - ArmConstants.pivotHeight - yDistLLToShooter;
+      double error = stupid(xShooterToGoal, yShooterToGoal)[0] - RobotContainer.arm.getRadiansTravelled();
+      double rpmNeeded = stupid(xShooterToGoal, yShooterToGoal)[1];
+  
+      return new RunCommand(
+        () -> RobotContainer.arm.move(error*kP),
+        RobotContainer.arm
+      ).alongWith(
+        new RunCommand(
+          () -> RobotContainer.shooter.setShooterRPM(rpmNeeded),
+          RobotContainer.shooter)
+      );
+    } else {
+      System.out.println(((DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? "Red" : "Blue") + " Alliance Mid Speaker AprilTag Not Found!");
+      return new RunCommand(
+        () -> RobotContainer.arm.getDefaultCommand(),
+        RobotContainer.arm
+      ).alongWith(
+        new RunCommand(
+          () -> RobotContainer.shooter.getDefaultCommand(),
+          RobotContainer.shooter)
+      );
+    }
+  }
+
   public static double[] stupid(double xDist, double yDist) {
         // this code is very effective until around 30 feet which is further than podium so it doesnt matter lol
         //      the reason its uneffective at until 30 is bc the note needs to follow the trajectory and enter the speaker

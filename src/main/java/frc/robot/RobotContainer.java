@@ -52,7 +52,7 @@ public class RobotContainer {
   
   public static AutoAim autoaim = new AutoAim(arm, shooter);
   
-  public static LED led = new LED(0, 16);
+  public static LED led = new LED(0, 18);
 
   public static Climb climb = new Climb(10, 11);
   public static ClimbCom climbcom = new ClimbCom(climb);

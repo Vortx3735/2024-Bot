@@ -65,6 +65,8 @@ public final class Constants {
     public static final double motorToArmGearRatio = 1.0/27.0;
     public static final double ampArmPos = 0.570;
     public static final double groundArmPos = 0.314;
+    public static final double armTravelPos = groundArmPos + 0.05; 
+
     public static final double armLength = Units.inchesToMeters(24.727914);
     public static final double encoderPitchDiameter = 62.23*1000;
     public static final double pivotHeight = Units.inchesToMeters(10.907);
