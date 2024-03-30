@@ -126,9 +126,7 @@ public class RobotContainer {
     // not calibrated bc we need to know the distance between the arm pivot and the subwoofer,
     // and we need to know the starting angle of the arm when against the subwoofer
     // https://www.desmos.com/calculator/jy7vomzel0
-    
-
-  }
+}
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -228,7 +226,9 @@ public class RobotContainer {
           )
       );      
 
-
+    con2.aButton.whileTrue(
+      autoaim.aimSpeaker()
+    );
 
 
     RunCommand moveArmToAmp = new RunCommand(

@@ -25,7 +25,7 @@ public final class Constants {
   //meesheeshooballooogaggoogaggo woogo wogo bo
   //everything is in metric units and degrees
   
-  public static final double MASS_IN_POUNDS = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 116.5+13.5 : 116.5+11.2; //
+  public static final double MASS_IN_POUNDS = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 116.5+13.5 : 116.5+11.2;
   public static final double ROBOT_MASS = MASS_IN_POUNDS*0.453592; //converting pounds to kg
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
@@ -63,10 +63,11 @@ public final class Constants {
 
   public static class ArmConstants {
     public static final double motorToArmGearRatio = 1.0/27.0;
-    public static final double ampArmPos = 0.577;
-    public static final double groundArmPos = 0.321;
-    public static final double armTravelPos = groundArmPos + 0.05;
-    public static final double armLength = 24.727914/39.37;
+    public static final double ampArmPos = 0.570;
+    public static final double groundArmPos = 0.314;
+    public static final double armLength = Units.inchesToMeters(24.727914);
+    public static final double encoderPitchDiameter = 62.23*1000;
+    public static final double pivotHeight = Units.inchesToMeters(10.907);
     public static final double[][] armAngleArray = {
       // test for different angles from different x distances
       {0, 0}
@@ -75,8 +76,10 @@ public final class Constants {
   }
 
   public static class ShooterConstants {
-    public static final double shooterRadius = 2.0/39.37;
-    public static final double shooterLength = 5.639686/39.37;
+    public static final double shooterRadius = Units.inchesToMeters(2.0);
+    public static final double shooterLength = Units.inchesToMeters(5.639686);
+    public static final double maxRPM = 5700;
+    public static final double differenceFromArm = Units.degreesToRadians(55);
     public static final double[][] shooterSpeedArray = {
       // test for different speeds from different angles
       {0, 0}
@@ -86,18 +89,17 @@ public final class Constants {
   }
 
   public static class VisionConstants {
-    public static final double limelightHeight = 0.0;
-    public static final double limelightDegrees = 0.0;
-    public static final double heightFromGround = 0.0;
-    public static final int[] speakerMidTags = {4,7};
-    public static final int[] speakerSideTags = {3,8};
-    public static final int[] ampTags = {5,6};
-    public static final double speakerTagHeight = 0.0;
-
+    public static final double limelightHeight = Units.inchesToMeters(15.325);
+    public static final double limelightDegrees = 50;
+    public static final double limelightXDistToArmPivot = Units.inchesToMeters(2.142);
+    public static final double limelightYDistToArmPivot = Units.inchesToMeters(4.418);
+    public static final int speakerMidTag = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 4 : 7;
+    public static final int speakerSideTag = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 3 : 8;
+    public static final int ampTags = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 5 : 6;
   }
 
   public static class FieldConstants {
-    public static final double speakerHeight = 0.0;
+    public static final double speakerHeight = 2.045;
     public static final double ampHeight = 0.0;
   }
 

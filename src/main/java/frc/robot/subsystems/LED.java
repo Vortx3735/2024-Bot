@@ -26,18 +26,19 @@ public class LED extends SubsystemBase{
         m_led.start();
     }
 
-    @Override
-    public void periodic() {
-        // if (DriverStation.isEnabled()) {
-        //     setLEDs();
-        // }
+    public void blinkColor(Color color) {
+        double timer = System.currentTimeMillis();
+        if(timer % 150 <= 75) {
+            for (int i = 0; i < m_ledBuffer.getLength(); i++) { 
+                m_ledBuffer.setLED(i, color);
+            }
+        } else {
+            for (int i = 0; i < m_ledBuffer.getLength(); i++) { 
+                m_ledBuffer.setLED(i, Color.kBlack);
+            }
+        }
+        m_led.setData(m_ledBuffer);
     }
-
-    @Override
-    public void simulationPeriodic() {
-
-    }
-
 
     public void rainbow() {
         // For every pixel

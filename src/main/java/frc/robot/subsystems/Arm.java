@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 import frc.robot.Constants;
+import frc.robot.Constants.ArmConstants;
 
 
 
@@ -52,7 +53,8 @@ public class Arm extends SubsystemBase {
     ArmNeo1.setInverted(false);
     ArmNeo1.setIdleMode(IdleMode.kBrake);
     ArmNeo2.setIdleMode(IdleMode.kBrake);
-    this.ArmNeo2.follow(ArmNeo1, false);
+    ArmNeo2.follow(ArmNeo1, false);
+    armEncoder.setDistancePerRotation(Math.PI * ArmConstants.encoderPitchDiameter);
 
     // armEncoder.reset();
     armEncoder.setPositionOffset(offset);
@@ -96,7 +98,7 @@ public class Arm extends SubsystemBase {
 
 
 
-  private void move(double percentSpeed){
+  public void move(double percentSpeed){
     ArmNeo1.set(percentSpeed);
     System.out.println("Setting Speed" + percentSpeed);
   }
@@ -104,7 +106,9 @@ public class Arm extends SubsystemBase {
 
   //add soft limits based on encoder position
   public void up(double percentSpeed) {
+    if(position < .24) {
       move(percentSpeed);
+    }
   }
 
   public void coast() {
@@ -136,6 +140,10 @@ public class Arm extends SubsystemBase {
     // double armAngleDegrees = armRotation * 360;
     // return armAngleDegrees;
     return position;
+  }
+
+  public double getRadiansTravelled() {
+    return armEncoder.getDistance()/(2*Math.PI);
   }
 
   public BooleanSupplier getArmDown() {
