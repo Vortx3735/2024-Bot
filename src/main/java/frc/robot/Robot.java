@@ -149,13 +149,21 @@ public class Robot extends TimedRobot {
     // m_robotContainer.setDriveMode();
     // m_robotContainer.setMotorBrake(true);
     RobotContainer.arm.setArmBrake(IdleMode.kBrake);
-    RobotContainer.drivebase.setMotorBrake(true);  
+    RobotContainer.drivebase.setMotorBrake(true);
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    RobotContainer.led.noteCheck();
+    if(RobotContainer.con2.rb.getAsBoolean()) {
+      RobotContainer.led.blinkColor(Color.kGreen);
+    } else if (RobotContainer.con1.rt.getAsBoolean() || RobotContainer.con1.lt.getAsBoolean()) {
+      RobotContainer.led.blinkColor(Color.kBlue);
+    } else if (RobotContainer.con2.lt.getAsBoolean() || RobotContainer.con2.rt.getAsBoolean()) {
+      RobotContainer.led.blinkColor(Color.kRed);
+    } else {
+      RobotContainer.led.noteCheck();
+    }
   }
 
   @Override

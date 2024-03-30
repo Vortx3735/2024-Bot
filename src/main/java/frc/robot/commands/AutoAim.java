@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
@@ -43,36 +44,48 @@ public class AutoAim extends Command {
   }
 
   public Command aimSpeaker() {
-    double kP = 0.1;
-    double xDistLLToShooter = ArmConstants.armLength*Math.cos(RobotContainer.arm.getRadiansTravelled()) 
-                              - ShooterConstants.shooterLength*Math.cos(RobotContainer.arm.getRadiansTravelled() 
-                                                                          + ShooterConstants.differenceFromArm)
-                              + VisionConstants.limelightXDistToArmPivot;
-    double yDistLLToShooter = ArmConstants.armLength*Math.sin(RobotContainer.arm.getRadiansTravelled()) 
-                              - ShooterConstants.shooterLength*Math.sin(RobotContainer.arm.getRadiansTravelled()
-                                                                          + ShooterConstants.differenceFromArm)
-                              - VisionConstants.limelightYDistToArmPivot;
-    double targetOffsetAngle_Vertical = LimelightHelpers.getTY("limelight");  
-
-    double angleToGoalDegrees = VisionConstants.limelightDegrees + targetOffsetAngle_Vertical;
-    double angleToGoalRadians = Units.degreesToRadians(angleToGoalDegrees);
-
-    //calculate distance
-    double distanceFromLimelightToGoalMeters = (FieldConstants.speakerHeight - VisionConstants.limelightHeight) / Math.tan(angleToGoalRadians);
-    double xShooterToGoal = distanceFromLimelightToGoalMeters + xDistLLToShooter;
-
-    double yShooterToGoal = FieldConstants.speakerHeight - ArmConstants.pivotHeight - yDistLLToShooter;
-    double error = stupid(xShooterToGoal, yShooterToGoal)[0] - RobotContainer.arm.getRadiansTravelled();
-    double rpmNeeded = stupid(xShooterToGoal, yShooterToGoal)[1];
-
-    return new RunCommand(
-      () -> RobotContainer.arm.move(error*kP),
-      RobotContainer.arm
-    ).alongWith(
-      new RunCommand(
-        () -> RobotContainer.shooter.setShooterRPM(rpmNeeded),
-        RobotContainer.shooter)
-    );
+    if(LimelightHelpers.getFiducialID("limelight") == VisionConstants.speakerMidTag) {
+      double kP = 0.1;
+      double xDistLLToShooter = ArmConstants.armLength*Math.cos(RobotContainer.arm.getRadiansTravelled()) 
+                                - ShooterConstants.shooterLength*Math.cos(RobotContainer.arm.getRadiansTravelled() 
+                                                                            + ShooterConstants.differenceFromArm)
+                                + VisionConstants.limelightXDistToArmPivot;
+      double yDistLLToShooter = ArmConstants.armLength*Math.sin(RobotContainer.arm.getRadiansTravelled()) 
+                                - ShooterConstants.shooterLength*Math.sin(RobotContainer.arm.getRadiansTravelled()
+                                                                            + ShooterConstants.differenceFromArm)
+                                - VisionConstants.limelightYDistToArmPivot;
+      double targetOffsetAngle_Vertical = LimelightHelpers.getTY("limelight");  
+  
+      double angleToGoalDegrees = VisionConstants.limelightDegrees + targetOffsetAngle_Vertical;
+      double angleToGoalRadians = Units.degreesToRadians(angleToGoalDegrees);
+  
+      //calculate distance
+      double distanceFromLimelightToGoalMeters = (FieldConstants.speakerHeight - VisionConstants.limelightHeight) / Math.tan(angleToGoalRadians);
+      double xShooterToGoal = distanceFromLimelightToGoalMeters + xDistLLToShooter;
+  
+      double yShooterToGoal = FieldConstants.speakerHeight - ArmConstants.pivotHeight - yDistLLToShooter;
+      double error = stupid(xShooterToGoal, yShooterToGoal)[0] - RobotContainer.arm.getRadiansTravelled();
+      double rpmNeeded = stupid(xShooterToGoal, yShooterToGoal)[1];
+  
+      return new RunCommand(
+        () -> RobotContainer.arm.move(error*kP),
+        RobotContainer.arm
+      ).alongWith(
+        new RunCommand(
+          () -> RobotContainer.shooter.setShooterRPM(rpmNeeded),
+          RobotContainer.shooter)
+      );
+    } else {
+      System.out.println(((DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? "Red" : "Blue") + " Alliance Mid Speaker AprilTag Not Found!");
+      return new RunCommand(
+        () -> RobotContainer.arm.getDefaultCommand(),
+        RobotContainer.arm
+      ).alongWith(
+        new RunCommand(
+          () -> RobotContainer.shooter.getDefaultCommand(),
+          RobotContainer.shooter)
+      );
+    }
   }
 
   public static double[] stupid(double xDist, double yDist) {

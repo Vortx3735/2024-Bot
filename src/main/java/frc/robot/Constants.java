@@ -25,7 +25,7 @@ public final class Constants {
   //meesheeshooballooogaggoogaggo woogo wogo bo
   //everything is in metric units and degrees
   
-  public static final double MASS_IN_POUNDS = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 116.5+13.5 : 116.5+11.2; //
+  public static final double MASS_IN_POUNDS = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 116.5+13.5 : 116.5+11.2;
   public static final double ROBOT_MASS = MASS_IN_POUNDS*0.453592; //converting pounds to kg
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
@@ -93,9 +93,9 @@ public final class Constants {
     public static final double limelightDegrees = 50;
     public static final double limelightXDistToArmPivot = Units.inchesToMeters(2.142);
     public static final double limelightYDistToArmPivot = Units.inchesToMeters(4.418);
-    public static final int[] speakerMidTags = {4,7};
-    public static final int[] speakerSideTags = {3,8};
-    public static final int[] ampTags = {5,6};
+    public static final int speakerMidTag = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 4 : 7;
+    public static final int speakerSideTag = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 3 : 8;
+    public static final int ampTags = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 5 : 6;
   }
 
   public static class FieldConstants {
