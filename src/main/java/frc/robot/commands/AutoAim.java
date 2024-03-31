@@ -163,7 +163,7 @@ public class AutoAim extends Command {
         if(shootingvelo > 5700) {
             shootingvelo = 5700;
         }
-        double rpm = (30*shootingvelo)/(Math.PI*(2.0/39.37))/2;
+        double rpm = (30*shootingvelo)/(Math.PI*(ShooterConstants.shooterRadius))/2;
         
         double t4 = (Math.pow(a_x, 2) + Math.pow(a_y, 2))/4;
         double t3 = (a_x*v_x + a_y*v_y);

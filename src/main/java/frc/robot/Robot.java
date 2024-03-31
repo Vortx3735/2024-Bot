@@ -14,7 +14,6 @@ import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import swervelib.parser.SwerveParser;
@@ -27,12 +26,9 @@ import swervelib.parser.SwerveParser;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static Robot   instance;
-
+  private static Robot instance;
   private Command m_autonomousCommand;
-
   private RobotContainer m_robotContainer;
-
 
   // private DigitalInput beamBreak = new DigitalInput(IntakeConstants.BEAM_BREAK_PORT);
 
@@ -56,10 +52,10 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    // CameraServer.startAutomaticCapture();
-
     RobotContainer.drivebase.swerveDrive.setMotorIdleMode(true);
 
+    CameraServer.startAutomaticCapture("intake", 0);
+    CameraServer.startAutomaticCapture("back", 1);
     
     enableLiveWindowInTest(true); //enabling test mode
     SmartDashboard.putData(CommandScheduler.getInstance());
