@@ -154,11 +154,8 @@ public class AutoAim extends Command {
         double v_x = 0;
         double p_x = -yDist; // horizontal distance from target, this will change bc the robot moves
         
-        // i swear this is the only magic number and its to align the arm to 0 when against the subwoofer
-        // you could go through the math to get the good number but i dont feel like it so nah
-        double magic = 0.8812; // 0.8812
-        double shootingvelo_y = Math.sqrt(p_y * a_y * 2) + magic;
-        double shootingvelo_x = p_x/(shootingvelo_y/a_y) + magic;
+        double shootingvelo_y = Math.sqrt(p_y * a_y * 2);
+        double shootingvelo_x = p_x/(shootingvelo_y/a_y);
         double shootingvelo = Math.sqrt(Math.pow(shootingvelo_x, 2) + Math.pow(shootingvelo_y, 2))*2;
         if(shootingvelo > 5700) {
             shootingvelo = 5700;
