@@ -35,6 +35,12 @@
               }
             ]
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ShootFarRightMiddle_1"
+          }
         }
       ]
     }

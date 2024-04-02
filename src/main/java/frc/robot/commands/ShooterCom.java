@@ -38,7 +38,7 @@ public class ShooterCom extends Command {
   }
 
   public void idleShot() {
-    if(RobotContainer.intake.getRing()) {
+    if(RobotContainer.intake.getNoteBeamBoolean()) {
       RobotContainer.shooter.move(.5);
     } else {
       RobotContainer.shooter.move(0);
@@ -122,10 +122,10 @@ public class ShooterCom extends Command {
         return  new SequentialCommandGroup(
             new RunCommand(
               () -> RobotContainer.shooter.move(0.8), // rev up shooter
-              RobotContainer.shooter).withTimeout(.5),
+              RobotContainer.shooter).withTimeout(.1),
             
             new RunCommand(
-              () -> RobotContainer.intake.move(1), 
+              () -> RobotContainer.intake.move(0.8), 
               RobotContainer.intake).alongWith(
                 new RunCommand(
                   () -> RobotContainer.shooter.move(0.8), // shooter

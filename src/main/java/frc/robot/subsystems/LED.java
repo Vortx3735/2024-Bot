@@ -57,11 +57,16 @@ public class LED extends SubsystemBase{
     }
 
     public void noteCheck() {
-        if(RobotContainer.intake.getRing()) {
+        if(RobotContainer.intake.getNoteBeamBoolean() && !RobotContainer.intake.getRing()) {
             for(int i = 0; i < m_ledBuffer.getLength(); i++) {
-                m_ledBuffer.setLED(i, Color.kYellow);
+                m_ledBuffer.setLED(i, Color.kAntiqueWhite);
             }
-        } else {
+        } else if(RobotContainer.intake.getRing() && RobotContainer.intake.getNoteBeamBoolean()) {
+            for(int i = 0; i < m_ledBuffer.getLength(); i++) {
+                m_ledBuffer.setLED(i, Color.kGreen);
+            }
+        }
+        else {
             for(int i = 0; i < m_ledBuffer.getLength(); i++) {
                 m_ledBuffer.setLED(i, Color.kBlue);
             }

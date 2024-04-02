@@ -5,7 +5,16 @@
         "visible": true
       }
     },
+<<<<<<< Updated upstream
     "RoboRIO": {
+=======
+    "DIO": {
+      "window": {
+        "visible": true
+      }
+    },
+    "PWM Outputs": {
+>>>>>>> Stashed changes
       "window": {
         "visible": true
       }

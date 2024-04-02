@@ -195,25 +195,20 @@ public class RobotContainer {
       )
     );
 
-    con2.rt.whileTrue(
-      new RunCommand(
-          () -> intake.move(.8), 
-          intake).alongWith(
-        new RunCommand(
-          () -> shooter.move(.8), // rev up shooter
-          shooter))
-    );
-
     con2.lt.whileTrue(
       new RunCommand(
-        () -> shooter.move(1), 
+        () -> shooter.move(.85), 
         shooter)
     );
 
-    con2.lb.whileTrue(
+    con2.rt.whileTrue(
       new RunCommand(
-        () -> arm.moveToSetpoint(Constants.ArmConstants.armTravelPos, 3), 
-        arm)
+        () -> shooter.move(.85), 
+        shooter).alongWith(
+          new RunCommand(
+            () -> intake.move(.85), 
+            intake)
+        )
     );
 
       con2.yButton.whileTrue(
@@ -266,6 +261,15 @@ public class RobotContainer {
         )
     );
 
+    RunCommand moveArmToShot = new RunCommand(
+      () -> arm.moveToSetpoint(Constants.ArmConstants.armTravelPos, 4), 
+      arm
+      );
+
+    con2.aButton.whileTrue(
+      moveArmToShot
+    );
+
     con1.lb.toggleOnTrue(
       new InstantCommand(
         () -> drivebase.togglePrecisionMode(),
@@ -282,23 +286,17 @@ public class RobotContainer {
     //   RobotContainer.climbcom.getMoveCommand(-.25)
     // );
 
-    con2.povDown.whileTrue(
-      new RunCommand(
-        () -> climb.moveLeft(-.25), 
-        climb)
-    );
     con2.povUp.whileTrue(
       new RunCommand(
-        () -> climb.moveLeft(.25), 
+        () -> climb.moveRight(-.25), 
         climb)
     );
 
-    // // con2.yButton.whileTrue(climbcom.getMoveCommand(.25));
-    // con1.povUp.whileTrue(
-    //   new RunCommand(
-    //     () -> climb.moveLeft(.25), 
-    //     climb)
-    // );
+    con2.povDown.whileTrue(
+      new RunCommand(
+        () -> climb.moveRight(.25), 
+        climb)
+    );
 
     // con1.povUp.whileTrue(
     //   new RunCommand(
@@ -306,11 +304,6 @@ public class RobotContainer {
     //     climb)
     // );
 
-    // con2.view.whileTrue(
-    //   new RunCommand(
-    //     // () -> climb.setReverseSoftLimit(-5000), 
-    //     climb)
-    // );
 
     con1.lt.whileTrue(
       new RunCommand(
@@ -360,9 +353,11 @@ public class RobotContainer {
 
     //  return drivebase.getAutonomousCommand("MoveForwardCenter");
 
-    // return drivebase.getAutonomousCommand("Test");
+    // return drivebase.getAutonomousCommand("RightMiddleCollectNotes");
 
-    return drivebase.getAutonomousCommand("RightMiddleCollectNotes");
+    return drivebase.getAutonomousCommand("FourNoteCenter");
+
+    
   }
 
   public void setDriveMode() {

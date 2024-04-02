@@ -70,6 +70,10 @@ public class Intake extends SubsystemBase {
     return () -> intakingRing;
   }
 
+  public boolean getNoteBeamBoolean() {
+    return intakingRing;
+  }
+
   public boolean getRing() {
     return hasRing;
   }

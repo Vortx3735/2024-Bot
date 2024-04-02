@@ -25,7 +25,7 @@ public class Climb extends SubsystemBase {
     climbNeo2.setIdleMode(IdleMode.kBrake);
 
     climbNeo1.setInverted(true);
-    climbNeo2.setInverted(false);
+    climbNeo2.setInverted(true);
     // climbNeo2.follow(climbNeo1, true);
 
 
