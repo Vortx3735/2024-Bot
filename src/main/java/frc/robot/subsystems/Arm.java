@@ -40,7 +40,7 @@ public class Arm extends SubsystemBase {
   private final DutyCycleEncoder armEncoder = new DutyCycleEncoder(0);
   public double position = 0;
   private double raw_position;
-  private double offset = .3;
+  private double offset = 0.7;
 
 
   public Arm(int leftMotor, int rightMotor, double motorToArmGearRatio) {

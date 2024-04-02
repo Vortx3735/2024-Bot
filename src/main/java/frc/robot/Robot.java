@@ -14,6 +14,7 @@ import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import swervelib.parser.SwerveParser;
@@ -155,15 +156,15 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    // if(RobotContainer.con2.rb.getAsBoolean()) {
-    //   RobotContainer.led.blinkColor(Color.kGreen);
-    // } else if (RobotContainer.con1.rt.getAsBoolean() || RobotContainer.con1.lt.getAsBoolean()) {
-    //   RobotContainer.led.blinkColor(Color.kBlue);
-    // } else if (RobotContainer.con2.lt.getAsBoolean() || RobotContainer.con2.rt.getAsBoolean()) {
-    //   RobotContainer.led.blinkColor(Color.kRed);
-    // } else {
-    //   RobotContainer.led.noteCheck();
-    // }
+    if(RobotContainer.con2.rb.getAsBoolean()) {
+      RobotContainer.led.blinkColor(Color.kGreen);
+    } else if (RobotContainer.con1.rt.getAsBoolean() || RobotContainer.con1.lt.getAsBoolean()) {
+      RobotContainer.led.blinkColor(Color.kBlue);
+    } else if (RobotContainer.con2.lt.getAsBoolean() || RobotContainer.con2.rt.getAsBoolean()) {
+      RobotContainer.led.blinkColor(Color.kRed);
+    } else {
+      RobotContainer.led.noteCheck();
+    }
   }
 
   @Override
