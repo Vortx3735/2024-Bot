@@ -116,6 +116,7 @@ public class AutoAim extends Command {
         if(shootingvelo > 5700) {
             shootingvelo = 5700;
         }
+        //divide by 2 because theres 2 shooters that act on the note also this makes our trajectory work in desmos :)
         double rpm = (30*shootingvelo)/(Math.PI*(ShooterConstants.shooterRadius))/2;
         
         double t4 = (Math.pow(a_x, 2) + Math.pow(a_y, 2))/4;
@@ -126,7 +127,7 @@ public class AutoAim extends Command {
 
 
         List<Double> roots = RootFinder.rootFinder(Arrays.asList(t4, t3, t2, t1, t0), 0.01);
-        for(double root: roots) {
+        for(double root : roots) {
             root = Math.abs(root);
         }
         double t = -1;

@@ -143,7 +143,7 @@ public class Arm extends SubsystemBase {
   }
 
   public double getRadiansTravelled() {
-    return armEncoder.getDistance()/(Constants.ArmConstants.encoderPitchDiameter/2);
+    return (position - ArmConstants.groundArmPos) * 2 * Math.PI;
   }
 
   public BooleanSupplier getArmDown() {
