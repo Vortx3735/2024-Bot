@@ -68,7 +68,7 @@ public final class Constants {
     public static final double armTravelPos = groundArmPos + 0.05; 
 
     public static final double armLength = Units.inchesToMeters(24.727914);
-    public static final double encoderPitchDiameter = 62.23*1000;
+    public static final double encoderPitchDiameter = 62.23/1000;
     public static final double pivotHeight = Units.inchesToMeters(10.907);
     public static final double[][] armAngleArray = {
       // test for different angles from different x distances
