@@ -55,8 +55,8 @@ public class Robot extends TimedRobot {
 
     RobotContainer.drivebase.swerveDrive.setMotorIdleMode(true);
 
-    CameraServer.startAutomaticCapture("intake", 0);
-    CameraServer.startAutomaticCapture("back", 1);
+    // CameraServer.startAutomaticCapture("intake", 0);
+    // CameraServer.startAutomaticCapture("back", 1);
     
     enableLiveWindowInTest(true); //enabling test mode
     SmartDashboard.putData(CommandScheduler.getInstance());
@@ -156,12 +156,12 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if(RobotContainer.con2.rb.getAsBoolean()) {
-      RobotContainer.led.blinkColor(Color.kGreen);
+    if(RobotContainer.con2.rt.getAsBoolean() || RobotContainer.con2.rb.getAsBoolean()) {
+      RobotContainer.led.blinkColor(Color.kRed);
     } else if (RobotContainer.con1.rt.getAsBoolean() || RobotContainer.con1.lt.getAsBoolean()) {
       RobotContainer.led.blinkColor(Color.kBlue);
-    } else if (RobotContainer.con2.lt.getAsBoolean() || RobotContainer.con2.rt.getAsBoolean()) {
-      RobotContainer.led.blinkColor(Color.kRed);
+    } else if (RobotContainer.con2.lt.getAsBoolean()) {
+      RobotContainer.led.blinkColor(Color.kGreen);
     } else {
       RobotContainer.led.noteCheck();
     }

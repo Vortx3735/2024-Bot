@@ -143,7 +143,7 @@ public class Arm extends SubsystemBase {
   }
 
   public double getRadiansTravelled() {
-    return armEncoder.getDistance()/(2*Math.PI);
+    return armEncoder.getDistance()/(Constants.ArmConstants.encoderPitchDiameter/2);
   }
 
   public BooleanSupplier getArmDown() {
@@ -189,6 +189,7 @@ public class Arm extends SubsystemBase {
       position = raw_position - offset;
     }
     SmartDashboard.putNumber("arm//ArmEncoder", position);
+    SmartDashboard.putNumber("arm//distance travelled", getRadiansTravelled());
     //SmartDashboard.putNumber("arm//ArmEncoder without math", armEncoder.getAbsolutePosition());
   }
 

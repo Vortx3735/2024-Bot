@@ -44,8 +44,8 @@ public class AutoAim extends Command {
   }
 
   public Command aimSpeaker() {
-    if(LimelightHelpers.getFiducialID("limelight") == VisionConstants.speakerMidTag) {
-      double kP = 0.1;
+    // if(LimelightHelpers.getFiducialID("limelight") == VisionConstants.speakerMidTag) {
+      double kP = 0.0001;
       double xDistLLToShooter = ArmConstants.armLength*Math.cos(RobotContainer.arm.getRadiansTravelled()) 
                                 - ShooterConstants.shooterLength*Math.cos(RobotContainer.arm.getRadiansTravelled() 
                                                                             + ShooterConstants.differenceFromArm)
@@ -75,17 +75,16 @@ public class AutoAim extends Command {
           () -> RobotContainer.shooter.setShooterRPM(rpmNeeded),
           RobotContainer.shooter)
       );
-    } else {
-      System.out.println(((DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? "Red" : "Blue") + " Alliance Mid Speaker AprilTag Not Found!");
-      return new RunCommand(
-        () -> RobotContainer.arm.getDefaultCommand(),
-        RobotContainer.arm
-      ).alongWith(
-        new RunCommand(
-          () -> RobotContainer.shooter.getDefaultCommand(),
-          RobotContainer.shooter)
-      );
-    }
+    // } else {
+    //   return new RunCommand(
+    //     () -> RobotContainer.arm.hold(),
+    //     RobotContainer.arm
+    //   ).alongWith(
+    //     new RunCommand(
+    //       () -> RobotContainer.shooter.coast(),
+    //       RobotContainer.shooter)
+    //   );
+    // }
   }
 
   public Command aimSpeakerAuto() {

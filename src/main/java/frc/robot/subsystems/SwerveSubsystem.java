@@ -315,7 +315,7 @@ public class SwerveSubsystem extends SubsystemBase {
       // if it is too high, the robot will oscillate.
       // this is a hand-tuned number that determines the aggressiveness of our proportional control loop
       // kP (constant of proportionality)
-    double kP = .001;
+      double kP = .001;
 
       // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
       // your limelight 3 feed, tx should return roughly 31 degrees.

@@ -221,9 +221,9 @@ public class RobotContainer {
           )
       );      
 
-    con2.aButton.whileTrue(
-      autoaim.aimSpeaker()
-    );
+    // con2.aButton.whileTrue(
+    //   autoaim.aimSpeaker()
+    // );
 
 
     RunCommand moveArmToAmp = new RunCommand(
@@ -261,14 +261,14 @@ public class RobotContainer {
         )
     );
 
-    RunCommand moveArmToShot = new RunCommand(
-      () -> arm.moveToSetpoint(Constants.ArmConstants.armTravelPos, 4), 
-      arm
-      );
+    // RunCommand moveArmToShot = new RunCommand(
+    //   () -> arm.moveToSetpoint(Constants.ArmConstants.armTravelPos, 4), 
+    //   arm
+    //   );
 
-    con2.aButton.whileTrue(
-      moveArmToShot
-    );
+    // con2.aButton.whileTrue(
+    //   moveArmToShot
+    // );
 
     con1.lb.toggleOnTrue(
       new InstantCommand(
