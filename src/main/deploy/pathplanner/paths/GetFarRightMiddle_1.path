@@ -8,20 +8,52 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.07267095846602371,
-        "y": 0.6909393562011086
+        "x": 0.9392728628538557,
+        "y": 2.1547939244237972
       },
       "isLocked": false,
       "linkedName": "EndShootRightClose_1"
     },
     {
       "anchor": {
-        "x": 8.246834867421518,
-        "y": 1.5575412605889405
+        "x": 1.9581156423368469,
+        "y": 1.5809629336805036
       },
       "prevControl": {
-        "x": 7.1928595783011815,
-        "y": 1.8620230107792606
+        "x": 1.4896821805055864,
+        "y": 1.7683363184130072
+      },
+      "nextControl": {
+        "x": 2.4446334390791677,
+        "y": 1.3863558149835757
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.529920788800206,
+        "y": 1.1125294718492431
+      },
+      "prevControl": {
+        "x": 4.786005733385434,
+        "y": 1.0844572056071764
+      },
+      "nextControl": {
+        "x": 6.7712694626530485,
+        "y": 1.159372818032369
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.024328973051668,
+        "y": 1.5809629336805036
+      },
+      "prevControl": {
+        "x": 7.380232963033685,
+        "y": 1.1125294718492431
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,8 +71,8 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
-    "rotateFast": false
+    "rotation": 15.0,
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "RightMiddleCollectNotes",

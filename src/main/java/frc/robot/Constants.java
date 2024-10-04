@@ -25,7 +25,7 @@ public final class Constants {
   //meesheeshooballooogaggoogaggo woogo wogo bo
   //everything is in metric units and degrees
   
-  public static final double MASS_IN_POUNDS = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 121.8+13.5 : 121.8+11.2; //
+  public static final double MASS_IN_POUNDS = (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) ? 123.2+13.5 : 123.2+11.2; //
   public static final double ROBOT_MASS = Units.lbsToKilograms(MASS_IN_POUNDS); //converting pounds to kg
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
@@ -63,8 +63,8 @@ public final class Constants {
 
   public static class ArmConstants {
     public static final double motorToArmGearRatio = 1.0/27.0;
-    public static final double ampArmPos = 0.623;
-    public static final double groundArmPos = 0.374;
+    public static final double ampArmPos = 0.642;
+    public static final double groundArmPos = 0.381;
     public static final double armTravelPos = groundArmPos + 0.05; 
 
     public static final double armLength = Units.inchesToMeters(24.727914);

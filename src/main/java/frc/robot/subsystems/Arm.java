@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
 
 
@@ -100,9 +101,8 @@ public class Arm extends SubsystemBase {
 
   public void move(double percentSpeed){
     ArmNeo1.set(percentSpeed);
-    System.out.println("Setting Speed" + percentSpeed);
+    // System.out.println("Setting Speed" + percentSpeed);
   }
-
 
   //add soft limits based on encoder position
   public void up(double percentSpeed) {
@@ -189,7 +189,6 @@ public class Arm extends SubsystemBase {
       position = raw_position - offset;
     }
     SmartDashboard.putNumber("arm//ArmEncoder", position);
-    SmartDashboard.putNumber("arm//distance travelled", getRadiansTravelled());
     //SmartDashboard.putNumber("arm//ArmEncoder without math", armEncoder.getAbsolutePosition());
   }
 

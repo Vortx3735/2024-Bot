@@ -10,6 +10,8 @@ import java.io.IOException;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -18,6 +20,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import swervelib.parser.SwerveParser;
+
 
 
 /**
@@ -30,6 +33,8 @@ public class Robot extends TimedRobot {
   private static Robot instance;
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
+     
+
 
   // private DigitalInput beamBreak = new DigitalInput(IntakeConstants.BEAM_BREAK_PORT);
 
@@ -55,9 +60,8 @@ public class Robot extends TimedRobot {
 
     RobotContainer.drivebase.swerveDrive.setMotorIdleMode(true);
 
-    // CameraServer.startAutomaticCapture("intake", 0);
-    // CameraServer.startAutomaticCapture("back", 1);
-    
+    // CameraServer.startAutomaticCapture();
+
     enableLiveWindowInTest(true); //enabling test mode
     SmartDashboard.putData(CommandScheduler.getInstance());
 
@@ -91,6 +95,7 @@ public class Robot extends TimedRobot {
     //value = SmartDashboard.getNumber("shooter/Shooter Setpoint", 1.0);
     //SmartDashboard.putNumber("shooter/Shooter Setpoint 2", value);
     // SmartDashboard.putBoolean("intake/Beam Break",beamBreak.get());
+    
     SmartDashboard.putNumber("LeftX", RobotContainer.con1.getLeftX());
     SmartDashboard.putNumber("LeftY", RobotContainer.con1.getLeftY());
     SmartDashboard.putNumber("RightX", RobotContainer.con1.getRightX());
@@ -156,6 +161,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+
     if(RobotContainer.con2.rt.getAsBoolean() || RobotContainer.con2.rb.getAsBoolean()) {
       RobotContainer.led.blinkColor(Color.kRed);
     } else if (RobotContainer.con1.rt.getAsBoolean() || RobotContainer.con1.lt.getAsBoolean()) {

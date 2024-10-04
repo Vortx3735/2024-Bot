@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.8495862228255343,
-      "y": 6.655515482515854
+      "x": 1.4,
+      "y": 5.55
     },
-    "rotation": 58.50000458017709
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "FirstShot"
+            "name": "firstshotrev"
           }
         },
         {
@@ -30,16 +30,29 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "GoToLeftClose"
+                  "pathName": "ToNote"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "LeftCloseToSpeaker"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ToSpeaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shooterIdle"
+                }
+              }
+            ]
           }
         },
         {
@@ -55,7 +68,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LeftCloseSpeakerToMid"
+                  "pathName": "SubToLeft"
                 }
               },
               {
@@ -68,9 +81,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "LeftMiddleNoteToSpeaker"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LeftToSub"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shooterIdle"
+                }
+              }
+            ]
           }
         },
         {

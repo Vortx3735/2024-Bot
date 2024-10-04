@@ -18,9 +18,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+
 
 
 /** An example command that uses an example subsystem. */
@@ -28,6 +29,10 @@ public class AutoAim extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Arm arm;
   private final Shooter shooter;
+  private static double xShooterToGoal;
+  private static double yShooterToGoal;
+
+  
   /**
    * Creates a new ExampleCommand.
    *
@@ -43,50 +48,6 @@ public class AutoAim extends Command {
     addRequirements(arm, shooter);
   }
 
-  public Command aimSpeaker() {
-    // if(LimelightHelpers.getFiducialID("limelight") == VisionConstants.speakerMidTag) {
-      double kP = 0.01;
-      double xDistLLToShooter = VisionConstants.limelightXDistToArmPivot
-                                + ArmConstants.armLength*Math.cos(RobotContainer.arm.getRadiansTravelled()) 
-                                - ShooterConstants.shooterLength*Math.cos(RobotContainer.arm.getRadiansTravelled() 
-                                                                            - ShooterConstants.differenceFromArm);
-      double yDistLLToShooter = -VisionConstants.limelightYDistToArmPivot
-                                + ArmConstants.armLength*Math.sin(RobotContainer.arm.getRadiansTravelled()) 
-                                - ShooterConstants.shooterLength*Math.sin(RobotContainer.arm.getRadiansTravelled()
-                                                                            - ShooterConstants.differenceFromArm);
-                                
-      double targetOffsetAngle_Vertical = LimelightHelpers.getTY("limelight");  
-  
-      double angleToGoalDegrees = VisionConstants.limelightDegrees + targetOffsetAngle_Vertical;
-      double angleToGoalRadians = Units.degreesToRadians(angleToGoalDegrees);
-  
-      //calculate distance
-      double distanceFromLimelightToGoalMeters = (FieldConstants.speakerHeight - VisionConstants.limelightHeight) / Math.tan(angleToGoalRadians);
-      double xShooterToGoal = distanceFromLimelightToGoalMeters + xDistLLToShooter;
-  
-      double yShooterToGoal = FieldConstants.speakerHeight - ArmConstants.pivotHeight - yDistLLToShooter;
-      double error = stupid(xShooterToGoal, yShooterToGoal)[0] - RobotContainer.arm.getRadiansTravelled();
-      double rpmNeeded = stupid(xShooterToGoal, yShooterToGoal)[1];
-  
-      return new RunCommand(
-        () -> RobotContainer.arm.move(error*kP),
-        RobotContainer.arm
-      ).alongWith(
-        new RunCommand(
-          () -> RobotContainer.shooter.setShooterRPM(rpmNeeded),
-          RobotContainer.shooter)
-      );
-    // } else {
-    //   return new RunCommand(
-    //     () -> RobotContainer.arm.hold(),
-    //     RobotContainer.arm
-    //   ).alongWith(
-    //     new RunCommand(
-    //       () -> RobotContainer.shooter.coast(),
-    //       RobotContainer.shooter)
-    //   );
-    // }
-  }
 
   // 
   public static double[] stupid(double xDist, double yDist) {
@@ -151,23 +112,6 @@ public class AutoAim extends Command {
         t = minRoot;
     
 
-
-
-        // double maxRoot = Double.MIN_VALUE;
-        // System.out.println(roots);
-        // for (double root : roots) {
-        //     if (root > maxRoot) {
-        //         maxRoot = root;
-        //     }
-        // }
-
-
-        // if (maxRoot == Double.MIN_VALUE) {
-        //     System.out.println("no solutions");
-        //     return;
-        // }
-        // t = maxRoot;
-
         double p_aimX = -(p_x + v_x*t + (a_x*(Math.pow(t, 2)))/2.0);
         double p_aimY = -(p_y + v_y*t + (a_y*(Math.pow(t, 2)))/2.0);
         double shooting_theta = Math.atan(p_aimY / p_aimX);
@@ -182,10 +126,52 @@ public class AutoAim extends Command {
 
   }
 
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // SmartDashboard.putNumber("arm//radians travelled", RobotContainer.arm.getRadiansTravelled());
+    // SmartDashboard.putNumber("arm//setpoint", stupid(xShooterToGoal, yShooterToGoal)[0]);
 
+    // if(LimelightHelpers.getFiducialID("limelight") == VisionConstants.speakerMidTag) {
+    double kP = 0.1;
+    double xDistLLToShooter = VisionConstants.limelightXDistToArmPivot
+                              + ArmConstants.armLength*Math.cos(RobotContainer.arm.getRadiansTravelled()) 
+                              - ShooterConstants.shooterLength*Math.cos(RobotContainer.arm.getRadiansTravelled() 
+                                                                          - ShooterConstants.differenceFromArm);
+    double yDistLLToShooter = -VisionConstants.limelightYDistToArmPivot
+                              + ArmConstants.armLength*Math.sin(RobotContainer.arm.getRadiansTravelled()) 
+                              - ShooterConstants.shooterLength*Math.sin(RobotContainer.arm.getRadiansTravelled()
+                                                                          - ShooterConstants.differenceFromArm);
+                              
+    double targetOffsetAngle_Vertical = LimelightHelpers.getTY("limelight");  
+
+    double angleToGoalDegrees = VisionConstants.limelightDegrees + targetOffsetAngle_Vertical;
+    double angleToGoalRadians = Units.degreesToRadians(angleToGoalDegrees);
+
+    //calculate distance
+    double distanceFromLimelightToGoalMeters = (FieldConstants.speakerHeight - VisionConstants.limelightHeight) / Math.tan(angleToGoalRadians);
+    xShooterToGoal = distanceFromLimelightToGoalMeters + xDistLLToShooter;
+
+    yShooterToGoal = FieldConstants.speakerHeight - ArmConstants.pivotHeight - yDistLLToShooter;
+    double setpoint  = Math.abs(stupid(xShooterToGoal, yShooterToGoal)[0]);
+    double error = (setpoint - RobotContainer.arm.getRadiansTravelled()) * kP;
+    double rpmNeeded = stupid(xShooterToGoal, yShooterToGoal)[1];
+    // SmartDashboard.putNumber("arm//setpoint",setpoint);
+    // SmartDashboard.putNumber("arm//radians travelled", RobotContainer.arm.getRadiansTravelled());
+
+    // RobotContainer.arm.move(error);
+    // RobotContainer.shooter.setShooterRPM(rpmNeeded);
+  // } else {
+  //   return new RunCommand(
+  //     () -> RobotContainer.arm.hold(),
+  //     RobotContainer.arm
+  //   ).alongWith(
+  //     new RunCommand(
+  //       () -> RobotContainer.shooter.coast(),
+  //       RobotContainer.shooter)
+  //   );
+  // }
   }
 
   // Called once the command ends or is interrupted.

@@ -65,10 +65,10 @@ public class SwerveSubsystem extends SubsystemBase {
     //  The encoder resolution per motor revolution is 1 per motor revolution.
     double angleConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(150.0/7.0);
     // Motor conversion factor is (PI * WHEEL DIAMETER IN METERS) / (GEAR RATIO * ENCODER RESOLUTION).
-    //  In this case the wheel diameter is 4 inches, which must be converted to meters to get meters/second.
+    //  In this case the wheel diameter is 3.9 inches, which must be converted to meters to get meters/second.
     //  The gear ratio is 6.75 motor revolutions per wheel rotation.
     //  The encoder resolution per motor revolution is 1 per motor revolution.
-    double driveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 6.75);
+    double driveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(3.9), 6.75);
     System.out.println("\"conversionFactor\": {");
     System.out.println("\t\"angle\": " + angleConversionFactor + ",");
     System.out.println("\t\"drive\": " + driveConversionFactor);
@@ -99,7 +99,7 @@ public class SwerveSubsystem extends SubsystemBase {
     NamedCommands.registerCommand("Intake", RobotContainer.intakecom.intakeNoteCom().withTimeout(2).asProxy());
     NamedCommands.registerCommand("shooterIdle", RobotContainer.shootercom.autonShooterIdle().withTimeout(1.5).asProxy());
     NamedCommands.registerCommand("firstshotrev", RobotContainer.shootercom.firstShotFromSubasdf().withTimeout(2.2).asProxy());
-
+    
     // NamedCommands.registerCommand("moveArmUp", RobotContainer.shootercom.moveArmUp().asProxy());
     // NamedCommands.registerCommand("moveArmDown", RobotContainer.shootercom.moveArmDown().asProxy());
 

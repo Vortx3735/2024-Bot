@@ -17,7 +17,9 @@ public class Shooter extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   private CANSparkMax shooterNeo1;
   private CANSparkMax shooterNeo2;
-  private SparkPIDController m_pidController;
+  private SparkPIDController m_pidController1;
+  private SparkPIDController m_pidController2;
+
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   // SHOOTER NEO 1 = Top Roller
   // SHOOTER NEO 2 = Bottom Roller`     
@@ -30,7 +32,9 @@ public class Shooter extends SubsystemBase {
     shooterNeo1.setIdleMode(IdleMode.kBrake);
     shooterNeo2.setIdleMode(IdleMode.kBrake);
     shooterNeo1.getEncoder();
-    m_pidController = shooterNeo1.getPIDController();
+    m_pidController1 = shooterNeo1.getPIDController();
+    m_pidController2 = shooterNeo2.getPIDController();
+
 
 
     // PID coefficients
@@ -43,12 +47,18 @@ public class Shooter extends SubsystemBase {
     kMinOutput = -1;
 
     // set PID coefficients
-    m_pidController.setP(kP);
-    m_pidController.setI(kI);
-    m_pidController.setD(kD);
-    m_pidController.setIZone(kIz);
-    m_pidController.setFF(kFF);
-    m_pidController.setOutputRange(kMinOutput, kMaxOutput);
+    m_pidController1.setP(kP);
+    m_pidController1.setI(kI);
+    m_pidController1.setD(kD);
+    m_pidController1.setIZone(kIz);
+    m_pidController1.setFF(kFF);
+    m_pidController1.setOutputRange(kMinOutput, kMaxOutput);
+    m_pidController2.setP(kP);
+    m_pidController2.setI(kI);
+    m_pidController2.setD(kD);
+    m_pidController2.setIZone(kIz);
+    m_pidController2.setFF(kFF);
+    m_pidController2.setOutputRange(kMinOutput, kMaxOutput);
 
       
     // SmartDashboard.putNumber("shooter/Velocity", shooterEncoder.getVelocity());
@@ -69,7 +79,8 @@ public class Shooter extends SubsystemBase {
 
   public void setShooterRPM(double input) {
     if (input < ShooterConstants.maxRPM) {
-        m_pidController.setReference(-input, ControlType.kVelocity);
+        m_pidController1.setReference(input, ControlType.kVelocity);
+        m_pidController2.setReference(-input, ControlType.kVelocity);
     } else {
         System.out.println("Shooter Motor Warning - Cannot Set Motor RPM Over Limit Of "
                 + ShooterConstants.maxRPM);

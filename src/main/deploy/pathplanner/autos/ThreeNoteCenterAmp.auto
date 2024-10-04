@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7751692474475625,
-      "y": 4.3608937513538635
+      "x": 1.4,
+      "y": 5.55
     },
-    "rotation": -58.592656236842544
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,26 @@
         {
           "type": "named",
           "data": {
-            "name": "FirstShot"
+            "name": "firstshotrev"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ToNote"
+                }
+              }
+            ]
           }
         },
         {
@@ -24,22 +43,16 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "RightStartToRightNote"
+                  "pathName": "ToSpeaker"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "shooterIdle"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "RightNoteToSpeaker"
           }
         },
         {
@@ -55,7 +68,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "RightMiddleToMidNote"
+                  "pathName": "SubToPodium"
                 }
               },
               {
@@ -68,9 +81,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "RightMiddleToSpeaker"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "PodiumToSub"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "shooterIdle"
+                }
+              }
+            ]
           }
         },
         {

@@ -29,6 +29,8 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.Climb;
 import frc.robot.util.VorTXControllerXbox;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSink;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -63,8 +65,7 @@ public class RobotContainer {
 
 
   public static AdvantageScope advantagescope = new AdvantageScope();
-
-                                                                   
+      
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -197,32 +198,52 @@ public class RobotContainer {
 
     con2.lt.whileTrue(
       new RunCommand(
-        () -> shooter.move(.85), 
+        () -> shooter.move(.80), 
         shooter)
     );
 
     con2.rt.whileTrue(
       new RunCommand(
-        () -> shooter.move(.85), 
+        () -> shooter.move(.80), 
         shooter).alongWith(
           new RunCommand(
-            () -> intake.move(.85), 
+            () -> intake.move(.80), 
             intake)
         )
     );
 
-      con2.yButton.whileTrue(
-        new RunCommand(
-          () -> shooter.move(.5), 
-          shooter).alongWith(
-            new RunCommand(
-              () -> intake.move(.5), 
-              intake)
-          )
-      );      
+    con2.yButton.whileTrue(
+      new RunCommand(
+        () -> shooter.move(.5), 
+        shooter).alongWith(
+          new RunCommand(
+            () -> intake.move(.5), 
+            intake)
+        )
+    ); 
+
+    // yes ayman i know that its not technically part of the arm but idc shut up ur a nerd
+    // + ur driving sucks and u lose us state
+    /*
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     */
+    // con1.view.onTrue(
+    //   new InstantCommand(
+    //     () -> arm.switchCam(),
+    //     arm
+    //   )
+    // );
 
     // con2.aButton.whileTrue(
-    //   autoaim.aimSpeaker()
+    //   autoaim
     // );
 
 
@@ -322,7 +343,7 @@ public class RobotContainer {
 
 
   /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
+   * Use this to pass the  fnomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
@@ -355,7 +376,9 @@ public class RobotContainer {
 
     // return drivebase.getAutonomousCommand("RightMiddleCollectNotes");
 
-    return drivebase.getAutonomousCommand("FourNoteCenter");
+     return drivebase.getAutonomousCommand("FourNoteCenter");
+
+    // return drivebase.getAutonomousCommand("Static Shot");
 
     
   }
@@ -363,6 +386,8 @@ public class RobotContainer {
   public void setDriveMode() {
     // drivebase.setDefaultCommand();
   }
+
+  
 
   public void setMotorBrake(boolean brake) {
     drivebase.setMotorBrake(brake);
